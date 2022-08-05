@@ -21,6 +21,8 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 ./Alumni-Tracking-System-Client/.idea/*
+./alumni-tracking-system/mvn/wrapper/*
+./alumni-tracking-system/mvn/*
 
 # User-specific stuff
 .idea/**/workspace.xml
