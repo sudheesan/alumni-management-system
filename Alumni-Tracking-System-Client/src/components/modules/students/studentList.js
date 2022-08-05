@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllStudents } from "../actions/studentActions";
+import { fetchAllStudents } from "../../../actions/studentActions";
 
 const StudentList = () => {
   const students = useSelector((state) => state.student.students);

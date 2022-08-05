@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchAllStudents } from "../components/modules/actions/studentActions";
+import { fetchAllStudents } from "../actions/studentActions";
 
 const initialState = {
   students: [],
