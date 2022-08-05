@@ -1,7 +1,6 @@
 version: "3.8"
 
 services:
-
   postgres-db:
     image: postgres:14.1-alpine
     restart: always
@@ -11,7 +10,7 @@ services:
     ports:
       - '5432:5432'
     volumes: 
-      - ./postgres-db:/var/lib/postgresql/data
+      - ./resources/postgres-db:/var/lib/postgresql/data
 
 
   mysql:
@@ -38,9 +37,14 @@ services:
       - KC_DB_URL_DATABASE=keycloak
       - KC_DB_USERNAME=keycloak
       - KC_DB_PASSWORD=password
+  
+    volumes:
+      - ./resources/keycloak/realm-export.json:/opt/keycloak/data/import/realm.json
     ports:
       - "8080:8080"
-    command: start-dev
+    command: 
+      - start-dev
+      - --import-realm
     depends_on:
       - mysql
     healthcheck:
