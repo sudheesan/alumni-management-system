@@ -8,7 +8,7 @@ import SampleJob from "./sampleJob";
 const GridItem = function (props) {
   return (
     <Grid item>
-      <SampleJob jobDetail={props.jobDetail} />
+      <SampleJob bottomButtonTyepe="apply" jobDetail={props.jobDetail} />
     </Grid>
   );
 };
