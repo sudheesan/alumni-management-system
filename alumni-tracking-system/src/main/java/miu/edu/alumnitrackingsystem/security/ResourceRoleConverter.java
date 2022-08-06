@@ -14,7 +14,7 @@ public class ResourceRoleConverter implements Converter<Jwt, Collection<GrantedA
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
         final Map<String, List<String>> clientProperties = (Map<String, List<String>>) jwt.getClaims().get("resource_access");
-        final Map<String, List<String>> roleAccess = (Map<String, List<String>>) clientProperties.get("React-Auth");
+        final Map<String, List<String>> roleAccess = (Map<String, List<String>>) clientProperties.get("amp-client");
         if(roleAccess != null) {
             return roleAccess.get("roles")
                     .stream()
