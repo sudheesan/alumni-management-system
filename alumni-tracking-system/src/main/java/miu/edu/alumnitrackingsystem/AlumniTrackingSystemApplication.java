@@ -26,7 +26,7 @@ public class AlumniTrackingSystemApplication {
       .builder()
       .setCredentials(googleCredentials)
       .build();
-    FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "my-app");
+    FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "miu-am");
     return FirebaseMessaging.getInstance(app);
   }
 }

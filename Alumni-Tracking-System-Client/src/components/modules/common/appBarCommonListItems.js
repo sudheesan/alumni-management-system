@@ -24,7 +24,7 @@ export const commonListItems = (
       <ListItemIcon>
         <AccountBox />
       </ListItemIcon>
-      <NavLink href= "http://localhost:8081/realms/spring-app/account/#/personal-info"><ListItemText primary="Edit Profile" /></NavLink>
+      <NavLink href= "http://localhost:8080/realms/amp/account/#/personal-info"><ListItemText primary="Edit Profile" /></NavLink>
     </ListItemButton>
     <ListSubheader component="div" inset>
       Jobs
