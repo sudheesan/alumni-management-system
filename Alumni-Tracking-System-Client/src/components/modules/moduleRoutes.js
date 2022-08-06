@@ -1,12 +1,10 @@
-
-
 import React from "react";
 import { Routes, Route, } from "react-router-dom";
 
 import Profile from "../modules/account/profile";
 import MyJobList from "../modules/jobs/myadds";
 import JobPost from "../modules/jobs/jobPost";
-import JobAdList from "../modules/jobs/jobAdList";
+import JobAdList from "../modules/jobs/jobAds";
 import StudentList from "../modules/students/studentList";
 import Discover from "../modules/discover";
 

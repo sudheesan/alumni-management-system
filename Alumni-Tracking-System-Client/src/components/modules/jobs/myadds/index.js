@@ -37,33 +37,41 @@ const jobs = [
 const GridItem = function (props) {
   return (
     <Grid item>
-      <SampleJob bottomButtonTyepe="update"  {...props} />
+      <SampleJob bottomButtonTyepe="update" {...props} />
     </Grid>
   );
 };
 
 const MyJobList = () => {
-
   const [updateJobModalOpen, setUpdateJobModalOpen] = useState(false);
   const [jobPostToUpdate, setJobPostToUpdate] = useState(null);
 
   const handleUpdateJobModalOpen = (job) => {
-    setJobPostToUpdate(job)
+    setJobPostToUpdate(job);
     setUpdateJobModalOpen(true);
   };
 
   const handleUpdateJobModalClose = () => {
-    setJobPostToUpdate(null)
+    setJobPostToUpdate(null);
     setUpdateJobModalOpen(false);
   };
 
-
   return (
     <div>
-      <MyAdUpdateModal handleClose={handleUpdateJobModalClose} jobDetail = {jobPostToUpdate} openModal={updateJobModalOpen} />
+      <MyAdUpdateModal
+        handleClose={handleUpdateJobModalClose}
+        jobDetail={jobPostToUpdate}
+        openModal={updateJobModalOpen}
+      />
       <Grid container spacing={4} sx={{ m: 2 }}>
         {jobs && jobs.length
-          ? jobs.map((job) => <GridItem handleUpdateJobModalOpen={handleUpdateJobModalOpen} key={job.id} jobDetail={job} />)
+          ? jobs.map((job) => (
+              <GridItem
+                handleUpdateJobModalOpen={handleUpdateJobModalOpen}
+                key={job.id}
+                jobDetail={job}
+              />
+            ))
           : null}
       </Grid>
     </div>

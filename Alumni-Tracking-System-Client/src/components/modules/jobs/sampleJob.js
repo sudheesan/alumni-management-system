@@ -15,16 +15,24 @@ import JobImage from "../../../static/job.jpg";
 import { Tooltip } from "@mui/material";
 
 const SampleJob = (props) => {
-  const { jobDetail, bottomButtonTyepe, handleUpdateJobModalOpen } = props;
+  const {
+    jobDetail,
+    bottomButtonTyepe,
+    handleUpdateJobModalOpen,
+    handleApplyJobModalOpen,
+  } = props;
 
   const handleUpdateModelOpen = () => {
     handleUpdateJobModalOpen(jobDetail);
-  }
+  };
+
+  const handleApplyModelOpen = () => {
+    handleApplyJobModalOpen(jobDetail);
+  };
 
   {
     return jobDetail ? (
       <Card sx={{ maxWidth: 345 }}>
-
         <CardHeader
           avatar={
             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -48,14 +56,22 @@ const SampleJob = (props) => {
         <CardActions disableSpacing>
           {bottomButtonTyepe === "apply" ? (
             <Tooltip title="apply">
-              <IconButton size="large" aria-label="add to favorites">
+              <IconButton
+                onClick={handleApplyModelOpen}
+                size="large"
+                aria-label="add to favorites"
+              >
                 <AddToQueueSharpIcon />
               </IconButton>
             </Tooltip>
           ) : (
             <Tooltip title="update">
-              <IconButton onClick={handleUpdateModelOpen} size="large" aria-label="add to favorites">
-                <UpdateSharpIcon  />
+              <IconButton
+                onClick={handleUpdateModelOpen}
+                size="large"
+                aria-label="add to favorites"
+              >
+                <UpdateSharpIcon />
               </IconButton>
             </Tooltip>
           )}
