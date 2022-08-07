@@ -13,6 +13,7 @@ import java.util.List;
 @RequestMapping("/api/v1/tests")
 @CrossOrigin
 public class TestContrtoller {
+
     @GetMapping
     public List<Test> getAllTests(){
         Test test1 = new Test(1, "Sudheesan");

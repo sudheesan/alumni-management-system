@@ -2,7 +2,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ListItemButton from '@mui/material/ListItemButton';
-import NavLink from '@mui/material/Link';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -24,7 +23,7 @@ export const commonListItems = (
       <ListItemIcon>
         <AccountBox />
       </ListItemIcon>
-      <NavLink href= "http://localhost:8081/realms/spring-app/account/#/personal-info"><ListItemText primary="Edit Profile" /></NavLink>
+      <Link to="/discover/profile"><ListItemText primary="Profile" /></Link>
     </ListItemButton>
     <ListSubheader component="div" inset>
       Jobs
