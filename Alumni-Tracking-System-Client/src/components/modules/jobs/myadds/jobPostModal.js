@@ -78,9 +78,9 @@ export default function MyJobPostModal(props) {
 
   const handleFileUpload = (event) => {
     event.preventDefault()
-    const file = event.target[0]?.files[0];
+    const file = event.target?.files[0];
     if(!file) {
-      console.log("------ no file", event.target)
+      alert("Can't get the file please choose it again");
     }
     setSelectedFile(file);
     setIsFilePicked(true);
