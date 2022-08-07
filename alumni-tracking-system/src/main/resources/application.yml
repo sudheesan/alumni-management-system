@@ -1,6 +1,6 @@
 spring:
   application:
-    name: spring-data-demo
+    name: alumni-management-portal
   datasource:
     password: postgres
     url: jdbc:postgresql://localhost:5432/amp
