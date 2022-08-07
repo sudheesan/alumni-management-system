@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchAllStudents } from "../../../actions/studentActions";
-
 const StudentList = () => {
   const students = useSelector((state) => state.student.students);
   const dispatch = useDispatch();
@@ -13,7 +12,6 @@ const StudentList = () => {
   }, []);
 
   const handleNavigation = (param) =>{
-    console.log("valeee", param)
     navigate(`${param}`)
   }
 

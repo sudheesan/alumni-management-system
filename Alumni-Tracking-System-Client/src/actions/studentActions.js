@@ -1,10 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getProducts } from "../services/productService";
+import { getStudents } from "../services/studentService";
 import { FETCH_ALL_STUDENTS } from "./actionTypes";
+import to from "../utils/to";
 
 const fetchAllStudents = createAsyncThunk(FETCH_ALL_STUDENTS, async () => {
-  const students = await getProducts();
-  return students;
+  const [error, result] = await to(getStudents);
+  if(!error && result){
+    return result;
+  }
+  return [];
 });
 
 export { fetchAllStudents };
