@@ -13,6 +13,9 @@ import Checkbox from "@mui/material/Checkbox";
 import { Button } from "@mui/material";
 import UploadFile from "@mui/icons-material/UploadFile";
 import PostAddSharp from "@mui/icons-material/PostAddSharp";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import {storage} from "../../../../utils/firebase";
+
 
 const style = {
   position: "absolute",
@@ -55,6 +58,8 @@ export default function MyJobPostModal(props) {
   const { openModal, jobDetail, handleClose } = props;
 
   const [personName, setPersonName] = React.useState([]);
+  const [imgUrl, setImgUrl] = useState(null);
+
 
   const handleChange = (event) => {
     const {
@@ -68,10 +73,40 @@ export default function MyJobPostModal(props) {
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [isFilePicked, setIsFilePicked] = useState(false);
+  const [progressPercent, setProgressPercent] = useState(0);
+
 
   const handleFileUpload = (event) => {
-    setSelectedFile(event.target.files[0]);
+    event.preventDefault()
+    const file = event.target?.files[0];
+    if(!file) {
+      alert("Can't get the file please choose it again");
+    }
+    setSelectedFile(file);
     setIsFilePicked(true);
+
+    const storageRef = ref(storage, `cvs/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+
+    uploadTask.on("state_changed",
+      (snapshot) => {
+        const progress =
+          Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        console.log(progress);
+        setProgressPercent(progress);
+      },
+      (error) => {
+        alert(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log(downloadURL);
+          setImgUrl(downloadURL)
+        });
+      }
+    );
+
   };
 
   return (
@@ -176,7 +211,7 @@ export default function MyJobPostModal(props) {
                     disabled={!isFilePicked}
                     variant="contained"
                     color="primary"
-                    endIcon={<PostAddSharp />}  
+                    endIcon={<PostAddSharp />}
                   >
                     Post
                   </Button>

@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import {getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getStorage } from "firebase/storage";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -16,9 +17,13 @@ const firebaseConfig = {
   measurementId: "G-DCH8HR8E0G"
 };
 
+const vapidKey = 'BAnwN1fa9L_F5TfUyQ_nqNk4UfreKLitwnrlAlAolw7GV-5GpXILt5ZMm0w4idQUbf_FTBTux1scaFfFvm2PGlw';
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const messaging = getMessaging(app);
+export const storage = getStorage(app);
+
 
 export const onMessageListener = () =>
   new Promise((resolve) => {
@@ -28,19 +33,15 @@ export const onMessageListener = () =>
   });
 
 export const getFCMToken = (setTokenFound) => {
-  return getToken(messaging, {vapidKey: 'BAnwN1fa9L_F5TfUyQ_nqNk4UfreKLitwnrlAlAolw7GV-5GpXILt5ZMm0w4idQUbf_FTBTux1scaFfFvm2PGlw'}).then((currentToken) => {
+  return getToken(messaging, {vapidKey: vapidKey}).then((currentToken) => {
     if (currentToken) {
       console.log('current token for client: ', currentToken);
       setTokenFound(true);
-      // Track the token -> client mapping, by sending to backend server
-      // show on the UI that permission is secured
     } else {
       console.log('No registration token available. Request permission to generate one.');
       setTokenFound(false);
-      // shows on the UI that permission is required
     }
   }).catch((err) => {
     console.log('An error occurred while retrieving token. ', err);
-    // catch error while creating client token
   });
 }
