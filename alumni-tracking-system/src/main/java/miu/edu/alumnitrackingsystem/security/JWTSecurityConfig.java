@@ -20,9 +20,8 @@ public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests(authz -> authz
-                        .antMatchers(HttpMethod.POST, "/api/v1/tests/notification").permitAll()
                         .antMatchers(HttpMethod.GET, "/api/v1/**").hasRole("User")
-                        .antMatchers(HttpMethod.POST, "/api/v1/**").hasAuthority("ADMIN")
+                        .antMatchers(HttpMethod.POST, "/api/v1/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer()
                 .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()));

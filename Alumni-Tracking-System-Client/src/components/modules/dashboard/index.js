@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -7,11 +7,32 @@ import Toolbar from '@mui/material/Toolbar';
 import AppBar from '../common/appBar';
 
 import ModuleRoutes from '../moduleRoutes';
+import {getFCMToken, onMessageListener} from "../../../utils/firebase";
+import {saveFcmToken} from "../../../services/firebaseService";
 
 const mdTheme = createTheme();
 
 function DashboardContent() {
- 
+
+  const [show, setShow] = useState(false);
+
+  const [token, setToken] = useState(null);
+
+  getFCMToken(setToken);
+
+  onMessageListener().then(payload => {
+    setShow(true);
+    alert(payload.notification.title + "\n" + payload.notification.body );
+    console.log(payload);
+  }).catch(err => console.log('failed: ', err));
+
+  useEffect(()=>{
+    console.log("---- token found", token);
+    if(token) {
+      saveFcmToken(100, token);
+    }
+  }, [token])
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>

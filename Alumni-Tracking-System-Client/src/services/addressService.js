@@ -8,5 +8,5 @@ const getAllAddresses = async () => {
 }
 
 export {
-    getMyAds
-} 
+  getAllAddresses
+}
