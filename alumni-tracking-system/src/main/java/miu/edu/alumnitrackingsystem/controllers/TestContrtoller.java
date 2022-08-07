@@ -21,7 +21,6 @@ public class TestContrtoller {
   @PostMapping("/notification")
   public String sendNotification(@RequestBody NotificationMessage notificationMessage,
                                  @RequestParam String token) throws FirebaseMessagingException {
-    System.out.println("======="+ token + notificationMessage.toString());
     return firebaseMessagingService.sendNotification(notificationMessage, token);
   }
 
