@@ -3,12 +3,13 @@ import Chip from "@mui/material/Chip";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { Grid } from "@mui/material";
-import SampleJob from "./sampleJob";
+import SampleJob from "../sampleJob";
+import JobApplyModal from "../jobAds/applyModal";
 
 const GridItem = function (props) {
   return (
     <Grid item>
-      <SampleJob jobDetail={props.jobDetail} />
+      <SampleJob bottomButtonTyepe="apply" {...props} />
     </Grid>
   );
 };
@@ -48,10 +49,25 @@ const JobAdList = () => {
   const [jobList, setJobList] = useState(jobs);
   const [value, setValue] = useState([]);
 
+  const [applyJobobModalOpen, setApllyJobModalOpen] = useState(false);
+  const [jobPostToAppy, setJobPostToApply] = useState(null);
+
+  const handleApplyJobModalOpen = (job) => {
+    setJobPostToApply(job);
+    setApllyJobModalOpen(true);
+  };
+
+  const handleApplyJobModalClose = () => {
+    setJobPostToApply(null);
+    setApllyJobModalOpen(false);
+  };
+
   useEffect(() => {
-    const filteredJobs = value.length ? jobs.filter(job => job.tags.some(tag => value.includes(tag))) : jobs;
+    const filteredJobs = value.length
+      ? jobs.filter((job) => job.tags.some((tag) => value.includes(tag)))
+      : jobs;
     setJobList(filteredJobs);
-  }, [value])
+  }, [value]);
 
   return (
     <div>
@@ -74,9 +90,21 @@ const JobAdList = () => {
           <TextField {...params} label="Job Tags" placeholder="Favorites" />
         )}
       />
+      <JobApplyModal  
+        handleClose={handleApplyJobModalClose}
+        jobDetail={jobPostToAppy}
+        openModal={applyJobobModalOpen}
+      />
+
       <Grid container spacing={4} sx={{ m: 2 }}>
         {jobList && jobList.length
-          ? jobList.map((job) => <GridItem key={job.id} jobDetail={job} />)
+          ? jobList.map((job) => (
+              <GridItem
+                handleApplyJobModalOpen={handleApplyJobModalOpen}
+                key={job.id}
+                jobDetail={job}
+              />
+            ))
           : null}
       </Grid>
     </div>
