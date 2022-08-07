@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Chip from "@mui/material/Chip";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { Grid } from "@mui/material";
 import SampleJob from "../sampleJob";
 import JobApplyModal from "../jobAds/applyModal";
+import { fetchAllJobs } from "../../../../actions/JobAdActions";
+import { fetchAllTags } from "../../../../actions/tagsActions";
 
 const GridItem = function (props) {
   return (
@@ -45,12 +48,33 @@ const jobs = [
     tags: ["java", "js"],
   },
 ];
+
+
 const JobAdList = () => {
+  const dispatch = useDispatch();
+
+  const allJobAds = useSelector((state) => state.jobAds.jobAds);
+  const allTags = useSelector((state)=> state.tags.jobTags);
+
   const [jobList, setJobList] = useState(jobs);
   const [value, setValue] = useState([]);
-
   const [applyJobobModalOpen, setApllyJobModalOpen] = useState(false);
   const [jobPostToAppy, setJobPostToApply] = useState(null);
+
+  useEffect(() => {
+    dispatch(fetchAllJobs())
+  }, [])
+
+  useEffect(() => {
+    dispatch(fetchAllTags())
+  }, [])
+
+  useEffect(() => {
+    const filteredJobs = value.length
+      ? jobs.filter((job) => job.tags.some((tag) => value.includes(tag)))
+      : jobs;
+    setJobList(filteredJobs);
+  }, [value]);
 
   const handleApplyJobModalOpen = (job) => {
     setJobPostToApply(job);
@@ -61,13 +85,6 @@ const JobAdList = () => {
     setJobPostToApply(null);
     setApllyJobModalOpen(false);
   };
-
-  useEffect(() => {
-    const filteredJobs = value.length
-      ? jobs.filter((job) => job.tags.some((tag) => value.includes(tag)))
-      : jobs;
-    setJobList(filteredJobs);
-  }, [value]);
 
   return (
     <div>

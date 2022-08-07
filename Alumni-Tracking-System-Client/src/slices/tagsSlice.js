@@ -16,6 +16,7 @@ export const tagsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllTags.fulfilled, (state, action) => {
+      console.log("setting state")
       state.jobTags = action.payload;
     });
   },

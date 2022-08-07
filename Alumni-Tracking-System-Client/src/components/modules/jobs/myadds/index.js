@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { Button, Grid } from "@mui/material";
 import AddCircle from '@mui/icons-material/AddCircle';
 
 import SampleJob from "../sampleJob";
 import MyAdUpdateModal from "./updateModal";
 import MyJobPostModal from "./jobPostModal";
+import { fetchAllMyAds } from "../../../../actions/myAdsActions";
 
 const jobs = [
   {
@@ -53,10 +56,16 @@ const GridItem = function (props) {
 };
 
 const MyJobList = () => {
+
+  const allMyads = useSelector((state) => state.myAds.myJobAds);
+  const dispatch = useDispatch();
   const [updateJobModalOpen, setUpdateJobModalOpen] = useState(false);
   const [jobPostModalOpen, setJobPostModalOpen] = useState(false);
-
   const [jobPostToUpdate, setJobPostToUpdate] = useState(null);
+
+  useEffect(() => {
+      dispatch(fetchAllMyAds())
+  }, [])
 
   const handleUpdateJobModalOpen = (job) => {
     setJobPostToUpdate(job);

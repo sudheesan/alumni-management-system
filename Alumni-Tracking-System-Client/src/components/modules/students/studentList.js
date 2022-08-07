@@ -13,15 +13,10 @@ import StudentCard from "./studenCard";
 const StudentList = () => {
   const students = useSelector((state) => state.student.students);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   useState(() => {
     dispatch(fetchAllStudents());
   }, []);
-
-  const handleNavigation = (param) =>{
-    navigate(`${param}`)
-  }
 
   return (
     <Grid

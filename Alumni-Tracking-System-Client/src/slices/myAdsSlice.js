@@ -15,6 +15,7 @@ export const myAdsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllMyAds.fulfilled, (state, action) => {
+      console.log("setting state");
       state.jobAds = action.payload;
     });
   },

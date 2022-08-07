@@ -24,8 +24,6 @@ export default function JobApplyModal(props) {
   const [selectedFile, setSelectedFile] = useState(null);
 	const [isFilePicked, setIsFilePicked] = useState(false);
 
-  console.log("isFilePicked", isFilePicked);
-
   const handleFileUpload = (event) => {
     setSelectedFile(event.target.files[0]);
 		setIsFilePicked(true);
