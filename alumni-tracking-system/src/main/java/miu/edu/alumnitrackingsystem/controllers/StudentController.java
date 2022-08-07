@@ -13,7 +13,7 @@ import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.List;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/api/v1/students")
 public class StudentController {
     @Autowired private StudentService studentService;
 
