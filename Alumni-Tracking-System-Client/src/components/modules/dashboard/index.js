@@ -14,14 +14,12 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
 
-  const [show, setShow] = useState(false);
 
   const [token, setToken] = useState(null);
 
   getFCMToken(setToken);
 
   onMessageListener().then(payload => {
-    setShow(true);
     alert(payload.notification.title + "\n" + payload.notification.body );
   }).catch(err => console.log('failed: ', err));
 
