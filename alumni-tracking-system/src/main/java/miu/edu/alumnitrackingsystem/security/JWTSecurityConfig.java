@@ -22,6 +22,7 @@ public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests(authz -> authz
                         .antMatchers(HttpMethod.GET, "/api/v1/**").hasRole("User")
                         .antMatchers(HttpMethod.POST, "/api/v1/**").permitAll()
+                        .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer()
                 .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()));

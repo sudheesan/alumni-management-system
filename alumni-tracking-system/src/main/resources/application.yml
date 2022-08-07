@@ -24,6 +24,16 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/realms/amp
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    groups-order: DESC
+    disable-swagger-default-url: true
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
 server:
   port: 9090
 
