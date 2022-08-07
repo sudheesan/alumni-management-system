@@ -4,15 +4,13 @@ import miu.edu.alumnitrackingsystem.dto.StudentDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDto;
 import miu.edu.alumnitrackingsystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1/students")
 public class StudentController {
     @Autowired private StudentService studentService;
