@@ -1,33 +1,43 @@
 import React, { useState } from "react";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
+import AddCircle from '@mui/icons-material/AddCircle';
+
 import SampleJob from "../sampleJob";
 import MyAdUpdateModal from "./updateModal";
+import MyJobPostModal from "./jobPostModal";
 
 const jobs = [
   {
     id: 1,
     postedBy: "Sudheesan",
     postedDate: new Date().toDateString(),
+    description: "Facebook, Hiring js developers",
+    benifits: "Good Salary",
     content: "Facebook, Hiring js developers",
     tags: ["js"],
   },
   {
     id: 2,
     postedBy: "Rony",
+    benifits: "Good Salary",
     postedDate: new Date().toDateString(),
+    description: "Microsoft, Hiring .net developers",
     content: "Microsoft, Hiring .net developers",
     tags: [".net"],
   },
   {
     id: 3,
     postedBy: "Amit",
+    benifits: "Good Salary",
     postedDate: new Date().toDateString(),
+    description: "Google, Hiring jav developers",
     content: "Google, Hiring jav developers",
     tags: ["java"],
   },
   {
     id: 4,
     postedBy: "Umar Inan",
+    benifits: "Good Salary",
     postedDate: new Date().toDateString(),
     content: "Meta, Hiring js and java developers",
     tags: ["java", "js"],
@@ -44,6 +54,8 @@ const GridItem = function (props) {
 
 const MyJobList = () => {
   const [updateJobModalOpen, setUpdateJobModalOpen] = useState(false);
+  const [jobPostModalOpen, setJobPostModalOpen] = useState(false);
+
   const [jobPostToUpdate, setJobPostToUpdate] = useState(null);
 
   const handleUpdateJobModalOpen = (job) => {
@@ -56,6 +68,15 @@ const MyJobList = () => {
     setUpdateJobModalOpen(false);
   };
 
+  const handleJobPostModalOpen = () => {
+    setJobPostModalOpen(true);
+  };
+
+  const handleJobPostModalClose = () => {
+    setJobPostToUpdate(null);
+    setJobPostModalOpen(false);
+  };
+
   return (
     <div>
       <MyAdUpdateModal
@@ -63,16 +84,34 @@ const MyJobList = () => {
         jobDetail={jobPostToUpdate}
         openModal={updateJobModalOpen}
       />
-      <Grid container spacing={4} sx={{ m: 2 }}>
-        {jobs && jobs.length
-          ? jobs.map((job) => (
-              <GridItem
-                handleUpdateJobModalOpen={handleUpdateJobModalOpen}
-                key={job.id}
-                jobDetail={job}
-              />
-            ))
-          : null}
+      <MyJobPostModal
+        handleClose={handleJobPostModalClose}
+        openModal={jobPostModalOpen}
+      />
+
+      <Grid container direction="column" sx={{ m: 2 }}>
+        <Grid item>
+          <Button
+            onClick={handleJobPostModalOpen}
+            variant="contained"
+            endIcon={<AddCircle />}
+          >
+            Post a job
+          </Button>
+        </Grid>
+        <Grid item sx={{mt: 4}}>
+          <Grid container spacing={4}>
+            {jobs && jobs.length
+              ? jobs.map((job) => (
+                  <GridItem
+                    handleUpdateJobModalOpen={handleUpdateJobModalOpen}
+                    key={job.id}
+                    jobDetail={job}
+                  />
+                ))
+              : null}
+          </Grid>
+        </Grid>
       </Grid>
     </div>
   );

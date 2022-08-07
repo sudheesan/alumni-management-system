@@ -12,7 +12,7 @@ import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import { Button } from "@mui/material";
 import UploadFile from "@mui/icons-material/UploadFile";
-import UpdateSharp from "@mui/icons-material/UpdateSharp";
+import PostAddSharp from "@mui/icons-material/PostAddSharp";
 
 const style = {
   position: "absolute",
@@ -51,7 +51,7 @@ const names = [
   "Kelly Snyder",
 ];
 
-export default function MyAdUpdateModal(props) {
+export default function MyJobPostModal(props) {
   const { openModal, jobDetail, handleClose } = props;
 
   const [personName, setPersonName] = React.useState([]);
@@ -66,7 +66,7 @@ export default function MyAdUpdateModal(props) {
     );
   };
 
-  const [selectedFile, setSelectedFile] = useState(jobDetail && jobDetail.imagefile ?  jobDetail.imagefile : null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [isFilePicked, setIsFilePicked] = useState(false);
 
   const handleFileUpload = (event) => {
@@ -84,7 +84,7 @@ export default function MyAdUpdateModal(props) {
       >
         <Box sx={{ ...style, width: 800, height: 600, maxHeight: 600 }}>
           <Grid container direction="column" rowSpacing={2}>
-            <Grid item>Update job Ad</Grid>
+            <Grid item>Add a new job Add</Grid>
             <Grid item>
               <Divider light={false} />
             </Grid>
@@ -99,7 +99,6 @@ export default function MyAdUpdateModal(props) {
                 <Grid item md={4}>
                   <TextField
                     id="outlined-multiline-static"
-                    value={jobDetail && jobDetail.description}
                     label="Description"
                     multiline
                     rows={3}
@@ -110,7 +109,6 @@ export default function MyAdUpdateModal(props) {
                 <Grid item md={4}>
                   <TextField
                     id="outlined-multiline-static"
-                    value={jobDetail && jobDetail.benifits}
                     label="benifits"
                     multiline
                     rows={10}
@@ -178,9 +176,9 @@ export default function MyAdUpdateModal(props) {
                     disabled={!isFilePicked}
                     variant="contained"
                     color="primary"
-                    endIcon={<UpdateSharp />}  
+                    endIcon={<PostAddSharp />}  
                   >
-                    Update
+                    Post
                   </Button>
                 </Grid>
               </Grid>
