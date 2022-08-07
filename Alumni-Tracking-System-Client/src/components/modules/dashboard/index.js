@@ -23,11 +23,9 @@ function DashboardContent() {
   onMessageListener().then(payload => {
     setShow(true);
     alert(payload.notification.title + "\n" + payload.notification.body );
-    console.log(payload);
   }).catch(err => console.log('failed: ', err));
 
   useEffect(()=>{
-    console.log("---- token found", token);
     if(token) {
       saveFcmToken(100, token);
     }
