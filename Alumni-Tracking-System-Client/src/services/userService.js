@@ -1,9 +1,9 @@
 import Keycloak from "keycloak-js";
 
 const keycloak = new Keycloak({
-    url: "http://localhost:8081/",
-    realm: "spring-app",
-    clientId: "React-Auth",
+    url: "http://localhost:8080/",
+    realm: "amp",
+    clientId: "amp-client",
     onLoad: 'check-sso',
 });
 
@@ -14,9 +14,9 @@ const keycloak = new Keycloak({
  */
 const initKeycloak = (onAuthenticatedCallback) => {
     keycloak.init({
-        url: "http://localhost:8081/",
-        realm: "spring-app",
-        clientId: "React-Auth",
+        url: "http://localhost:8080/",
+        realm: "amp",
+        clientId: "amp-client",
         onLoad: 'check-sso',
     })
         .then((result) => {
