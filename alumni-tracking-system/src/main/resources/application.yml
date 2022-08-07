@@ -3,12 +3,12 @@ spring:
     name: spring-data-demo
   datasource:
     password: postgrespw
-    url: jdbc:postgresql://localhost:55001/mid
+    url: jdbc:postgresql://localhost:5432/project
     username: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -19,11 +19,11 @@ spring:
     init:
       mode: always
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8081/realms/spring-app
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:8081/realms/spring-app
   server:
     port: 8080
 
