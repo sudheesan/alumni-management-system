@@ -9,7 +9,6 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import AccountBox from '@mui/icons-material/AccountBox';
 import ListSubheader from '@mui/material/ListSubheader';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import FiberNewIcon from '@mui/icons-material/FiberNew';
 import FeedIcon from '@mui/icons-material/Feed';
 
 export const commonListItems = (
@@ -31,15 +30,9 @@ export const commonListItems = (
     </ListSubheader>
     <ListItemButton>
       <ListItemIcon>
-        <FiberNewIcon />
-      </ListItemIcon>
-      <Link to="/discover/jobPost"><ListItemText primary="Post a job" /></Link>
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <Link to="/discover/jobList"><ListItemText primary="My jobs" /></Link>
+      <Link to="/discover/jobList"><ListItemText primary="My Adds" /></Link>
 
     </ListItemButton>
     <ListItemButton>

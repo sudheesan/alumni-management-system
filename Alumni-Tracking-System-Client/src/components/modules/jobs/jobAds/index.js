@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Chip from "@mui/material/Chip";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { Grid } from "@mui/material";
-import SampleJob from "./sampleJob";
+import SampleJob from "../sampleJob";
+import JobApplyModal from "../jobAds/applyModal";
+import { fetchAllJobs } from "../../../../actions/JobAdActions";
+import { fetchAllTags } from "../../../../actions/tagsActions";
 
 const GridItem = function (props) {
   return (
     <Grid item>
-      <SampleJob jobDetail={props.jobDetail} />
+      <SampleJob bottomButtonTyepe="apply" {...props} />
     </Grid>
   );
 };
@@ -44,14 +48,43 @@ const jobs = [
     tags: ["java", "js"],
   },
 ];
+
+
 const JobAdList = () => {
+  const dispatch = useDispatch();
+
+  const allJobAds = useSelector((state) => state.jobAds.jobAds);
+  const allTags = useSelector((state)=> state.tags.jobTags);
+
   const [jobList, setJobList] = useState(jobs);
   const [value, setValue] = useState([]);
+  const [applyJobobModalOpen, setApllyJobModalOpen] = useState(false);
+  const [jobPostToAppy, setJobPostToApply] = useState(null);
 
   useEffect(() => {
-    const filteredJobs = value.length ? jobs.filter(job => job.tags.some(tag => value.includes(tag))) : jobs;
+    dispatch(fetchAllJobs())
+  }, [])
+
+  useEffect(() => {
+    dispatch(fetchAllTags())
+  }, [])
+
+  useEffect(() => {
+    const filteredJobs = value.length
+      ? jobs.filter((job) => job.tags.some((tag) => value.includes(tag)))
+      : jobs;
     setJobList(filteredJobs);
-  }, [value])
+  }, [value]);
+
+  const handleApplyJobModalOpen = (job) => {
+    setJobPostToApply(job);
+    setApllyJobModalOpen(true);
+  };
+
+  const handleApplyJobModalClose = () => {
+    setJobPostToApply(null);
+    setApllyJobModalOpen(false);
+  };
 
   return (
     <div>
@@ -74,9 +107,21 @@ const JobAdList = () => {
           <TextField {...params} label="Job Tags" placeholder="Favorites" />
         )}
       />
+      <JobApplyModal  
+        handleClose={handleApplyJobModalClose}
+        jobDetail={jobPostToAppy}
+        openModal={applyJobobModalOpen}
+      />
+
       <Grid container spacing={4} sx={{ m: 2 }}>
         {jobList && jobList.length
-          ? jobList.map((job) => <GridItem key={job.id} jobDetail={job} />)
+          ? jobList.map((job) => (
+              <GridItem
+                handleApplyJobModalOpen={handleApplyJobModalOpen}
+                key={job.id}
+                jobDetail={job}
+              />
+            ))
           : null}
       </Grid>
     </div>
