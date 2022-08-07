@@ -13,10 +13,10 @@ import javax.persistence.Id;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserToken {
+public class UserFcmToken {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
     private int userId;
-    private String token;
+    private String fcmToken;
 }

@@ -32,14 +32,13 @@ export const onMessageListener = () =>
     });
   });
 
-export const getFCMToken = (setTokenFound) => {
+export const getFCMToken = (setToken) => {
   return getToken(messaging, {vapidKey: vapidKey}).then((currentToken) => {
     if (currentToken) {
-      console.log('current token for client: ', currentToken);
-      setTokenFound(true);
+      setToken(currentToken);
     } else {
       console.log('No registration token available. Request permission to generate one.');
-      setTokenFound(false);
+      setToken(null);
     }
   }).catch((err) => {
     console.log('An error occurred while retrieving token. ', err);
