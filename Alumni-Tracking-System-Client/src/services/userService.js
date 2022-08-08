@@ -43,10 +43,14 @@ const updateToken = (successCallback) =>
         .then(successCallback)
         .catch(doLogin);
 
-const getUsername = () => keycloak.tokenParsed?.preferred_username;
+const getUsername = () => {
+    console.log("keycloak", keycloak);
+    return keycloak.tokenParsed?.preferred_username
+};
+
+const getEmail = () => keycloak.tokenParsed?.email;
 
 const hasRole = (roles) => roles.some((role) => keycloak.hasResourceRole(role));
-
 
 export {
     initKeycloak,
@@ -58,4 +62,5 @@ export {
     updateToken,
     getUsername,
     hasRole,
+    getEmail,
 };

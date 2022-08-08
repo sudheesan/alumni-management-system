@@ -1,8 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getMyAds, postNewAdd} from "../services/myAds";
-import { FETCH_ALL_MY_ADS, POST_A_JOB_AD } from "./actionTypes";
+import { getMyAds, postNewAdd, updateAnAd } from "../services/myAdsService";
+import {
+  FETCH_ALL_MY_ADS,
+  POST_A_JOB_AD,
+  UPDATE_A_JOB_AD,
+} from "./actionTypes";
 import to from "../utils/to";
-import { getUsername } from "../services/userService";
+import { getEmail } from "../services/userService";
 
 const fetchAllMyAds = createAsyncThunk(FETCH_ALL_MY_ADS, async () => {
   const [error, result] = await to(getMyAds);
@@ -13,23 +17,19 @@ const fetchAllMyAds = createAsyncThunk(FETCH_ALL_MY_ADS, async () => {
 });
 
 const postNewJobAd = createAsyncThunk(POST_A_JOB_AD, async (params) => {
-  const { description, tags, companyText, companyCity, companyState  } = params;
-
-  const newTags = tags.map((tg) =>  { return {tag: tg.tag}; })
-  const body = {
-    description,
-    tags: newTags,
-    companyName: companyText,
-    state: companyState,
-    city: companyCity,
-    postTedBy: getUsername(),
-  }
-  console.log(params);
-  const [error, result] = await to(postNewAdd, body);
+  const [error, result] = await to(postNewAdd, params);
   if (!error && result) {
     return result;
   }
-  return [];
+  return null;
 });
 
-export { fetchAllMyAds, postNewJobAd };
+const updateAJobAd = createAsyncThunk(UPDATE_A_JOB_AD, async (params) => {
+  const [error, result] = await to(updateAnAd, params);
+  if (!error && result) {
+    return result;
+  }
+  return null;
+});
+
+export { fetchAllMyAds, postNewJobAd, updateAJobAd };

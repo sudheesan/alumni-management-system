@@ -3,24 +3,29 @@ import { fetchAllMyAds } from "../actions/myAdsActions";
 
 const initialState = {
   myJobAds: [],
+  showLoader: false,
+  showAlert: false,
 };
 
 export const myAdsSlice = createSlice({
   name: "myJobAds",
   initialState,
   reducers: {
-    init: (state) => {
-     console.log("init");
+    setLoaderStatus: (state, action) => {
+      state.showLoader = action.payload;
+    },
+    setAlertStatus: (state, action) => {
+      console.log("calling", action.payload);
+      state.showAlert = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllMyAds.fulfilled, (state, action) => {
-      console.log("setting state");
-      state.jobAds = action.payload;
+      state.myJobAds = action.payload;
     });
   },
 });
 
-export const { init } = myAdsSlice.actions;
+export const { setLoaderStatus, setAlertStatus } = myAdsSlice.actions;
 
 export default myAdsSlice.reducer;
