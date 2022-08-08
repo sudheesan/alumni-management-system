@@ -12,6 +12,7 @@ import StudentCard from "./studenCard";
 
 const StudentList = () => {
   const students = useSelector((state) => state.student.students);
+
   const dispatch = useDispatch();
 
   useState(() => {
@@ -57,46 +58,13 @@ const StudentList = () => {
         }}
       >
         <Grid padding={1} container columnSpacing={2} rowSpacing={2}>
-          {/* {students.length
+          {students.length
             ? students.map((student) => (
-                <Grid item key={student.id}>
-                  <StudentCard />
+                <Grid xs={4} item key={student.id}>
+                  <StudentCard student={student} />
                 </Grid>
               ))
-            : null} */}
-          <Grid xs={4} item key={1}>
-            <StudentCard />
-          </Grid>
-          <Grid xs={4} item key={2}>
-            <StudentCard />
-          </Grid>
-          <Grid xs={4} item key={3}>
-            <StudentCard />
-          </Grid>
-          <Grid xs={4} item key={3}>
-            <StudentCard />
-          </Grid>
-          <Grid xs={4} item key={3}>
-            <StudentCard />
-          </Grid>
-          <Grid xs={4} item key={3}>
-            <StudentCard />
-          </Grid>
-          <Grid xs={4} item key={3}>
-            <StudentCard />
-          </Grid>
-          <Grid xs={4} item key={3}>
-            <StudentCard />
-          </Grid>
-          <Grid xs={4} item key={3}>
-            <StudentCard />
-          </Grid>
-          <Grid xs={4} item key={3}>
-            <StudentCard />
-          </Grid>
-          <Grid xs={4} item key={3}>
-            <StudentCard />
-          </Grid>
+            : null}
         </Grid>
       </Grid>
     </Grid>
