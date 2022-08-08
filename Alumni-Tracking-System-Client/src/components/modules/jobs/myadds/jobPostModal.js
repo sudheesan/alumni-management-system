@@ -19,6 +19,9 @@ import { useDispatch, useSelector } from "react-redux";
 import states from "./states";
 import { postNewJobAd } from "../../../../actions/myAdsActions";
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -32,8 +35,6 @@ const style = {
   pb: 3,
 };
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
     style: {
@@ -42,19 +43,6 @@ const MenuProps = {
     },
   },
 };
-
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
 
 export default function MyJobPostModal(props) {
   const { openModal, jobDetail, handleClose } = props;
@@ -73,7 +61,7 @@ export default function MyJobPostModal(props) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [progressPercent, setProgressPercent] = useState(0);
 
-  const handleApply = () => {
+  const handleJobPost = () => {
     dispatch(
       postNewJobAd({
         description,
@@ -289,7 +277,7 @@ export default function MyJobPostModal(props) {
                 </Grid>
                 <Grid textAlign="center" item>
                   <Button
-                    onClick={handleApply}
+                    onClick={handleJobPost}
                     size="large"
                     variant="contained"
                     color="primary"
