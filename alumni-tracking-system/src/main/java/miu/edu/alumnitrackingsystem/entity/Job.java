@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class Job {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String description;

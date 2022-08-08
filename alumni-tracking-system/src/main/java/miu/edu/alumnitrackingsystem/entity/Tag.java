@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Data
 public class Tag {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String tag;
