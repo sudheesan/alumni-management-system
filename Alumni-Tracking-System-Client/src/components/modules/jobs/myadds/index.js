@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Button, Grid } from "@mui/material";
-import AddCircle from '@mui/icons-material/AddCircle';
+import AddCircle from "@mui/icons-material/AddCircle";
 
 import SampleJob from "../sampleJob";
 import MyAdUpdateModal from "./updateModal";
 import MyJobPostModal from "./jobPostModal";
 import { fetchAllMyAds } from "../../../../actions/myAdsActions";
+import { fetchAllTags } from "../../../../actions/tagsActions";
 
 const jobs = [
   {
@@ -56,7 +57,6 @@ const GridItem = function (props) {
 };
 
 const MyJobList = () => {
-
   const allMyads = useSelector((state) => state.myAds.myJobAds);
   const dispatch = useDispatch();
   const [updateJobModalOpen, setUpdateJobModalOpen] = useState(false);
@@ -64,8 +64,9 @@ const MyJobList = () => {
   const [jobPostToUpdate, setJobPostToUpdate] = useState(null);
 
   useEffect(() => {
-      dispatch(fetchAllMyAds())
-  }, [])
+    dispatch(fetchAllMyAds());
+    dispatch(fetchAllTags());
+  }, []);
 
   const handleUpdateJobModalOpen = (job) => {
     setJobPostToUpdate(job);
@@ -88,16 +89,19 @@ const MyJobList = () => {
 
   return (
     <div>
-      <MyAdUpdateModal
-        handleClose={handleUpdateJobModalClose}
-        jobDetail={jobPostToUpdate}
-        openModal={updateJobModalOpen}
-      />
-      <MyJobPostModal
-        handleClose={handleJobPostModalClose}
-        openModal={jobPostModalOpen}
-      />
-
+      {jobPostModalOpen && (
+        <MyJobPostModal
+          handleClose={handleJobPostModalClose}
+          openModal={jobPostModalOpen}
+        />
+      )}
+      {updateJobModalOpen && (
+        <MyAdUpdateModal
+          handleClose={handleUpdateJobModalClose}
+          jobDetail={jobPostToUpdate}
+          openModal={updateJobModalOpen}
+        />
+      )}
       <Grid container direction="column" sx={{ m: 2 }}>
         <Grid item>
           <Button
@@ -108,7 +112,7 @@ const MyJobList = () => {
             Post a job
           </Button>
         </Grid>
-        <Grid item sx={{mt: 4}}>
+        <Grid item sx={{ mt: 4 }}>
           <Grid container spacing={4}>
             {jobs && jobs.length
               ? jobs.map((job) => (

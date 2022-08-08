@@ -8,7 +8,6 @@ import SampleJob from "../sampleJob";
 import JobApplyModal from "../jobAds/applyModal";
 import { fetchAllJobs } from "../../../../actions/JobAdActions";
 import { fetchAllTags } from "../../../../actions/tagsActions";
-import { JoinFull } from "@mui/icons-material";
 
 const GridItem = function (props) {
   return (
@@ -18,30 +17,21 @@ const GridItem = function (props) {
   );
 };
 
-
 const JobAdList = () => {
   const dispatch = useDispatch();
 
   const allJobAds = useSelector((state) => state.jobAds.jobAds);
-  const allTags = useSelector((state)=> state.tags.jobTags);
+  const allTags = useSelector((state) => state.tags.jobTags);
 
-  console.log(allJobAds);
   const [jobList, setJobList] = useState(allJobAds);
   const [value, setValue] = useState([]);
   const [applyJobobModalOpen, setApllyJobModalOpen] = useState(false);
   const [jobPostToAppy, setJobPostToApply] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchAllJobs())
-    dispatch(fetchAllTags())
-  }, [])
-
-  useEffect(() => {
-    const filteredJobs = value.length
-      ? allJobAds.filter((job) => job.tags.some((tag) => value.includes(tag)))
-      : allJobAds;
-    setJobList(filteredJobs);
-  }, [value]);
+    dispatch(fetchAllJobs());
+    dispatch(fetchAllTags());
+  }, []);
 
   const handleApplyJobModalOpen = (job) => {
     setJobPostToApply(job);
@@ -63,23 +53,28 @@ const JobAdList = () => {
           setValue([...newValue]);
         }}
         options={allTags}
-        getOptionLabel={(option) => option}
+        getOptionLabel={(option) => {
+          return option.tag;
+        }}
         renderTags={(tagValue, getTagProps) =>
-          tagValue.map((option, index) => (
-            <Chip label={option} {...getTagProps({ index })} />
-          ))
+          tagValue.map((option, index) => {
+            return <Chip label={option.tag} {...getTagProps({ index })} />;
+          })
         }
         style={{ width: 500, marginTop: 16, marginLeft: 50 }}
-        renderInput={(params) => (
-          <TextField {...params} label="Job Tags" placeholder="Favorites" />
-        )}
+        renderInput={(params) => {
+          return (
+            <TextField {...params} label="Job Tags" placeholder="Favorites" />
+          );
+        }}
       />
-      <JobApplyModal  
-        handleClose={handleApplyJobModalClose}
-        jobDetail={jobPostToAppy}
-        openModal={applyJobobModalOpen}
-      />
-
+      {applyJobobModalOpen && (
+        <JobApplyModal
+          handleClose={handleApplyJobModalClose}
+          jobDetail={jobPostToAppy}
+          openModal={applyJobobModalOpen}
+        />
+      )}
       <Grid container spacing={4} sx={{ m: 2 }}>
         {/* {jobList && jobList.length
           ? jobList.map((job) => (
@@ -91,12 +86,11 @@ const JobAdList = () => {
             ))
           : null} */}
 
-          {
-            jobList && jobList.length &&
-            jobList.forEach((job) =>  {
-              console.log(job);
-            })
-          }
+        {jobList &&
+          jobList.length &&
+          jobList.forEach((job) => {
+            console.log(job);
+          })}
       </Grid>
     </div>
   );
