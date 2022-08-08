@@ -31,4 +31,17 @@ public class Job {
 
     private String state;
     private String city;
+
+    @JoinColumn(name = "job_id")
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<File> files;
+
+    @JoinColumn(name = "job_id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<JobCv> jobCvs= new ArrayList<>();
+
+
+    public void addCv(JobCv cv){
+        jobCvs.add(cv);
+    }
 }
