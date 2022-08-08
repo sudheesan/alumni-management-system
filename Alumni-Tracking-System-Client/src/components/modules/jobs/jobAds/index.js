@@ -8,7 +8,6 @@ import SampleJob from "../sampleJob";
 import JobApplyModal from "../jobAds/applyModal";
 import { fetchAllJobs } from "../../../../actions/JobAdActions";
 import { fetchAllTags } from "../../../../actions/tagsActions";
-import { JoinFull } from "@mui/icons-material";
 
 const GridItem = function (props) {
   return (
@@ -33,7 +32,6 @@ const JobAdList = () => {
     dispatch(fetchAllJobs());
     dispatch(fetchAllTags());
   }, []);
-
 
   const handleApplyJobModalOpen = (job) => {
     setJobPostToApply(job);
@@ -65,18 +63,18 @@ const JobAdList = () => {
         }
         style={{ width: 500, marginTop: 16, marginLeft: 50 }}
         renderInput={(params) => {
-          console.log(params);
           return (
             <TextField {...params} label="Job Tags" placeholder="Favorites" />
           );
         }}
       />
-      <JobApplyModal
-        handleClose={handleApplyJobModalClose}
-        jobDetail={jobPostToAppy}
-        openModal={applyJobobModalOpen}
-      />
-
+      {applyJobobModalOpen && (
+        <JobApplyModal
+          handleClose={handleApplyJobModalClose}
+          jobDetail={jobPostToAppy}
+          openModal={applyJobobModalOpen}
+        />
+      )}
       <Grid container spacing={4} sx={{ m: 2 }}>
         {/* {jobList && jobList.length
           ? jobList.map((job) => (
@@ -88,12 +86,11 @@ const JobAdList = () => {
             ))
           : null} */}
 
-        {
-            jobList && jobList.length &&
-            jobList.forEach((job) =>  {
-              console.log(job);
-            })
-          }
+        {jobList &&
+          jobList.length &&
+          jobList.forEach((job) => {
+            console.log(job);
+          })}
       </Grid>
     </div>
   );
