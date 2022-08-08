@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import ApplyJobModalContent from "./applyModalContent";
 import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
 import UploadFile from "@mui/icons-material/UploadFile";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchJobDetails } from "../../../../actions/JobAdActions";
 
 const style = {
   position: "absolute",
@@ -20,6 +22,7 @@ const style = {
 
 export default function JobApplyModal(props) {
   const { openModal, jobDetail, handleClose } = props;
+  const dispatch = useDispatch();
 
   const [selectedFile, setSelectedFile] = useState(null);
 	const [isFilePicked, setIsFilePicked] = useState(false);
@@ -29,6 +32,15 @@ export default function JobApplyModal(props) {
 		setIsFilePicked(true);
   }
 
+  useEffect(()=> {
+    console.log(jobDetail, "++++++");
+    if(jobDetail) {
+      dispatch(fetchJobDetails(jobDetail.id));
+    } 
+  },[]);
+
+  console.log("From modal====");
+  console.log(jobDetail);
   return (
     <div>
       <Modal

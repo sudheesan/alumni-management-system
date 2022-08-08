@@ -7,6 +7,12 @@ const getAllJobs = async () => {
     return result.data;
 }
 
+const getJobDetailsByJobId = async (jobId)=>{
+    const result = await axios.get(`/jobs/${jobId}`);
+    return result.data;
+}
+
 export {
-    getAllJobs
+    getAllJobs,
+    getJobDetailsByJobId
 } 

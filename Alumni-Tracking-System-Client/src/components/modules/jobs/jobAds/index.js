@@ -81,22 +81,14 @@ const JobAdList = () => {
       />
 
       <Grid container spacing={4} sx={{ m: 2 }}>
-        {/* {jobList && jobList.length
-          ? jobList.map((job) => (
+        { jobList.map((job) => (
               <GridItem
                 handleApplyJobModalOpen={handleApplyJobModalOpen}
                 key={job.id}
                 jobDetail={job}
               />
             ))
-          : null} */}
-
-          {
-            jobList && jobList.length &&
-            jobList.forEach((job) =>  {
-              console.log(job);
-            })
-          }
+          } 
       </Grid>
     </div>
   );

@@ -39,8 +39,8 @@ const SampleJob = (props) => {
               R
             </Avatar>
           }
-          title={jobDetail.postedBy}
-          subheader={jobDetail.postedDate}
+          title={jobDetail.companyName}
+          subheader={"sub headder"}
         />
         <CardMedia
           component="img"
@@ -50,7 +50,7 @@ const SampleJob = (props) => {
         />
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            {jobDetail.content}
+            {jobDetail.description}
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
