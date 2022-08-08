@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import { Button, Divider, Grid } from "@mui/material";
 import AddCommentSharpIcon from "@mui/icons-material/AddCommentSharp";
+import to from "../../../utils/to";
+import { addComment } from "../../../services/facultyService";
 
 const style = {
   position: "absolute",
@@ -19,7 +21,25 @@ const style = {
 };
 
 const FacultyCommentModal = (props) => {
-  const { openModal, handleClose } = props;
+  const { openModal, handleClose, id } = props;
+
+  const [comment, setComment] = useState("");
+
+  const handleCommentOnChange = (event) => {
+    setComment(event.target.value);
+  };
+
+  const handlePostComment = async () => {
+    const [error, result] = await to(addComment, {
+      id,
+      comment,
+    });
+
+    if(!error){
+      handleClose();
+    }
+    console.log("the result", result, error);
+  };
 
   return (
     <div>
@@ -43,13 +63,15 @@ const FacultyCommentModal = (props) => {
                 rows={4}
                 variant="outlined"
                 style={{ width: 730 }}
+                onChange={handleCommentOnChange}
               />
             </Grid>
             <Grid item>
               <Button
-                style={{float: "right"}}
+                style={{ float: "right" }}
                 variant="contained"
                 endIcon={<AddCommentSharpIcon size="lg" />}
+                onClick={handlePostComment}
               >
                 Save Comment
               </Button>

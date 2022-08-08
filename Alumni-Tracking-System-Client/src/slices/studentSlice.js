@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchAllStudents } from "../actions/studentActions";
+import { fetchAllStudents, fetchStudentByid } from "../actions/studentActions";
 
 const initialState = {
   students: [],
+  selectedStudent: null,
 };
 
 export const studentSlice = createSlice({
@@ -10,13 +11,14 @@ export const studentSlice = createSlice({
   initialState,
   reducers: {
     init: (state) => {
-      state.students.push("TOH HARDY");
-      state.students.push("TOH HANKS");
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllStudents.fulfilled, (state, action) => {
       state.students = action.payload;
+    });
+    builder.addCase(fetchStudentByid.fulfilled, (state, action) => {
+      state.selectedStudent = action.payload;
     });
   },
 });
