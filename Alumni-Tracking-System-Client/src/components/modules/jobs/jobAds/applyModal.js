@@ -22,6 +22,8 @@ const style = {
 
 export default function JobApplyModal(props) {
   const { openModal, jobDetail, handleClose } = props;
+  const jobDetails = useSelector((state) => state.jobAds.jobDetails);
+
   const dispatch = useDispatch();
 
   const [selectedFile, setSelectedFile] = useState(null);
@@ -33,15 +35,14 @@ export default function JobApplyModal(props) {
   }
 
   useEffect(()=> {
-    console.log(jobDetail, "++++++");
     if(jobDetail) {
       dispatch(fetchJobDetails(jobDetail.id));
-    } 
-  },[]);
+      console.log(jobDetail, "++++++");
 
-  console.log("From modal====");
-  console.log(jobDetail);
-  return (
+    }
+  },[jobDetail]);
+
+  return ( jobDetail &&
     <div>
       <Modal
         onClose={handleClose}
@@ -52,6 +53,7 @@ export default function JobApplyModal(props) {
         <Box sx={{ ...style, width: "800px", maxHeight: "600px" }}>
           <Grid container spacing={2}>
             <Grid item xs={8}>
+
               <ApplyJobModalContent jobDetail={jobDetail} />
             </Grid>
             <Grid item xs={4}>

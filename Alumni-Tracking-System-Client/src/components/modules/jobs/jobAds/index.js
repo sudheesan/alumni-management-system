@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import Chip from "@mui/material/Chip";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { Grid } from "@mui/material";
+import {Grid} from "@mui/material";
 import SampleJob from "../sampleJob";
 import JobApplyModal from "../jobAds/applyModal";
-import { fetchAllJobs } from "../../../../actions/JobAdActions";
-import { fetchAllTags } from "../../../../actions/tagsActions";
-import { JoinFull } from "@mui/icons-material";
+import {fetchAllJobs} from "../../../../actions/JobAdActions";
+import {fetchAllTags} from "../../../../actions/tagsActions";
+import {JoinFull} from "@mui/icons-material";
 
 const GridItem = function (props) {
   return (
@@ -23,9 +23,8 @@ const JobAdList = () => {
   const dispatch = useDispatch();
 
   const allJobAds = useSelector((state) => state.jobAds.jobAds);
-  const allTags = useSelector((state)=> state.tags.jobTags);
+  const allTags = useSelector((state) => state.tags.jobTags);
 
-  console.log(allJobAds);
   const [jobList, setJobList] = useState(allJobAds);
   const [value, setValue] = useState([]);
   const [applyJobobModalOpen, setApllyJobModalOpen] = useState(false);
@@ -37,10 +36,12 @@ const JobAdList = () => {
   }, [])
 
   useEffect(() => {
-    const filteredJobs = value.length
-      ? allJobAds.filter((job) => job.tags.some((tag) => value.includes(tag)))
-      : allJobAds;
-    setJobList(filteredJobs);
+    if(value.length > 0) {
+      const filteredJobs = value.length
+        ? allJobAds.filter((job) => job.tags.some((tag) => value.includes(tag)))
+        : allJobAds;
+      setJobList(filteredJobs);
+    }
   }, [value]);
 
   const handleApplyJobModalOpen = (job) => {
@@ -66,29 +67,31 @@ const JobAdList = () => {
         getOptionLabel={(option) => option}
         renderTags={(tagValue, getTagProps) =>
           tagValue.map((option, index) => (
-            <Chip label={option} {...getTagProps({ index })} />
+            <Chip label={option} {...getTagProps({index})} />
           ))
         }
-        style={{ width: 500, marginTop: 16, marginLeft: 50 }}
+        style={{width: 500, marginTop: 16, marginLeft: 50}}
         renderInput={(params) => (
-          <TextField {...params} label="Job Tags" placeholder="Favorites" />
+          <TextField {...params} label="Job Tags" placeholder="Favorites"/>
         )}
       />
-      <JobApplyModal  
+
+      <JobApplyModal
         handleClose={handleApplyJobModalClose}
         jobDetail={jobPostToAppy}
         openModal={applyJobobModalOpen}
       />
 
-      <Grid container spacing={4} sx={{ m: 2 }}>
-        { jobList.map((job) => (
-              <GridItem
-                handleApplyJobModalOpen={handleApplyJobModalOpen}
-                key={job.id}
-                jobDetail={job}
-              />
-            ))
-          } 
+      <Grid container spacing={4} sx={{m: 2}}>
+        {jobList.map((job) => (
+
+          <GridItem
+            handleApplyJobModalOpen={handleApplyJobModalOpen}
+            key={job.id}
+            jobDetail={job}
+          />
+        ))
+        }
       </Grid>
     </div>
   );

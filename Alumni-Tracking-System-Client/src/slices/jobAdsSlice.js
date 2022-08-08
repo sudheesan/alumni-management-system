@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchAllJobs } from "../actions/JobAdActions";
+import {fetchAllJobs, fetchJobDetails} from "../actions/JobAdActions";
 
 const initialState = {
   jobAds: [],
@@ -17,6 +17,10 @@ export const jobAdsSlice = createSlice({
     builder.addCase(fetchAllJobs.fulfilled, (state, action) => {
       console.log("setting state")
       state.jobAds = action.payload;
+    });
+    builder.addCase(fetchJobDetails().fulfilled, (state, action) => {
+      console.log("setting state")
+      state.jobDetails = action.payload;
     });
   },
 });
