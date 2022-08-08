@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Data
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     @ManyToOne

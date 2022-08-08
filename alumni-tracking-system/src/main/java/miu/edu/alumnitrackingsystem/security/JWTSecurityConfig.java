@@ -21,7 +21,7 @@ public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests(authz -> authz
                         .antMatchers(HttpMethod.GET, "/api/v1/**").hasAnyRole("Admin","User","Faculty")
-                        .antMatchers(HttpMethod.POST, "/api/v1/**").hasAnyAuthority("Admin","User","Faculty")
+                        .antMatchers(HttpMethod.POST, "/api/v1/**").hasAnyRole("Admin","User","Faculty")
 
                         .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
 

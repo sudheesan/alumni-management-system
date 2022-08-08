@@ -14,9 +14,11 @@ const fetchAllMyAds = createAsyncThunk(FETCH_ALL_MY_ADS, async () => {
 
 const postNewJobAd = createAsyncThunk(POST_A_JOB_AD, async (params) => {
   const { description, tags, companyText, companyCity, companyState  } = params;
+
+  const newTags = tags.map((tg) =>  { return {tag: tg.tag}; })
   const body = {
     description,
-    tags,
+    tags: newTags,
     companyName: companyText,
     state: companyState,
     city: companyCity,
