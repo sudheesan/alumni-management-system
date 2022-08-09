@@ -29,6 +29,7 @@ public class JWTSecurityConfig extends WebSecurityConfigurerAdapter {
                         .anyRequest().authenticated())
                 .oauth2ResourceServer()
                 .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()));
+
     }
 
     private Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter() {

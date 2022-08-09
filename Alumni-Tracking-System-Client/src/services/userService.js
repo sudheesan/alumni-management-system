@@ -23,6 +23,7 @@ const initKeycloak = (onAuthenticatedCallback) => {
             if (!result) {
                 console.log("user is not authenticated..!");
             }
+            console.log("username", getUsername(), keycloak.tokenParsed);
             onAuthenticatedCallback();
         })
         .catch(console.error);
