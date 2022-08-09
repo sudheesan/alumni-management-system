@@ -5,15 +5,15 @@ import miu.edu.alumnitrackingsystem.dto.JobDto;
 import miu.edu.alumnitrackingsystem.entity.Faculty;
 import miu.edu.alumnitrackingsystem.entity.Job;
 import miu.edu.alumnitrackingsystem.entity.Tag;
-import miu.edu.alumnitrackingsystem.repo.FacultyRepo;
-import miu.edu.alumnitrackingsystem.repo.JobRepo;
-import miu.edu.alumnitrackingsystem.repo.TagRepo;
-import miu.edu.alumnitrackingsystem.repo.UserRepo;
+import miu.edu.alumnitrackingsystem.repo.*;
 import miu.edu.alumnitrackingsystem.service.JobService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +31,8 @@ public class JobServiceImpl implements JobService {
 
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private FileRepo fileRepo;
     @Override
     public List<JobDto> getAll() {
 
@@ -56,40 +58,43 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void save(JobDetailsDto job) {
-        int currentUserId = 1;//todo change
+        int currentUserId = 1000;//todo change
+
         var user = userRepo.findById(currentUserId).orElse(null);
         if(user!=null){
             var entity = modelMapper.map(job, Job.class);
             entity.setPostedBy(user);
 
             var tags = entity.getTags();
+            var files = entity.getFiles();
             List<Tag> resultTags = new ArrayList<>();
             tags.forEach(tag->{
                 Tag result= null;
-                var tagEntity = tagRepo.findAllByTag(tag.getTag());
-                if(tagEntity!=null && tagEntity.size() >0){
-                    result = tagEntity.get(0);
+                var tagEntity = tagRepo.findByTagEqualsIgnoreCase(tag.getTag());
+                if(tagEntity!=null){
+                    result = tagEntity;
                 }else{
                     tagRepo.save(tag);
                     result = tag;
                 }
                 resultTags.add(result);
             });
-
+            fileRepo.saveAll(files);
             entity.setTags(resultTags);
-
+            entity.setFiles(files);
             repo.save(entity);
         }
 
     }
 
     @Override
-    public void update(JobDetailsDto job) {
+    public void update(int jobId, JobDetailsDto job) {
 
-        int currentUserId = 1;//todo change
+        int currentUserId = 1000;//todo change
         var user = userRepo.findById(currentUserId).orElse(null);
-        var jobEntity = repo.findById(job.getId()).orElse(null);
+        var jobEntity = repo.findById(jobId).orElse(null);
         if(user!=null && jobEntity!= null){
+            job.setId(jobId);
             var entity = modelMapper.map(job, Job.class);
 
             repo.save(entity);
