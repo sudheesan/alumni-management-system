@@ -56,7 +56,7 @@ export default function MyJobPostModal(props) {
   const [companyState, setCompanyState] = useState("");
   const [companyCity, setCompanyCity] = useState("");
 
-  const [imgUrl, setImgUrl] = useState(null);
+  const [fileUrls, setFileUrls] = useState([]);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [progressPercent, setProgressPercent] = useState(0);
@@ -69,6 +69,7 @@ export default function MyJobPostModal(props) {
         companyState,
         companyCity,
         tags,
+        fileUrls,
       })
     );
   };
@@ -125,7 +126,6 @@ export default function MyJobPostModal(props) {
         const progress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
-        console.log(progress);
         setProgressPercent(progress);
       },
       (error) => {
@@ -133,8 +133,7 @@ export default function MyJobPostModal(props) {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log(downloadURL);
-          setImgUrl(downloadURL);
+          setFileUrls([...fileUrls, { fileName: file.name , url: downloadURL }]);
         });
       }
     );
@@ -198,7 +197,9 @@ export default function MyJobPostModal(props) {
                       onChange={handleCompanyStateChangeChange}
                     >
                       {states.map((state) => (
-                        <MenuItem key={state} value={state}>{state}</MenuItem>
+                        <MenuItem key={state} value={state}>
+                          {state}
+                        </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
@@ -214,7 +215,9 @@ export default function MyJobPostModal(props) {
                       onChange={handleCompanyCityChangeChange}
                     >
                       {states.map((state) => (
-                        <MenuItem key={state} value={state}>{state}</MenuItem>
+                        <MenuItem key={state} value={state}>
+                          {state}
+                        </MenuItem>
                       ))}
                     </Select>
                   </FormControl>

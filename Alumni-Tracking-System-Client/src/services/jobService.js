@@ -7,6 +7,13 @@ const getAllJobs = async () => {
     return result.data;
 }
 
+const applyToJob = async (params) => {
+    const { id, cvUrl} = params;
+    const result = await axios.post(`/students/apply-to-job/${id}`, {cvUrl});
+    return result.data;
+}
+
 export {
-    getAllJobs
+    getAllJobs,
+    applyToJob,
 } 
