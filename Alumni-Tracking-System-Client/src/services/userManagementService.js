@@ -2,7 +2,7 @@ import { getAxiosClient } from "./httpService";
 
 const axios = getAxiosClient();
 
-const getTags = async () => {
+const getUserByEmail = async () => {
     const result = await axios.get('/tags');
     return result.data;
 }
