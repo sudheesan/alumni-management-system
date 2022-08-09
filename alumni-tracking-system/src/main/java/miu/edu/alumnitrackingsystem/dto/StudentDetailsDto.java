@@ -3,7 +3,7 @@ package miu.edu.alumnitrackingsystem.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import miu.edu.alumnitrackingsystem.entity.File;
+import miu.edu.alumnitrackingsystem.util.UserType;
 
 import java.util.List;
 @Data
@@ -21,4 +21,5 @@ public class StudentDetailsDto {
     private List<JobDto> appliedJobs;
     private List<CommentDto> comments;
 
+    public UserType userType;
 }

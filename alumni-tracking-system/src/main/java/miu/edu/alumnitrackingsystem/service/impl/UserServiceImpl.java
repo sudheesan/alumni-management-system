@@ -1,5 +1,8 @@
 package miu.edu.alumnitrackingsystem.service.impl;
 
+import miu.edu.alumnitrackingsystem.dto.FacultyDetailsDto;
+import miu.edu.alumnitrackingsystem.dto.StudentDetailsDto;
+import miu.edu.alumnitrackingsystem.dto.UserDetailsDto;
 import miu.edu.alumnitrackingsystem.entity.Faculty;
 import miu.edu.alumnitrackingsystem.entity.Student;
 import miu.edu.alumnitrackingsystem.entity.User;
@@ -8,6 +11,7 @@ import miu.edu.alumnitrackingsystem.repo.StudentRepo;
 import miu.edu.alumnitrackingsystem.repo.UserRepo;
 import miu.edu.alumnitrackingsystem.service.UserService;
 import miu.edu.alumnitrackingsystem.util.UserType;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,8 @@ public class UserServiceImpl implements UserService {
     private FacultyRepo facultyRepo;
     @Autowired
     private StudentRepo studentRepo;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public List<User> getAll() {
@@ -78,5 +84,24 @@ public class UserServiceImpl implements UserService {
         }
 
         return user;
+    }
+    public Object getUserByEmail(String email){
+        User u = repo.findUserByEmailEqualsIgnoreCase(email);
+        Student s = studentRepo.findById(u.getId()).orElse(null);
+        if(s!= null){
+            var details =  modelMapper.map(s, StudentDetailsDto.class);
+            details.setUserType(UserType.Student);
+            return details;
+        }
+
+        Faculty f = facultyRepo.findById(u.getId()).orElse(null);
+        if(f!= null){
+            var details =  modelMapper.map(f, FacultyDetailsDto.class);
+            details.setUserType(UserType.Faculty);
+            return details;
+        }
+        var details =  modelMapper.map(u, UserDetailsDto.class);
+        details.setUserType(UserType.Admin);
+        return details;
     }
 }
