@@ -47,21 +47,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmailAndRole(String email, UserType userType) {
+    public User getUserByEmailAndRole(String email, String fName, String lName, UserType userType) {
         var user = repo.findUserByEmailEqualsIgnoreCase(email);
         if(user== null){
             if(userType==UserType.Student){
                 Student s= new Student();
                 s.setEmail(email);
+                s.setFirstName(fName);
+                s.setLastName(lName);
+                studentRepo.save(s);
                 return s;
             } else if (userType == UserType.Faculty) {
                 Faculty f = new Faculty();
                 f.setEmail(email);
+                f.setFirstName(fName);
+                f.setLastName(lName);
+                facultyRepo.save(f);
                 return f;
 
             } else if (userType== UserType.Admin) {
                 User u = new User();
                 u.setEmail(email);
+                u.setFirstName(fName);
+                u.setLastName(lName);
+                repo.save(u);
                 return u;
             }else{
                 throw new RuntimeException("Invalid User type");

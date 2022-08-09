@@ -69,7 +69,7 @@ public class UserExistenceInterceptor {
                     }
                 }
             }
-            userService.getUserByEmailAndRole(email, userType);
+            var x = userService.getUserByEmailAndRole(email, firstName, lastName, userType);
         }
     }
 }
