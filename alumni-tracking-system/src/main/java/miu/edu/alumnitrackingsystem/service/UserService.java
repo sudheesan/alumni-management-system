@@ -14,4 +14,5 @@ public interface UserService {
     void update(User user);
     void delete();
     User getUserByEmailAndRole(String email,String fName, String lName,  UserType userType);
+    Object getUserByEmail(String email);
 }
