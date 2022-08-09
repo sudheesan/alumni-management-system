@@ -8,8 +8,16 @@ import MenuItem from "@mui/material/MenuItem";
 import states from "./states";
 import { Grid } from "@mui/material";
 import UpdateSharp from "@mui/icons-material/UpdateSharp";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserByEmail } from "../../../actions/userActions";
 
 const Profile = () => {
+  const dispatch = useDispatch();
+
+  const currentUser = useSelector((state) => state.user.currentUser);
+
+  console.log("current user", currentUser);
+  
   const [userState, setUserState] = useState("");
   const [userCity, setUserCity] = useState("");
 
@@ -27,6 +35,9 @@ const Profile = () => {
     setUserCity(value);
   };
 
+  useState(() => {
+    dispatch(fetchUserByEmail());
+  }, []);
   const handleUserUpdate = async () => {};
 
   return (

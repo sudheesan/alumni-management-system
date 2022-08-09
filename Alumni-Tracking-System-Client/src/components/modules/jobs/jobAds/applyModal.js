@@ -5,6 +5,10 @@ import ApplyJobModalContent from "./applyModalContent";
 import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
 import UploadFile from "@mui/icons-material/UploadFile";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../../../utils/firebase";
+import to from "../../../../utils/to";
+import { applyToJob } from "../../../../services/jobService";
 
 const style = {
   position: "absolute",
@@ -22,12 +26,53 @@ export default function JobApplyModal(props) {
   const { openModal, jobDetail, handleClose } = props;
 
   const [selectedFile, setSelectedFile] = useState(null);
-	const [isFilePicked, setIsFilePicked] = useState(false);
+  const [isFilePicked, setIsFilePicked] = useState(false);
+
+  const [cvUrl, setCvUrl] = useState("");
+
+  const [progressPercent, setProgressPercent] = useState(0);
+
+  const handleApply = async () => {
+    const params = {
+      id: jobDetail.id,
+      cvUrl,
+    };
+    const [error, result] = to(applyToJob, params);
+    if (!error) {
+      handleClose();
+    }
+  };
 
   const handleFileUpload = (event) => {
-    setSelectedFile(event.target.files[0]);
-		setIsFilePicked(true);
-  }
+    event.preventDefault();
+    const file = event.target?.files[0];
+    if (!file) {
+      alert("Can't get the file please choose it again");
+    }
+    setSelectedFile(file);
+    setIsFilePicked(true);
+
+    const storageRef = ref(storage, `cvs/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgressPercent(progress);
+      },
+      (error) => {
+        alert(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setCvUrl(downloadURL);
+        });
+      }
+    );
+  };
 
   return (
     <div>
@@ -63,12 +108,13 @@ export default function JobApplyModal(props) {
                     component="div"
                     sx={{ p: 2, mt: 4, border: "1px dashed grey" }}
                   >
-                    {`You selected: ${selectedFile ? selectedFile.name : "" }`}
+                    {`You selected: ${selectedFile ? selectedFile.name : ""}`}
                   </Box>
                 </Grid>
-                <Grid sx={{mt:4}} item>
+                <Grid sx={{ mt: 4 }} item>
                   <Button
                     disabled={!isFilePicked}
+                    onClick={handleApply}
                     fullWidth
                     variant="contained"
                     color="primary"

@@ -9,7 +9,7 @@ const getMyAds = async () => {
 };
 
 const postNewAdd = async (params) => {
-  const { description, tags, companyText, companyCity, companyState } = params;
+  const { description, tags, companyText, companyCity, companyState, fileUrls } = params;
   const updatedTags = tags.map((tg) => {
     return { tag: tg.tag };
   });
@@ -19,6 +19,7 @@ const postNewAdd = async (params) => {
     companyName: companyText,
     state: companyState,
     city: companyCity,
+    files: fileUrls,
   };
   const result = await axios.post(BASE_URL, body);
   return result.data;
