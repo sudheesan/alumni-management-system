@@ -4,11 +4,13 @@ import miu.edu.alumnitrackingsystem.dto.CvForJobDto;
 import miu.edu.alumnitrackingsystem.dto.JobDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDto;
+import miu.edu.alumnitrackingsystem.entity.Faculty;
 import miu.edu.alumnitrackingsystem.entity.JobCv;
 import miu.edu.alumnitrackingsystem.entity.Student;
 import miu.edu.alumnitrackingsystem.repo.JobRepo;
 import miu.edu.alumnitrackingsystem.repo.StudentRepo;
 import miu.edu.alumnitrackingsystem.service.StudentService;
+import miu.edu.alumnitrackingsystem.util.UserType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +47,9 @@ public class StudentServiceImpl implements StudentService {
 
         var entity= repo.findById(id).orElse(null);
         if(entity!= null){
-            return mapper.map(entity, StudentDetailsDto.class);
+            var model = mapper.map(entity, StudentDetailsDto.class);
+            model.setUserType(UserType.Student);
+            return model;
         }
         return null;
     }
@@ -103,5 +107,16 @@ public class StudentServiceImpl implements StudentService {
         }
 
 
+    }
+
+    @Override
+    public void update(int id, StudentDetailsDto studentDetailsDto) {
+        var user = repo.findById(id).orElse(null);
+        if(user==null)
+            throw new RuntimeException("No user found");
+
+        var entity = mapper.map(studentDetailsDto, Student.class);
+        entity.setId(id);
+        repo.save(entity);
     }
 }

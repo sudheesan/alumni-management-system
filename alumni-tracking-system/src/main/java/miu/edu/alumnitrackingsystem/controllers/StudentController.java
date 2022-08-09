@@ -1,6 +1,7 @@
 package miu.edu.alumnitrackingsystem.controllers;
 
 import miu.edu.alumnitrackingsystem.dto.CvForJobDto;
+import miu.edu.alumnitrackingsystem.dto.FacultyDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDto;
 import miu.edu.alumnitrackingsystem.service.StudentService;
@@ -31,4 +32,8 @@ public class StudentController {
         studentService.appliedToJob(jobId, cvForJobDto);
     }
 
+    @PutMapping("/{id}")
+    public void update(@PathVariable int id, @RequestBody StudentDetailsDto studentDetailsDto){
+        studentService.update(id, studentDetailsDto);
+    }
 }

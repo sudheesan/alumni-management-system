@@ -47,7 +47,6 @@ public class JobController {
     }
     @PutMapping("/{id}")
     public void update(@PathVariable int id, @RequestBody JobDetailsDto jobDetailsDto){
-        service.update(jobDetailsDto);
-
+        service.update(id, jobDetailsDto);
     }
 }

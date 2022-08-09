@@ -33,8 +33,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getById(int id) {
-        return repo.findById(id).orElse(null);
+    public UserDetailsDto getById(int id) {
+
+        var a= repo.findById(id).orElse(null);
+        if(a!= null){
+            var model = modelMapper.map(a, UserDetailsDto.class);
+            model.setUserType(UserType.Admin);
+            return model;
+        }
+        return null;
     }
 
     @Override
@@ -103,5 +110,14 @@ public class UserServiceImpl implements UserService {
         var details =  modelMapper.map(u, UserDetailsDto.class);
         details.setUserType(UserType.Admin);
         return details;
+    }
+    public void update(int id, UserDetailsDto userDetailsDto){
+        var user = repo.findById(id).orElse(null);
+        if(user==null)
+            throw new RuntimeException("No user found");
+
+        var entity = modelMapper.map(userDetailsDto, User.class);
+        entity.setId(id);
+        repo.save(entity);
     }
 }
