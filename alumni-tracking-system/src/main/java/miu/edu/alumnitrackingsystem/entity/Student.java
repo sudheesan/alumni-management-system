@@ -17,9 +17,6 @@ public class Student extends User{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "student", cascade = CascadeType.ALL)
     private List<Comment> comments=new ArrayList<>();
 
-    public void addToAppliedJob(Job job){
-        appliedJobs.add(job);
-    }
     public void addComment(Comment comment){
         comments.add(comment);
     }

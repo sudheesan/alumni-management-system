@@ -1,11 +1,11 @@
 package miu.edu.alumnitrackingsystem.service.impl;
 
+import miu.edu.alumnitrackingsystem.dto.CvForJobDto;
 import miu.edu.alumnitrackingsystem.dto.JobDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDto;
-import miu.edu.alumnitrackingsystem.entity.Faculty;
+import miu.edu.alumnitrackingsystem.entity.JobCv;
 import miu.edu.alumnitrackingsystem.entity.Student;
-import miu.edu.alumnitrackingsystem.repo.FacultyRepo;
 import miu.edu.alumnitrackingsystem.repo.JobRepo;
 import miu.edu.alumnitrackingsystem.repo.StudentRepo;
 import miu.edu.alumnitrackingsystem.service.StudentService;
@@ -81,14 +81,27 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void appliedToJob(int jobId) {
-        var studentId=1;//todo change
+    public void appliedToJob(int jobId, CvForJobDto cvForJobDto) {
+        var studentId=2;//todo change
         var student = repo.findById(studentId).orElse(null);
         var job= jobRepo.findById(jobId).orElse(null);
+
+
         if(job!= null&& student!=null){
-            student.addToAppliedJob(job);
-            repo.save(student);
+            var alreadyApplied = job.getAppliedStudent().stream().anyMatch(s->s.getId() == student.getId());
+            if(alreadyApplied)
+                return;
+            //student.addToAppliedJob(job);
+            //repo.save(student);
+            job.addAppliedStudent(student);
+
+            JobCv jobCv = new JobCv();
+            jobCv.setStudentId(studentId);
+            jobCv.setCvUrl(cvForJobDto.getCvUrl());
+            job.addCv(jobCv);
+            jobRepo.save(job);
         }
+
 
     }
 }

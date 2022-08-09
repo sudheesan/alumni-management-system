@@ -11,7 +11,7 @@ public interface JobService {
     List<JobDto> getAll();
     JobDetailsDto getById(int id);
     void save(JobDetailsDto job);
-    void update(JobDetailsDto job);
+    void update(int jobid, JobDetailsDto job);
     void delete();
     List<JobDto> myPostedJob();
 }

@@ -10,25 +10,37 @@ import java.util.List;
 @Data
 public class Job {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
 
     private String description;
+    private String title;
+    private String companyName;
+    private Boolean deleted = false;
+    private String state;
+    private String city;
+
+    @JoinColumn(name = "job_id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<File> files=new ArrayList<>();
+    @JoinColumn(name = "job_id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<JobCv> jobCvs= new ArrayList<>();
 
     @ManyToMany
     private List<Tag> tags = new ArrayList<>();
 
-
-    private String companyName;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private User postedBy;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Student> appliedStudent;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    private List<Student> appliedStudent= new ArrayList<>();
 
-    private Boolean deleted = false;
+    public void addCv(JobCv cv){
+        jobCvs.add(cv);
+    }
 
-    private String state;
-    private String city;
+    public void addAppliedStudent(Student s){
+        appliedStudent.add(s);
+    }
 }
