@@ -1,10 +1,14 @@
 package miu.edu.alumnitrackingsystem.service.impl;
 
+import miu.edu.alumnitrackingsystem.dto.FacultyDetailsDto;
 import miu.edu.alumnitrackingsystem.entity.Comment;
 import miu.edu.alumnitrackingsystem.entity.Faculty;
+import miu.edu.alumnitrackingsystem.entity.User;
 import miu.edu.alumnitrackingsystem.repo.FacultyRepo;
 import miu.edu.alumnitrackingsystem.repo.StudentRepo;
 import miu.edu.alumnitrackingsystem.service.FacultyService;
+import miu.edu.alumnitrackingsystem.util.UserType;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +21,8 @@ public class FacultyServiceImpl implements FacultyService {
     FacultyRepo repo;
     @Autowired
     StudentRepo studentRepo;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public List<Faculty> getAll() {
@@ -24,8 +30,15 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Faculty getById(int id) {
-        return repo.findById(id).orElse(null);
+    public FacultyDetailsDto getById(int id) {
+
+        var f= repo.findById(id).orElse(null);
+        if(f!= null){
+            var model = modelMapper.map(f, FacultyDetailsDto.class);
+            model.setUserType(UserType.Faculty);
+            return model;
+        }
+        return null;
     }
 
     @Override
@@ -57,5 +70,16 @@ public class FacultyServiceImpl implements FacultyService {
             studentRepo.save(student);
         }
 
+    }
+
+    @Override
+    public void update(int id, FacultyDetailsDto facultyDetailsDto) {
+        var user = repo.findById(id).orElse(null);
+        if(user==null)
+            throw new RuntimeException("No user found");
+
+        var entity = modelMapper.map(facultyDetailsDto, Faculty.class);
+        entity.setId(id);
+        repo.save(entity);
     }
 }

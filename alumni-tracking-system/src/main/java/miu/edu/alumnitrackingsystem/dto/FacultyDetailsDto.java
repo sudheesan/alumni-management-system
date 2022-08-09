@@ -1,5 +1,6 @@
 package miu.edu.alumnitrackingsystem.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ public class FacultyDetailsDto {
     private String department;
     private String state;
     private String city;
-    private List<Job> jobs;
+    private List<JobDto> jobs;
 
     public UserType userType;
 }
