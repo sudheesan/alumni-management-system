@@ -82,12 +82,18 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void appliedToJob(int jobId, CvForJobDto cvForJobDto) {
-        var studentId=1;//todo change
+        var studentId=2;//todo change
         var student = repo.findById(studentId).orElse(null);
         var job= jobRepo.findById(jobId).orElse(null);
+
+
         if(job!= null&& student!=null){
-            student.addToAppliedJob(job);
-            repo.save(student);
+            var alreadyApplied = job.getAppliedStudent().stream().anyMatch(s->s.getId() == student.getId());
+            if(alreadyApplied)
+                return;
+            //student.addToAppliedJob(job);
+            //repo.save(student);
+            job.addAppliedStudent(student);
 
             JobCv jobCv = new JobCv();
             jobCv.setStudentId(studentId);

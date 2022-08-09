@@ -1,5 +1,6 @@
 package miu.edu.alumnitrackingsystem.controllers;
 
+import miu.edu.alumnitrackingsystem.dto.CvForJobDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDto;
 import miu.edu.alumnitrackingsystem.service.StudentService;
@@ -24,4 +25,10 @@ public class StudentController {
     public StudentDetailsDto getById(@PathVariable int id){
         return studentService.getById(id);
     }
+
+    @PostMapping("/apply-to-job/{jobId}")
+    public void appliedToJob(@PathVariable int jobId,@RequestBody CvForJobDto cvForJobDto){
+        studentService.appliedToJob(jobId, cvForJobDto);
+    }
+
 }

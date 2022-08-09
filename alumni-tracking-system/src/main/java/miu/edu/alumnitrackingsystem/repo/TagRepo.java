@@ -9,6 +9,5 @@ import java.util.List;
 
 @Repository
 public interface TagRepo extends CrudRepository<Tag, Integer> {
-    @Query(value = "SELECT e FROM Tag e WHERE e.tag like :tag")
-    List<Tag> findAllByTag(String tag);
+    Tag findByTagEqualsIgnoreCase(String tag);
 }

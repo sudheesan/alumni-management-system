@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class JobCv {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private int studentId;
     private String cvUrl;

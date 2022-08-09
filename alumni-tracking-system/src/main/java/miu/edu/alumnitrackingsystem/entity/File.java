@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class File {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
     private String fileName;
     private String url;
