@@ -2,50 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Button, Grid } from "@mui/material";
-import AddCircle from '@mui/icons-material/AddCircle';
+import AddCircle from "@mui/icons-material/AddCircle";
 
 import SampleJob from "../sampleJob";
 import MyAdUpdateModal from "./updateModal";
 import MyJobPostModal from "./jobPostModal";
 import { fetchAllMyAds } from "../../../../actions/myAdsActions";
-
-const jobs = [
-  {
-    id: 1,
-    postedBy: "Sudheesan",
-    postedDate: new Date().toDateString(),
-    description: "Facebook, Hiring js developers",
-    benifits: "Good Salary",
-    content: "Facebook, Hiring js developers",
-    tags: ["js"],
-  },
-  {
-    id: 2,
-    postedBy: "Rony",
-    benifits: "Good Salary",
-    postedDate: new Date().toDateString(),
-    description: "Microsoft, Hiring .net developers",
-    content: "Microsoft, Hiring .net developers",
-    tags: [".net"],
-  },
-  {
-    id: 3,
-    postedBy: "Amit",
-    benifits: "Good Salary",
-    postedDate: new Date().toDateString(),
-    description: "Google, Hiring jav developers",
-    content: "Google, Hiring jav developers",
-    tags: ["java"],
-  },
-  {
-    id: 4,
-    postedBy: "Umar Inan",
-    benifits: "Good Salary",
-    postedDate: new Date().toDateString(),
-    content: "Meta, Hiring js and java developers",
-    tags: ["java", "js"],
-  },
-];
+import { fetchAllTags } from "../../../../actions/tagsActions";
+import Loader from "../../common/loader";
 
 const GridItem = function (props) {
   return (
@@ -56,16 +20,24 @@ const GridItem = function (props) {
 };
 
 const MyJobList = () => {
-
   const allMyads = useSelector((state) => state.myAds.myJobAds);
+  const showAlert = useSelector((state) => state.myAds.showAlert);
+
+  
   const dispatch = useDispatch();
+  const [alert, setAlert] = useState(showAlert);
   const [updateJobModalOpen, setUpdateJobModalOpen] = useState(false);
   const [jobPostModalOpen, setJobPostModalOpen] = useState(false);
   const [jobPostToUpdate, setJobPostToUpdate] = useState(null);
 
   useEffect(() => {
-      dispatch(fetchAllMyAds())
-  }, [])
+    dispatch(fetchAllMyAds());
+    dispatch(fetchAllTags());
+  }, []);
+
+  useEffect(() => {
+    setAlert(true)
+  }, [showAlert]);
 
   const handleUpdateJobModalOpen = (job) => {
     setJobPostToUpdate(job);
@@ -88,16 +60,19 @@ const MyJobList = () => {
 
   return (
     <div>
-      <MyAdUpdateModal
-        handleClose={handleUpdateJobModalClose}
-        jobDetail={jobPostToUpdate}
-        openModal={updateJobModalOpen}
-      />
-      <MyJobPostModal
-        handleClose={handleJobPostModalClose}
-        openModal={jobPostModalOpen}
-      />
-
+      {jobPostModalOpen && (
+        <MyJobPostModal
+          handleClose={handleJobPostModalClose}
+          openModal={jobPostModalOpen}
+        />
+      )}
+      {updateJobModalOpen && (
+        <MyAdUpdateModal
+          handleClose={handleUpdateJobModalClose}
+          jobDetail={jobPostToUpdate}
+          openModal={updateJobModalOpen}
+        />
+      )}
       <Grid container direction="column" sx={{ m: 2 }}>
         <Grid item>
           <Button
@@ -108,10 +83,10 @@ const MyJobList = () => {
             Post a job
           </Button>
         </Grid>
-        <Grid item sx={{mt: 4}}>
+        <Grid item sx={{ mt: 4 }}>
           <Grid container spacing={4}>
-            {jobs && jobs.length
-              ? jobs.map((job) => (
+            {allMyads && allMyads.length
+              ? allMyads.map((job) => (
                   <GridItem
                     handleUpdateJobModalOpen={handleUpdateJobModalOpen}
                     key={job.id}

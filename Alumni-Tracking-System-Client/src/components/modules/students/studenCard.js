@@ -14,7 +14,8 @@ const Img = styled("img")({
   maxHeight: "100%",
 });
 
-const StudentCard = () => {
+const StudentCard = (props) => {
+  const { student } = props;
   const navigate = useNavigate();
 
   const handleNavigation = (param) => {
@@ -31,37 +32,32 @@ const StudentCard = () => {
         backgroundColor: (theme) =>
           theme.palette.mode === "dark" ? "#1A2027" : "#fff",
       }}
-      onClick={() => handleNavigation("sudheesan")}
+      onClick={() => handleNavigation(student.id)}
     >
       <Grid container spacing={2}>
-        <Grid item>
-          <ButtonBase sx={{ width: 128, height: 128 }}>
-            <Img alt="complex" src={avatar} />
+        <Grid item width="100%" textAlign="center">
+          <ButtonBase>
+            <Img sx={{ width: 150, height: 150 }} alt="complex" src={avatar} />
           </ButtonBase>
         </Grid>
         <Grid item xs={12} sm container>
           <Grid item xs container direction="column" spacing={2}>
             <Grid item xs>
               <Typography gutterBottom variant="subtitle1" component="div">
-                Standard license
+                {`${student && student.firstName} ${
+                  student && student.lastName
+                } `}
               </Typography>
-              <Typography variant="body2" gutterBottom>
-                Full resolution 1920x1080 • JPEG
+              <Typography variant="body2">
+                {student && student.email}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                ID: 1030114
+              <Typography variant="body2">
+                {`ID: ${student && student.id}`}
+              </Typography>
+              <Typography variant="body2">
+                {`GPA: ${student && student.gpa}`}
               </Typography>
             </Grid>
-            <Grid item>
-              <Typography sx={{ cursor: "pointer" }} variant="body2">
-                Remove
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Typography variant="subtitle1" component="div">
-              $19.00
-            </Typography>
           </Grid>
         </Grid>
       </Grid>

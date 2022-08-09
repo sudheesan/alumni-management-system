@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
@@ -13,6 +14,13 @@ import Checkbox from "@mui/material/Checkbox";
 import { Button } from "@mui/material";
 import UploadFile from "@mui/icons-material/UploadFile";
 import UpdateSharp from "@mui/icons-material/UpdateSharp";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../../../utils/firebase";
+import states from "./states";
+import { updateAnAd } from "../../../../services/myAdsService";
+import to from "../../../../utils/to";
+import { setLoaderStatus, setAlertStatus } from "../../../../slices/myAdsSlice";
+import Loader from "../../common/loader";
 
 const style = {
   position: "absolute",
@@ -38,40 +46,106 @@ const MenuProps = {
   },
 };
 
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
-
 export default function MyAdUpdateModal(props) {
   const { openModal, jobDetail, handleClose } = props;
+  const showLoader = useSelector((state) => state.myAds.showLoader);
 
-  const [personName, setPersonName] = React.useState([]);
+  const { companyName, description, tags, state, city, id } = jobDetail;
 
-  const handleChange = (event) => {
+  const allTags = useSelector((state) => state.tags.jobTags);
+  const dispatch = useDispatch();
+
+  const [jobTags, setJobTags] = useState(tags || []);
+  const [jobDescription, setJobDescription] = useState(description || "");
+  const [companyText, setCompanyText] = useState(companyName || "");
+  const [companyState, setCompanyState] = useState(state || "");
+  const [companyCity, setCompanyCity] = useState(city || "");
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const [imgUrl, setImgUrl] = useState(null);
+
+  const [progressPercent, setProgressPercent] = useState(0);
+
+  const handleJobPostUpdate = async () => {
+    const params = {
+      id,
+      jobDescription,
+      companyText,
+      companyState,
+      companyCity,
+      jobTags,
+    };
+    const [error, result] = await to(updateAnAd, params);    
+    if (!error) {
+      dispatch(setAlertStatus(true));
+    }
+  };
+
+  const handleDescriptionChange = (event) => {
     const {
       target: { value },
     } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+    setJobDescription(value);
   };
 
-  const [selectedFile, setSelectedFile] = useState(jobDetail && jobDetail.imagefile ?  jobDetail.imagefile : null);
-  const [isFilePicked, setIsFilePicked] = useState(false);
+  const handleCompantTextChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setCompanyText(value);
+  };
+
+  const handleTagChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setJobTags(typeof value === "string" ? value.split(",") : value);
+  };
+
+  const handleCompanyStateChangeChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setCompanyState(value);
+  };
+
+  const handleCompanyCityChangeChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setCompanyCity(value);
+  };
 
   const handleFileUpload = (event) => {
-    setSelectedFile(event.target.files[0]);
-    setIsFilePicked(true);
+    event.preventDefault();
+    const file = event.target?.files[0];
+    if (!file) {
+      alert("Can't get the file please choose it again");
+    }
+    setSelectedFile(file);
+
+    const storageRef = ref(storage, `cvs/${file.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        console.log(progress);
+        setProgressPercent(progress);
+      },
+      (error) => {
+        alert(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          console.log(downloadURL);
+          setImgUrl(downloadURL);
+        });
+      }
+    );
   };
 
   return (
@@ -84,7 +158,7 @@ export default function MyAdUpdateModal(props) {
       >
         <Box sx={{ ...style, width: 800, height: 600, maxHeight: 600 }}>
           <Grid container direction="column" rowSpacing={2}>
-            <Grid item>Update job Ad</Grid>
+            <Grid item>Add a new job Add</Grid>
             <Grid item>
               <Divider light={false} />
             </Grid>
@@ -96,31 +170,70 @@ export default function MyAdUpdateModal(props) {
                 container
                 direction="column"
               >
-                <Grid item md={4}>
+                <Grid item>
                   <TextField
+                    onChange={handleCompantTextChange}
+                    value={companyText}
                     id="outlined-multiline-static"
-                    value={jobDetail && jobDetail.description}
+                    label="Company"
+                    multiline
+                    rows={2}
+                    variant="outlined"
+                    style={{ width: 300 }}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    value={jobDescription}
+                    onChange={handleDescriptionChange}
+                    id="outlined-multiline-static"
                     label="Description"
                     multiline
-                    rows={3}
+                    rows={5}
                     variant="outlined"
                     style={{ width: 300 }}
                   />
                 </Grid>
-                <Grid item md={4}>
-                  <TextField
-                    id="outlined-multiline-static"
-                    value={jobDetail && jobDetail.benifits}
-                    label="benifits"
-                    multiline
-                    rows={10}
-                    variant="outlined"
-                    style={{ width: 300 }}
-                  />
+
+                <Grid item style={{ width: 300 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">State</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={companyState}
+                      label="State"
+                      onChange={handleCompanyStateChangeChange}
+                    >
+                      {states.map((state) => (
+                        <MenuItem key={state} value={state}>
+                          {state}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Grid>
-                <Grid item md={4}>
+                <Grid item style={{ width: 300 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">City</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={companyCity}
+                      label="City"
+                      onChange={handleCompanyCityChangeChange}
+                    >
+                      {states.map((state) => (
+                        <MenuItem key={state} value={state}>
+                          {state}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item>
                   <div>
-                    <FormControl sx={{ m: 1, width: 300 }}>
+                    <FormControl sx={{ width: 300 }}>
                       <InputLabel id="demo-multiple-checkbox-label">
                         Tag
                       </InputLabel>
@@ -128,23 +241,25 @@ export default function MyAdUpdateModal(props) {
                         labelId="demo-multiple-checkbox-label"
                         id="demo-multiple-checkbox"
                         multiple
-                        value={personName}
-                        onChange={handleChange}
+                        value={jobTags}
+                        onChange={handleTagChange}
                         input={<OutlinedInput label="Tag" />}
-                        renderValue={(selected) => selected.join(", ")}
+                        renderValue={(selected) =>
+                          selected.map((value) => value.tag).join(", ")
+                        }
                         MenuProps={MenuProps}
                       >
-                        {names.map((name) => (
-                          <MenuItem key={name} value={name}>
-                            <Checkbox checked={personName.indexOf(name) > -1} />
-                            <ListItemText primary={name} />
+                        {allTags.map((name) => (
+                          <MenuItem key={name.tag} value={name}>
+                            <Checkbox checked={jobTags.indexOf(name) > -1} />
+                            <ListItemText primary={name.tag} />
                           </MenuItem>
                         ))}
                       </Select>
                     </FormControl>
                   </div>
                 </Grid>
-                <Grid item md={4}>
+                <Grid item>
                   <Grid container direction="column">
                     <Grid item>
                       <Button
@@ -174,13 +289,13 @@ export default function MyAdUpdateModal(props) {
                 </Grid>
                 <Grid textAlign="center" item>
                   <Button
+                    onClick={handleJobPostUpdate}
                     size="large"
-                    disabled={!isFilePicked}
                     variant="contained"
                     color="primary"
-                    endIcon={<UpdateSharp />}  
+                    endIcon={<UpdateSharp />}
                   >
-                    Update
+                    Post
                   </Button>
                 </Grid>
               </Grid>

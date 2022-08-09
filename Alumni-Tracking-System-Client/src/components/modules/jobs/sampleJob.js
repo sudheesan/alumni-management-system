@@ -22,6 +22,7 @@ const SampleJob = (props) => {
     handleApplyJobModalOpen,
   } = props;
 
+
   const handleUpdateModelOpen = () => {
     handleUpdateJobModalOpen(jobDetail);
   };
@@ -50,7 +51,7 @@ const SampleJob = (props) => {
         />
         <CardContent>
           <Typography variant="body2" color="text.secondary">
-            {jobDetail.content}
+            {jobDetail.companyName}
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
