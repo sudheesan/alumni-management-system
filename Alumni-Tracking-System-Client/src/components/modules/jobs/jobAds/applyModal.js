@@ -37,7 +37,7 @@ export default function JobApplyModal(props) {
       id: jobDetail.id,
       cvUrl,
     };
-    const [error, result] = to(applyToJob, params);
+    const [error, result] = await to(applyToJob, params);
     if (!error) {
       handleClose();
     }

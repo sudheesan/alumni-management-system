@@ -32,7 +32,6 @@ const updateAnAd = async (params) => {
     return { tag: tg.tag };
   });
   const body = {
-    id,
     description,
     tags: jobTags,
     companyName: companyText,
@@ -40,7 +39,7 @@ const updateAnAd = async (params) => {
     city: companyCity,
   };
 
-  const result = await axios.put(BASE_URL, body);
+  const result = await axios.put(`${BASE_URL}/${id}`, body);
   return result.data;
 };
 

@@ -158,7 +158,7 @@ export default function MyAdUpdateModal(props) {
       >
         <Box sx={{ ...style, width: 800, height: 600, maxHeight: 600 }}>
           <Grid container direction="column" rowSpacing={2}>
-            <Grid item>Add a new job Add</Grid>
+            <Grid item>Update the job</Grid>
             <Grid item>
               <Divider light={false} />
             </Grid>
@@ -295,7 +295,7 @@ export default function MyAdUpdateModal(props) {
                     color="primary"
                     endIcon={<UpdateSharp />}
                   >
-                    Post
+                    Update
                   </Button>
                 </Grid>
               </Grid>
