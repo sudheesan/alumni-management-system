@@ -1,5 +1,6 @@
 package miu.edu.alumnitrackingsystem.service;
 
+import miu.edu.alumnitrackingsystem.dto.CvForJobDto;
 import miu.edu.alumnitrackingsystem.dto.JobDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDto;
@@ -14,5 +15,6 @@ public interface StudentService {
     void update(Student student);
     void delete();
     List<JobDto> getMyAppliedJob();
-    void appliedToJob(int jobId);
+
+    void appliedToJob(int jobId, CvForJobDto cvForJobDto);
 }

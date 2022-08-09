@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class JobDto {
     private int id;
+    private String title;
 
     private String description;
 
