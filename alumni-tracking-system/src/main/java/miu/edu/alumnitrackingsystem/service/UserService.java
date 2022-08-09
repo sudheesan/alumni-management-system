@@ -13,5 +13,5 @@ public interface UserService {
     void save(User user);
     void update(User user);
     void delete();
-    User getUserByEmailAndRole(String email, UserType userType);
+    User getUserByEmailAndRole(String email,String fName, String lName,  UserType userType);
 }
