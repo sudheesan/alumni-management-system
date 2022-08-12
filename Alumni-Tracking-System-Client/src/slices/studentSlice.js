@@ -4,13 +4,18 @@ import { fetchAllStudents, fetchStudentByid } from "../actions/studentActions";
 const initialState = {
   students: [],
   selectedStudent: null,
+  isStudentsLoading: false,
 };
 
 export const studentSlice = createSlice({
   name: "student",
   initialState,
   reducers: {
-    init: (state) => {
+    setIsStudentsLoadingTrue: (state) => {
+      state.isStudentsLoading = true;
+    },
+    setIsStudentsLoadingFalse: (state) => {
+      state.isStudentsLoading = false;
     },
   },
   extraReducers: (builder) => {
@@ -23,6 +28,6 @@ export const studentSlice = createSlice({
   },
 });
 
-export const { init } = studentSlice.actions;
+export const { setIsStudentsLoadingTrue, setIsStudentsLoadingFalse } = studentSlice.actions;
 
 export default studentSlice.reducer;

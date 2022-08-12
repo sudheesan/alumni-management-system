@@ -19,8 +19,6 @@ import { storage } from "../../../../utils/firebase";
 import states from "./states";
 import { updateAnAd } from "../../../../services/myAdsService";
 import to from "../../../../utils/to";
-import { setLoaderStatus, setAlertStatus } from "../../../../slices/myAdsSlice";
-import Loader from "../../common/loader";
 
 const style = {
   position: "absolute",
@@ -48,7 +46,7 @@ const MenuProps = {
 
 export default function MyAdUpdateModal(props) {
   const { openModal, jobDetail, handleClose } = props;
-  const showLoader = useSelector((state) => state.myAds.showLoader);
+  const isMyAdsLoading = useSelector((state) => state.myAds.isMyAdsLoading);
 
   const { companyName, description, tags, state, city, id } = jobDetail;
 
@@ -77,7 +75,8 @@ export default function MyAdUpdateModal(props) {
     };
     const [error, result] = await to(updateAnAd, params);    
     if (!error) {
-      dispatch(setAlertStatus(true));
+     
+    
     }
   };
 
