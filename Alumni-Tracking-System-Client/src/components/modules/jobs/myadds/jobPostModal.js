@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import { Divider, Grid } from "@mui/material";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
+import LoadingButton from "@mui/lab/LoadingButton";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
@@ -13,11 +14,16 @@ import Checkbox from "@mui/material/Checkbox";
 import { Button } from "@mui/material";
 import UploadFile from "@mui/icons-material/UploadFile";
 import PostAddSharp from "@mui/icons-material/PostAddSharp";
+import Snackbar from "@mui/material/Snackbar";
+
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+
+import Alert from "../../common/alert";
 import { storage } from "../../../../utils/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import states from "./states";
-import { postNewJobAd } from "../../../../actions/myAdsActions";
+import to from "../../../../utils/to";
+import { postNewAdd } from "../../../../services/myAdsService";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -44,6 +50,12 @@ const MenuProps = {
   },
 };
 
+const initialAlertState = {
+  open: false,
+  severity: "success",
+  message: "no message",
+};
+
 export default function MyJobPostModal(props) {
   const { openModal, jobDetail, handleClose } = props;
   const allTags = useSelector((state) => state.tags.jobTags);
@@ -56,22 +68,44 @@ export default function MyJobPostModal(props) {
   const [companyState, setCompanyState] = useState("");
   const [companyCity, setCompanyCity] = useState("");
 
+  const [isAdPosting, setIsAdPosting] = useState(false);
+
+  const [adPostAlert, setAdPostAlert] = useState(initialAlertState);
+
   const [fileUrls, setFileUrls] = useState([]);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [progressPercent, setProgressPercent] = useState(0);
 
-  const handleJobPost = () => {
-    dispatch(
-      postNewJobAd({
-        description,
-        companyText,
-        companyState,
-        companyCity,
-        tags,
-        fileUrls,
-      })
-    );
+  const handleJobPost = async () => {
+    setIsAdPosting(true);
+    const [error, response] = await to(postNewAdd, {
+      description,
+      companyText,
+      companyState,
+      companyCity,
+      tags,
+      fileUrls,
+    });
+    setIsAdPosting(false);
+    if (!error) {
+      setAdPostAlert({
+        open: true,
+        severity: "success",
+        message: "Job Ad posted successfully",
+      });
+    } else {
+     
+      setAdPostAlert({
+        open: true,
+        severity: "error",
+        message: "Error while posting job Ad",
+      });
+    }
+  };
+
+  const handleAlertClose = () => {
+    setAdPostAlert(initialAlertState);
   };
 
   const handleDescriptionChange = (event) => {
@@ -133,7 +167,7 @@ export default function MyJobPostModal(props) {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setFileUrls([...fileUrls, { fileName: file.name , url: downloadURL }]);
+          setFileUrls([...fileUrls, { fileName: file.name, url: downloadURL }]);
         });
       }
     );
@@ -141,6 +175,19 @@ export default function MyJobPostModal(props) {
 
   return (
     <div>
+      <Snackbar
+        open={adPostAlert.open}
+        autoHideDuration={3000}
+        onClose={handleAlertClose}
+      >
+        <Alert
+          onClose={handleAlertClose}
+          severity={adPostAlert.severity}
+          sx={{ width: "100%" }}
+        >
+          {adPostAlert.message}
+        </Alert>
+      </Snackbar>
       <Modal
         onClose={handleClose}
         open={openModal}
@@ -279,15 +326,17 @@ export default function MyJobPostModal(props) {
                   </Grid>
                 </Grid>
                 <Grid textAlign="center" item>
-                  <Button
+                  <LoadingButton
                     onClick={handleJobPost}
+                    disabled={isAdPosting}
+                    loading={isAdPosting}
                     size="large"
                     variant="contained"
                     color="primary"
                     endIcon={<PostAddSharp />}
                   >
                     Post
-                  </Button>
+                  </LoadingButton>
                 </Grid>
               </Grid>
             </Grid>

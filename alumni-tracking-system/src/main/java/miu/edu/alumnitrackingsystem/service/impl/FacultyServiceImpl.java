@@ -7,6 +7,7 @@ import miu.edu.alumnitrackingsystem.entity.User;
 import miu.edu.alumnitrackingsystem.repo.FacultyRepo;
 import miu.edu.alumnitrackingsystem.repo.StudentRepo;
 import miu.edu.alumnitrackingsystem.service.FacultyService;
+import miu.edu.alumnitrackingsystem.service.UserService;
 import miu.edu.alumnitrackingsystem.util.UserType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class FacultyServiceImpl implements FacultyService {
     StudentRepo studentRepo;
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<Faculty> getAll() {
@@ -58,7 +62,8 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public void addCommentToStudent(int studentId, String commentText) {
-        int facultyId=1; //todo change
+        var currentUser = userService.getLoggedInUser();
+        int facultyId = currentUser.getId();
         var student = studentRepo.findById(studentId).orElse(null);
         var faculty = repo.findById(facultyId).orElse(null);
         if(student!= null && faculty!= null){

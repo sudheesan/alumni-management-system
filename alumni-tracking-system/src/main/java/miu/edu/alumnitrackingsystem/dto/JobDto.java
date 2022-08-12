@@ -19,4 +19,7 @@ public class JobDto {
     private String description;
 
     private String companyName;
+    private String state;
+    private String city;
+    private List<StudentDto> appliedStudent;
 }

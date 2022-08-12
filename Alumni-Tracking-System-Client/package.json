@@ -8,6 +8,7 @@
     "@emotion/styled": "^11.10.0",
     "@firebase/messaging": "^0.9.16",
     "@mui/icons-material": "^5.8.4",
+    "@mui/lab": "^5.0.0-alpha.94",
     "@mui/material": "^5.9.3",
     "@mui/styled-engine-sc": "^5.9.3",
     "@react-keycloak/web": "^3.4.0",

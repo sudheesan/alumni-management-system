@@ -3,6 +3,7 @@ package miu.edu.alumnitrackingsystem.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import miu.edu.alumnitrackingsystem.entity.Comment;
 import miu.edu.alumnitrackingsystem.util.UserType;
 
 import java.util.List;

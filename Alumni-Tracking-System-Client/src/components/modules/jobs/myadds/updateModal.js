@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { Divider, Grid } from "@mui/material";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -14,7 +15,10 @@ import Checkbox from "@mui/material/Checkbox";
 import { Button } from "@mui/material";
 import UploadFile from "@mui/icons-material/UploadFile";
 import UpdateSharp from "@mui/icons-material/UpdateSharp";
+import Snackbar from "@mui/material/Snackbar";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+
+import Alert from "../../common/alert";
 import { storage } from "../../../../utils/firebase";
 import states from "./states";
 import { updateAnAd } from "../../../../services/myAdsService";
@@ -44,6 +48,12 @@ const MenuProps = {
   },
 };
 
+const initialAlertState = {
+  open: false,
+  severity: "success",
+  message: "no message",
+};
+
 export default function MyAdUpdateModal(props) {
   const { openModal, jobDetail, handleClose } = props;
   const isMyAdsLoading = useSelector((state) => state.myAds.isMyAdsLoading);
@@ -64,6 +74,10 @@ export default function MyAdUpdateModal(props) {
 
   const [progressPercent, setProgressPercent] = useState(0);
 
+  const [isAdUpdating, setIsAdUpdating] = useState(false);
+
+  const [updateAlert, setUpdateAlert] = useState(initialAlertState);
+
   const handleJobPostUpdate = async () => {
     const params = {
       id,
@@ -73,11 +87,26 @@ export default function MyAdUpdateModal(props) {
       companyCity,
       jobTags,
     };
-    const [error, result] = await to(updateAnAd, params);    
+    setIsAdUpdating(true);
+    const [error, result] = await to(updateAnAd, params);
+    setIsAdUpdating(false);
     if (!error) {
-     
-    
+      setUpdateAlert({
+        open: true,
+        severity: "success",
+        message: "Ad updated successfully",
+      });
+    } else {
+      setUpdateAlert({
+        open: true,
+        severity: "error",
+        message: "Error while updatimg Ad",
+      });
     }
+  };
+
+  const handleAlertClose = () => {
+    setUpdateAlert(initialAlertState);
   };
 
   const handleDescriptionChange = (event) => {
@@ -149,6 +178,19 @@ export default function MyAdUpdateModal(props) {
 
   return (
     <div>
+      <Snackbar
+        open={updateAlert.open}
+        autoHideDuration={3000}
+        onClose={handleAlertClose}
+      >
+        <Alert
+          onClose={handleAlertClose}
+          severity={updateAlert.severity}
+          sx={{ width: "100%" }}
+        >
+          {updateAlert.message}
+        </Alert>
+      </Snackbar>
       <Modal
         onClose={handleClose}
         open={openModal}
@@ -287,15 +329,17 @@ export default function MyAdUpdateModal(props) {
                   </Grid>
                 </Grid>
                 <Grid textAlign="center" item>
-                  <Button
+                  <LoadingButton
                     onClick={handleJobPostUpdate}
+                    disabled={isAdUpdating}
+                    loading={isAdUpdating}
                     size="large"
                     variant="contained"
                     color="primary"
                     endIcon={<UpdateSharp />}
                   >
                     Update
-                  </Button>
+                  </LoadingButton>
                 </Grid>
               </Grid>
             </Grid>
