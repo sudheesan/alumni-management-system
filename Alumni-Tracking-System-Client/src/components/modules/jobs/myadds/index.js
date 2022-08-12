@@ -51,6 +51,7 @@ const MyJobList = () => {
   const handleUpdateJobModalClose = () => {
     setJobPostToUpdate(null);
     setUpdateJobModalOpen(false);
+    dispatch(fetchAllMyAds());
   };
 
   const handleJobPostModalOpen = () => {
@@ -60,6 +61,7 @@ const MyJobList = () => {
   const handleJobPostModalClose = () => {
     setJobPostToUpdate(null);
     setJobPostModalOpen(false);
+    dispatch(fetchAllMyAds());
   };
 
   const handleJobApplicantstModalClose = () => {
