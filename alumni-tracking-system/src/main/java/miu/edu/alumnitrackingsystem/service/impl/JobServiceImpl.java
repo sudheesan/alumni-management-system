@@ -7,6 +7,7 @@ import miu.edu.alumnitrackingsystem.entity.Job;
 import miu.edu.alumnitrackingsystem.entity.Tag;
 import miu.edu.alumnitrackingsystem.repo.*;
 import miu.edu.alumnitrackingsystem.service.JobService;
+import miu.edu.alumnitrackingsystem.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
@@ -33,6 +34,10 @@ public class JobServiceImpl implements JobService {
     private UserRepo userRepo;
     @Autowired
     private FileRepo fileRepo;
+
+    @Autowired
+    private UserService userService;
+
     @Override
     public List<JobDto> getAll() {
 
@@ -58,7 +63,8 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public void save(JobDetailsDto job) {
-        int currentUserId = 1000;//todo change
+        var currentUser = userService.getLoggedInUser();
+        int currentUserId = currentUser.getId();
 
         var user = userRepo.findById(currentUserId).orElse(null);
         if(user!=null){
@@ -90,7 +96,8 @@ public class JobServiceImpl implements JobService {
     @Override
     public void update(int jobId, JobDetailsDto job) {
 
-        int currentUserId = 1000;//todo change
+        var currentUser = userService.getLoggedInUser();
+        int currentUserId = currentUser.getId();
         var user = userRepo.findById(currentUserId).orElse(null);
         var jobEntity = repo.findById(jobId).orElse(null);
         if(user!=null && jobEntity!= null){
@@ -108,7 +115,8 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public List<JobDto> myPostedJob(){
-        var currentUserId = 1;//need to update it from the context object
+        var currentUser = userService.getLoggedInUser();
+        int currentUserId = currentUser.getId();
         var user = userRepo.findById(currentUserId).orElse(null);
         if(user!= null){
             List<JobDto> result = new ArrayList<>();
