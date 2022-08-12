@@ -5,6 +5,7 @@ const initialState = {
   students: [],
   selectedStudent: null,
   isStudentsLoading: false,
+  isStudentDetailLoading: false,
 };
 
 export const studentSlice = createSlice({
@@ -17,6 +18,12 @@ export const studentSlice = createSlice({
     setIsStudentsLoadingFalse: (state) => {
       state.isStudentsLoading = false;
     },
+    setIsStudentDetailsLoadingTrue: (state) => {
+      state.isStudentDetailLoading = true;
+    },
+    setIsStudentDetailsLoadingFalse: (state) => {
+      state.isStudentDetailLoading = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllStudents.fulfilled, (state, action) => {
@@ -28,6 +35,11 @@ export const studentSlice = createSlice({
   },
 });
 
-export const { setIsStudentsLoadingTrue, setIsStudentsLoadingFalse } = studentSlice.actions;
+export const {
+  setIsStudentsLoadingTrue,
+  setIsStudentsLoadingFalse,
+  setIsStudentDetailsLoadingTrue,
+  setIsStudentDetailsLoadingFalse,
+} = studentSlice.actions;
 
 export default studentSlice.reducer;
