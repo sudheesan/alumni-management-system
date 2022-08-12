@@ -3,24 +3,27 @@ import { fetchAllJobs } from "../actions/JobAdActions";
 
 const initialState = {
   jobAds: [],
+  isJobsLoading: false,
 };
 
 export const jobAdsSlice = createSlice({
   name: "jobAds",
   initialState,
   reducers: {
-    init: (state) => {
-     console.log("init");
+    setIsJobsLoadingTrue: (state) => {
+      state.isJobsLoading = true;
+    },
+    setIsJobsLoadingFalse: (state) => {
+      state.isJobsLoading = false;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllJobs.fulfilled, (state, action) => {
-      console.log("setting state")
       state.jobAds = action.payload;
     });
   },
 });
 
-export const { init } = jobAdsSlice.actions;
+export const { setIsJobsLoadingTrue, setIsJobsLoadingFalse } = jobAdsSlice.actions;
 
 export default jobAdsSlice.reducer;

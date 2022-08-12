@@ -7,9 +7,14 @@ import {
 } from "./actionTypes";
 import to from "../utils/to";
 import { getEmail } from "../services/userService";
+import { setIsMyAdsLoadingFalse, setIsMyAdsLoadingTrue } from "../slices/myAdsSlice";
 
-const fetchAllMyAds = createAsyncThunk(FETCH_ALL_MY_ADS, async () => {
+const fetchAllMyAds = createAsyncThunk(FETCH_ALL_MY_ADS, async (params, {dispatch}) => {
+
+  dispatch(setIsMyAdsLoadingTrue())
   const [error, result] = await to(getMyAds);
+  dispatch(setIsMyAdsLoadingFalse())
+
   if (!error && result) {
     return result;
   }

@@ -3,20 +3,18 @@ import { fetchAllMyAds } from "../actions/myAdsActions";
 
 const initialState = {
   myJobAds: [],
-  showLoader: false,
-  showAlert: false,
+  isMyAdsLoading: false,
 };
 
 export const myAdsSlice = createSlice({
   name: "myJobAds",
   initialState,
   reducers: {
-    setLoaderStatus: (state, action) => {
-      state.showLoader = action.payload;
+    setIsMyAdsLoadingTrue: (state) => {
+      state.isMyAdsLoading = true;
     },
-    setAlertStatus: (state, action) => {
-      console.log("calling", action.payload);
-      state.showAlert = action.payload;
+    setIsMyAdsLoadingFalse: (state) => {
+      state.isMyAdsLoading = false;
     },
   },
   extraReducers: (builder) => {
@@ -26,6 +24,6 @@ export const myAdsSlice = createSlice({
   },
 });
 
-export const { setLoaderStatus, setAlertStatus } = myAdsSlice.actions;
+export const { setIsMyAdsLoadingTrue, setIsMyAdsLoadingFalse } = myAdsSlice.actions;
 
 export default myAdsSlice.reducer;

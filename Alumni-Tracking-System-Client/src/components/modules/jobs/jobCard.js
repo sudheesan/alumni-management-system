@@ -8,11 +8,13 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
+import { Tooltip } from "@mui/material";
 import AddToQueueSharpIcon from "@mui/icons-material/AddToQueueSharp";
 import UpdateSharpIcon from "@mui/icons-material/UpdateSharp";
 
+import HailSharpIcon from "@mui/icons-material/HailSharp";
+
 import JobImage from "../../../static/job.jpg";
-import { Tooltip } from "@mui/material";
 
 const SampleJob = (props) => {
   const {
@@ -21,7 +23,6 @@ const SampleJob = (props) => {
     handleUpdateJobModalOpen,
     handleApplyJobModalOpen,
   } = props;
-
 
   const handleUpdateModelOpen = () => {
     handleUpdateJobModalOpen(jobDetail);
@@ -66,15 +67,26 @@ const SampleJob = (props) => {
               </IconButton>
             </Tooltip>
           ) : (
-            <Tooltip title="update">
-              <IconButton
-                onClick={handleUpdateModelOpen}
-                size="large"
-                aria-label="add to favorites"
-              >
-                <UpdateSharpIcon />
-              </IconButton>
-            </Tooltip>
+            <div>
+              <Tooltip title="update">
+                <IconButton
+                  onClick={handleUpdateModelOpen}
+                  size="large"
+                  aria-label="add to favorites"
+                >
+                  <UpdateSharpIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Applicants">
+                <IconButton
+                  onClick={handleApplyModelOpen}
+                  size="large"
+                  aria-label="add to favorites"
+                >
+                  <HailSharpIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
           )}
         </CardActions>
       </Card>
