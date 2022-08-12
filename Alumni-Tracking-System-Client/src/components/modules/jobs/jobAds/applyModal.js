@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import ApplyJobModalContent from "./applyModalContent";
+import LoadingButton from "@mui/lab/LoadingButton";
+
 import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
 import UploadFile from "@mui/icons-material/UploadFile";
+import Snackbar from "@mui/material/Snackbar";
+
+import ApplyJobModalContent from "./applyModalContent";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../../../utils/firebase";
 import to from "../../../../utils/to";
 import { applyToJob } from "../../../../services/jobService";
+import Alert from "../../common/alert";
+
 
 const style = {
   position: "absolute",
@@ -22,11 +28,21 @@ const style = {
   pb: 3,
 };
 
+const initialAlertState = {
+  open: false,
+  severity: "success",
+  message: "no message",
+};
+
 export default function JobApplyModal(props) {
   const { openModal, jobDetail, handleClose } = props;
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [isFilePicked, setIsFilePicked] = useState(false);
+
+  const [isApplying, setIsApplying] = useState(false);
+
+  const [applyAlert, setAppyAlert] = useState(initialAlertState);
 
   const [cvUrl, setCvUrl] = useState("");
 
@@ -37,10 +53,27 @@ export default function JobApplyModal(props) {
       id: jobDetail.id,
       cvUrl,
     };
+    setIsApplying(true);
     const [error, result] = await to(applyToJob, params);
+    setIsApplying(false);
     if (!error) {
-      handleClose();
+      setAppyAlert({
+        open: true,
+        severity: "success",
+        message: "Applied successfully",
+      });
+    } else {
+     
+      setAppyAlert({
+        open: true,
+        severity: "error",
+        message: "Error while applying for the job",
+      });
     }
+  };
+
+  const handleAlertClose = () => {
+    setAppyAlert(initialAlertState);
   };
 
   const handleFileUpload = (event) => {
@@ -76,6 +109,19 @@ export default function JobApplyModal(props) {
 
   return (
     <div>
+      <Snackbar
+        open={applyAlert.open}
+        autoHideDuration={3000}
+        onClose={handleAlertClose}
+      >
+        <Alert
+          onClose={handleAlertClose}
+          severity={applyAlert.severity}
+          sx={{ width: "100%" }}
+        >
+          {applyAlert.message}
+        </Alert>
+      </Snackbar>
       <Modal
         onClose={handleClose}
         open={openModal}
@@ -112,15 +158,16 @@ export default function JobApplyModal(props) {
                   </Box>
                 </Grid>
                 <Grid sx={{ mt: 4 }} item>
-                  <Button
-                    disabled={!isFilePicked}
+                  <LoadingButton
+                    disabled={!isFilePicked || isApplying}
+                    loading={isApplying}
                     onClick={handleApply}
                     fullWidth
                     variant="contained"
                     color="primary"
                   >
                     Apply !!
-                  </Button>
+                  </LoadingButton>
                 </Grid>
               </Grid>
             </Grid>
