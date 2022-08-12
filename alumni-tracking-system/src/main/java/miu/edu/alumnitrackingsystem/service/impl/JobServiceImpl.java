@@ -111,7 +111,6 @@ public class JobServiceImpl implements JobService {
               firebaseMessagingService.sendNotification(msg, student.getFcmToken());
             } catch (FirebaseMessagingException e) {
               log.info("Notification sent to student id "+ student.getId());
-
               throw new RuntimeException(e);
             }
           });
