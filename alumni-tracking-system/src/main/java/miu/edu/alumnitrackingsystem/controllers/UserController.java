@@ -1,6 +1,8 @@
 package miu.edu.alumnitrackingsystem.controllers;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import miu.edu.alumnitrackingsystem.dto.FacultyDetailsDto;
+import miu.edu.alumnitrackingsystem.dto.FcmTokenDto;
 import miu.edu.alumnitrackingsystem.dto.UserDetailsDto;
 import miu.edu.alumnitrackingsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +26,10 @@ public class UserController {
     @GetMapping("/getbyid/{id}")
     public UserDetailsDto getById(@PathVariable int id){
         return userService.getById(id);
+    }
+
+    @PutMapping("/fcm-token")
+    public void saveFcmToken(@RequestBody FcmTokenDto fcmTokenDto) throws FirebaseMessagingException {
+      userService.saveFcmToken(fcmTokenDto.getUserId(), fcmTokenDto.getFcmToken());
     }
 }

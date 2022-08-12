@@ -9,6 +9,7 @@ import AppBar from '../common/appBar';
 import ModuleRoutes from '../moduleRoutes';
 import {getFCMToken, onMessageListener} from "../../../utils/firebase";
 import {saveFcmToken} from "../../../services/firebaseService";
+import {useSelector} from "react-redux";
 
 const mdTheme = createTheme();
 
@@ -16,6 +17,8 @@ function DashboardContent() {
 
 
   const [token, setToken] = useState(null);
+  const currentUser = useSelector((s) => s.user.currentUser)
+  console.log(currentUser);
 
   getFCMToken(setToken);
 
@@ -24,10 +27,11 @@ function DashboardContent() {
   }).catch(err => console.log('failed: ', err));
 
   useEffect(()=>{
-    if(token) {
+    if(currentUser) {
+      console.log(currentUser);
       saveFcmToken(100, token);
     }
-  }, [token])
+  }, [currentUser])
 
   return (
     <ThemeProvider theme={mdTheme}>

@@ -110,6 +110,8 @@ public class StudentServiceImpl implements StudentService {
             jobCv.setCvUrl(cvForJobDto.getCvUrl());
             job.addCv(jobCv);
             jobRepo.save(job);
+
+            var postedBy = job.getPostedBy();
         }
 
 

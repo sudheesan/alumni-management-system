@@ -1,5 +1,6 @@
 package miu.edu.alumnitrackingsystem.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import miu.edu.alumnitrackingsystem.entity.Tag;
 import miu.edu.alumnitrackingsystem.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@Slf4j
 @RequestMapping("/api/v1/tags")
 public class TagController {
     @Autowired
@@ -21,6 +23,8 @@ public class TagController {
 
     @PostMapping
     public void save(@RequestBody Tag tag){
-        tagService.save(tag);
+      log.info("Initializing '{}' realm in Keycloak ...", "name sdkjfhdskjhfhksd");
+
+      tagService.save(tag);
     }
 }

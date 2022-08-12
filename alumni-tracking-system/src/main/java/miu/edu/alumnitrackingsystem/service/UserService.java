@@ -18,4 +18,6 @@ public interface UserService {
     Object getUserByEmail(String email);
     void update(int id, UserDetailsDto userDetailsDto);
     User getLoggedInUser();
+    void saveFcmToken(int userId, String fcmToken);
+
 }
