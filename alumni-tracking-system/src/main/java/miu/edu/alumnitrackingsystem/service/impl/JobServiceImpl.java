@@ -129,7 +129,7 @@ public class JobServiceImpl implements JobService {
                 var cvs = e.getJobCvs();
                 myjob.getAppliedStudent().forEach(aps->{
                     var scv = cvs.stream().filter(cv-> cv.getId() == aps.getId()).collect(Collectors.toList());
-                    if(scv!= null || scv.size()> 0){
+                    if(scv!= null && scv.size()> 0){
                         aps.setCvUrl(scv.get(0).getCvUrl());
                     }
 
