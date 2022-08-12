@@ -10,6 +10,7 @@ import miu.edu.alumnitrackingsystem.entity.Student;
 import miu.edu.alumnitrackingsystem.repo.JobRepo;
 import miu.edu.alumnitrackingsystem.repo.StudentRepo;
 import miu.edu.alumnitrackingsystem.service.StudentService;
+import miu.edu.alumnitrackingsystem.service.UserService;
 import miu.edu.alumnitrackingsystem.util.UserType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class StudentServiceImpl implements StudentService {
     private JobRepo jobRepo;
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<StudentDto> getAll() {
@@ -71,7 +75,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<JobDto> getMyAppliedJob() {
-        var studentId=1;//Todo change
+        var currentUser = userService.getLoggedInUser();
+        int studentId = currentUser.getId();
         var student = repo.findById(studentId).orElse(null);
         if(student!= null){
             List<JobDto> result = new ArrayList<>();
@@ -86,7 +91,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void appliedToJob(int jobId, CvForJobDto cvForJobDto) {
-        var studentId=2;//todo change
+        var currentUser = userService.getLoggedInUser();
+        int studentId = currentUser.getId();
         var student = repo.findById(studentId).orElse(null);
         var job= jobRepo.findById(jobId).orElse(null);
 
