@@ -1,5 +1,8 @@
 package miu.edu.alumnitrackingsystem.service.impl;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import miu.edu.alumnitrackingsystem.dto.CvForJobDto;
 import miu.edu.alumnitrackingsystem.dto.JobDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDetailsDto;
@@ -7,8 +10,10 @@ import miu.edu.alumnitrackingsystem.dto.StudentDto;
 import miu.edu.alumnitrackingsystem.entity.Faculty;
 import miu.edu.alumnitrackingsystem.entity.JobCv;
 import miu.edu.alumnitrackingsystem.entity.Student;
+import miu.edu.alumnitrackingsystem.models.NotificationMessage;
 import miu.edu.alumnitrackingsystem.repo.JobRepo;
 import miu.edu.alumnitrackingsystem.repo.StudentRepo;
+import miu.edu.alumnitrackingsystem.service.FirebaseMessagingService;
 import miu.edu.alumnitrackingsystem.service.StudentService;
 import miu.edu.alumnitrackingsystem.service.UserService;
 import miu.edu.alumnitrackingsystem.util.UserType;
@@ -17,20 +22,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
-    @Autowired
-    private StudentRepo repo;
-    @Autowired
-    private JobRepo jobRepo;
-    @Autowired
-    private ModelMapper mapper;
-
-    @Autowired
-    private UserService userService;
+    private final StudentRepo repo;
+    private final JobRepo jobRepo;
+    private final ModelMapper mapper;
+    private final UserService userService;
+    private final FirebaseMessagingService firebaseMessagingService;
 
     @Override
     public List<StudentDto> getAll() {
@@ -112,6 +116,20 @@ public class StudentServiceImpl implements StudentService {
             jobRepo.save(job);
 
             var postedBy = job.getPostedBy();
+            if(postedBy!= null && postedBy.getFcmToken() != null) {
+              var msg = new NotificationMessage();
+              msg.setSubject("Job Alert");
+              msg.setContent(student.getFirstName() + " is applied for job: " + job.getTitle());
+              msg.setData(new HashMap<>());
+              try {
+                firebaseMessagingService.sendNotification(msg, postedBy.getFcmToken());
+                log.info("Notification sent to job owner "+ msg.toString());
+              } catch (FirebaseMessagingException e) {
+                log.error("Cannot sent notification", e);
+                throw new RuntimeException(e);
+              }
+            }
+
         }
 
 

@@ -17,8 +17,6 @@ function DashboardContent() {
 
 
   const [token, setToken] = useState(null);
-  const currentUser = useSelector((s) => s.user.currentUser)
-  console.log(currentUser);
 
   getFCMToken(setToken);
 
@@ -27,11 +25,10 @@ function DashboardContent() {
   }).catch(err => console.log('failed: ', err));
 
   useEffect(()=>{
-    if(currentUser) {
-      console.log(currentUser);
-      saveFcmToken(100, token);
+    if(token) {
+      saveFcmToken(token);
     }
-  }, [currentUser])
+  }, [token])
 
   return (
     <ThemeProvider theme={mdTheme}>

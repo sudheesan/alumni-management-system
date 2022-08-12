@@ -1,11 +1,15 @@
 package miu.edu.alumnitrackingsystem.service.impl;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
+import lombok.extern.slf4j.Slf4j;
 import miu.edu.alumnitrackingsystem.dto.JobDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.JobDto;
 import miu.edu.alumnitrackingsystem.entity.Faculty;
 import miu.edu.alumnitrackingsystem.entity.Job;
 import miu.edu.alumnitrackingsystem.entity.Tag;
+import miu.edu.alumnitrackingsystem.models.NotificationMessage;
 import miu.edu.alumnitrackingsystem.repo.*;
+import miu.edu.alumnitrackingsystem.service.FirebaseMessagingService;
 import miu.edu.alumnitrackingsystem.service.JobService;
 import miu.edu.alumnitrackingsystem.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -16,9 +20,11 @@ import org.springframework.stereotype.Service;
 
 import java.security.Security;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
+@Slf4j
 public class JobServiceImpl implements JobService {
     @Autowired
     private JobRepo repo;
@@ -34,9 +40,14 @@ public class JobServiceImpl implements JobService {
     private UserRepo userRepo;
     @Autowired
     private FileRepo fileRepo;
+    @Autowired
+    private StudentRepo studentRepo;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FirebaseMessagingService firebaseMessagingService;
 
     @Override
     public List<JobDto> getAll() {
@@ -89,6 +100,21 @@ public class JobServiceImpl implements JobService {
             entity.setTags(resultTags);
             entity.setFiles(files);
             repo.save(entity);
+
+          var msg = new NotificationMessage();
+          msg.setSubject("New Job Alert");
+          msg.setContent(user.getFirstName() + " post a new job. Title: "+ job.getTitle());
+          msg.setData(new HashMap<>());
+          var students = studentRepo.findAll();
+          students.forEach(student -> {
+            try {
+              firebaseMessagingService.sendNotification(msg, student.getFcmToken());
+            } catch (FirebaseMessagingException e) {
+              log.info("Notification sent to student id "+ student.getId());
+
+              throw new RuntimeException(e);
+            }
+          });
         }
 
     }

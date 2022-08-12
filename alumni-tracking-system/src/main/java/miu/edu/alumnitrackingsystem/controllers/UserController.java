@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+
+@CrossOrigin
 @RequestMapping("/api/v1/users")
 public class UserController {
     @Autowired
@@ -30,6 +32,6 @@ public class UserController {
 
     @PutMapping("/fcm-token")
     public void saveFcmToken(@RequestBody FcmTokenDto fcmTokenDto) throws FirebaseMessagingException {
-      userService.saveFcmToken(fcmTokenDto.getUserId(), fcmTokenDto.getFcmToken());
+      userService.saveFcmToken(fcmTokenDto.getFcmToken());
     }
 }

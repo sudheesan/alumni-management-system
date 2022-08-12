@@ -146,14 +146,14 @@ public class UserServiceImpl implements UserService {
     }
 
   @Override
-  public void saveFcmToken(int userId, String fcmToken) {
-    var user = repo.findById(userId).orElse(null);
+  public void saveFcmToken(String fcmToken) {
+    var user = getLoggedInUser();
     if(user != null) {
       user.setFcmToken(fcmToken);
       repo.save(user);
-      log.info("Fcm Token is updated for user id{}", userId);
+      log.info("Fcm Token is updated for user id{}{}", user.getId(), user.toString());
     } else {
-      log.info("Fcm Token is not updated for user id{}", userId);
+      log.info("Fcm Token is not updated for user id{}", user.getId());
     }
 
   }

@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FcmTokenDto {
-  private int userId;
   private String fcmToken;
 }
