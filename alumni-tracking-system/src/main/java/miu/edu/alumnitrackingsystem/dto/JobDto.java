@@ -21,5 +21,6 @@ public class JobDto {
     private String companyName;
     private String state;
     private String city;
-    private List<StudentDto> appliedStudent;
+    private List<AppliedStudentDto> appliedStudent;
+    private List<Tag> tags = new ArrayList<>();
 }

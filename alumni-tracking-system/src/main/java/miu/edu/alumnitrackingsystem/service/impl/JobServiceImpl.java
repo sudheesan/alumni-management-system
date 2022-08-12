@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.security.Security;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class JobServiceImpl implements JobService {
@@ -124,6 +125,15 @@ public class JobServiceImpl implements JobService {
             var entities = user.getJobs();
             entities.forEach(e->
             {
+                var myjob = modelMapper.map(e, JobDto.class);
+                var cvs = e.getJobCvs();
+                myjob.getAppliedStudent().forEach(aps->{
+                    var scv = cvs.stream().filter(cv-> cv.getId() == aps.getId()).collect(Collectors.toList());
+                    if(scv!= null || scv.size()> 0){
+                        aps.setCvUrl(scv.get(0).getCvUrl());
+                    }
+
+                });
                 result.add(modelMapper.map(e, JobDto.class));
             });
 
