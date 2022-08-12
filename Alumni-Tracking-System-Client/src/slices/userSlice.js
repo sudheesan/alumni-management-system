@@ -3,13 +3,18 @@ import { fetchUserByEmail } from "../actions/userActions";
 
 const initialState = {
   currentUser: null,
+  isUserLoading: false,
 };
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    init: (state) => {
+    setIsUserLoadingTrue: (state) => {
+      state.isUserLoading = true;
+    },
+    setIsUserLoadingFalse: (state) => {
+      state.isUserLoading = false;
     },
   },
   extraReducers: (builder) => {
@@ -19,6 +24,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { init } = userSlice.actions;
+export const { setIsUserLoadingTrue, setIsUserLoadingFalse  } = userSlice.actions;
 
 export default userSlice.reducer;
