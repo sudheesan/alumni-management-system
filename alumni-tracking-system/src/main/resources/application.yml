@@ -2,7 +2,7 @@ spring:
   application:
     name: alumni-management-portal
   datasource:
-    password: postgres
+    password: postgrespw
     url: jdbc:postgresql://localhost:5432/amp
     username: postgres
     driver-class-name: org.postgresql.Driver

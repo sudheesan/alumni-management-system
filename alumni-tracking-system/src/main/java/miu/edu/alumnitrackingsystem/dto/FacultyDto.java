@@ -13,4 +13,6 @@ public class FacultyDto {
     private String firstName;
     private String lastName;
     private String department;
+    private String state;
+    private String city;
 }
