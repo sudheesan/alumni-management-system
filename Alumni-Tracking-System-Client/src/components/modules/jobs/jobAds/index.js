@@ -64,12 +64,12 @@ const JobAdList = () => {
     //   );
     // }
 
-    // if (selectedState && selectedState !== "") {
-    //   filteredJobs = filteredJobs.filter((job) => job.state === selectedState);
-    // }
-    // if (selectedCity && selectedCity !== "") {
-    //   filteredJobs = filteredJobs.filter((job) => job.state === selectedCity);
-    // }
+    if (selectedState && selectedState !== "") {
+      filteredJobs = filteredJobs.filter((job) => job.state === selectedState);
+    }
+    if (selectedCity && selectedCity !== "") {
+      filteredJobs = filteredJobs.filter((job) => job.state === selectedCity);
+    }
     if (companyNameFilter && companyNameFilter.trim().length != 0) {
       filteredJobs = filteredJobs.filter((job) =>
         job.companyName.includes(companyNameFilter)
@@ -82,6 +82,7 @@ const JobAdList = () => {
     setValue([]);
     setSelectedState("");
     setSelectedCity("");
+    setCompanyNameFilter("");
     setJobList(allJobAds);
   };
 

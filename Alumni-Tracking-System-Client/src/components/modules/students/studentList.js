@@ -9,8 +9,8 @@ import Select from "@mui/material/Select";
 import { Tooltip } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ResetTvSharpIcon from "@mui/icons-material/ResetTvSharp";
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { fetchAllStudents } from "../../../actions/studentActions";
 import StudentCard from "./studenCard";
@@ -18,7 +18,9 @@ import states from "../../../utils/states";
 
 const StudentList = () => {
   const students = useSelector((state) => state.student.students);
-  const isStudentsLoading = useSelector((state) => state.student.isStudentsLoading);
+  const isStudentsLoading = useSelector(
+    (state) => state.student.isStudentsLoading
+  );
   const dispatch = useDispatch();
 
   const [studentsList, setStudentList] = useState(students);
@@ -43,16 +45,16 @@ const StudentList = () => {
         idFilterValue.includes(student.id)
       );
     }
-    // if (stateFilterValue.trim().length) {
-    //   filteredValues = filteredValues.filter(
-    //     (student) => student.state === stateFilterValue
-    //   );
-    // }
-    // if (cityFilterValue.trim().length) {
-    //   filteredValues = filteredValues.filter(
-    //     (student) => student.city === stateFilterValue
-    //   );
-    // }
+    if (stateFilterValue.trim().length) {
+      filteredValues = filteredValues.filter(
+        (student) => student.state === stateFilterValue
+      );
+    }
+    if (cityFilterValue.trim().length) {
+      filteredValues = filteredValues.filter(
+        (student) => student.city === cityFilterValue
+      );
+    }
     // if (majorFilterValue.trim().length) {
     //   filteredValues = filteredValues.filter(
     //     (student) => student.major === majorFilterValue
@@ -61,6 +63,14 @@ const StudentList = () => {
 
     setStudentList(filteredValues);
   }, [idFilterValue, stateFilterValue, cityFilterValue, majorFilterValue]);
+
+  const handleResetFilters = () => {
+    setIdFilterValue("");
+    setStateFilterValue("");
+    setCityFilterValue("");
+    setMajorFilterValue("");
+    setStudentList(students);
+  };
 
   return (
     <Grid
@@ -80,6 +90,7 @@ const StudentList = () => {
         <Grid item sm={1}>
           <Tooltip title="ResetFilters">
             <IconButton
+              onClick={handleResetFilters}
               style={{ fontSize: "30px", color: "#ffae1a" }}
               size="large"
               aria-label="add to favorites"
@@ -96,7 +107,7 @@ const StudentList = () => {
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
-              value={10}
+              value={stateFilterValue}
               label="Filter By State"
               onChange={(event) => setStateFilterValue(event.target.value)}
             >
@@ -116,7 +127,7 @@ const StudentList = () => {
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
-              value={10}
+              value={cityFilterValue}
               label="Filter By City"
               onChange={(event) => setCityFilterValue(event.target.value)}
             >
@@ -136,7 +147,7 @@ const StudentList = () => {
             <Select
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
-              value={10}
+              value={majorFilterValue}
               label="Filter By Major"
               onClick={(event) => setMajorFilterValue(event.target.value)}
             >
@@ -151,6 +162,7 @@ const StudentList = () => {
         <Grid item sm={2}>
           <FormControl style={{ width: "100%" }}>
             <TextField
+              value={idFilterValue}
               onChange={(event) => setIdFilterValue(event.target.value)}
               id="outlined-required"
               label="Search By Id"
