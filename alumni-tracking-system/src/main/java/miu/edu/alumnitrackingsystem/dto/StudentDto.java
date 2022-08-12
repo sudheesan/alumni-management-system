@@ -13,4 +13,6 @@ public class StudentDto {
     private String firstName;
     private String lastName;
     private float gpa;
+    private String state;
+    private String city;
 }

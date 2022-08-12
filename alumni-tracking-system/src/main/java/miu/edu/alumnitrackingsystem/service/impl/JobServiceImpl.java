@@ -103,6 +103,7 @@ public class JobServiceImpl implements JobService {
         if(user!=null && jobEntity!= null){
             job.setId(jobId);
             var entity = modelMapper.map(job, Job.class);
+            entity.setPostedBy(jobEntity.getPostedBy());
 
             repo.save(entity);
         }
