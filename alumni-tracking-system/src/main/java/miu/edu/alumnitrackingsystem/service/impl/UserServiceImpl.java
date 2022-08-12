@@ -13,6 +13,8 @@ import miu.edu.alumnitrackingsystem.service.UserService;
 import miu.edu.alumnitrackingsystem.util.UserType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,8 +63,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmailAndRole(String email, String fName, String lName, UserType userType) {
-        var user = repo.findUserByEmailEqualsIgnoreCase(email);
-        if(user== null){
+        var user = repo.findAllByEmailEqualsIgnoreCase(email);
+        if(user== null || user.size() == 0){
             if(userType==UserType.Student){
                 Student s= new Student();
                 s.setEmail(email);
@@ -90,26 +92,34 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        return user;
+        return user.get(0);
     }
     public Object getUserByEmail(String email){
-        User u = repo.findUserByEmailEqualsIgnoreCase(email);
-        Student s = studentRepo.findById(u.getId()).orElse(null);
-        if(s!= null){
-            var details =  modelMapper.map(s, StudentDetailsDto.class);
-            details.setUserType(UserType.Student);
+        var users = repo.findAllByEmailEqualsIgnoreCase(email);
+        if(users!= null && users.size() > 0){
+            User u = users.get(0);
+            Student s = studentRepo.findById(u.getId()).orElse(null);
+            if(s!= null){
+                var details =  modelMapper.map(s, StudentDetailsDto.class);
+                details.setUserType(UserType.Student);
+                return details;
+            }
+
+            Faculty f = facultyRepo.findById(u.getId()).orElse(null);
+            if(f!= null){
+                var details =  modelMapper.map(f, FacultyDetailsDto.class);
+                details.setUserType(UserType.Faculty);
+                return details;
+            }
+
+            var details =  modelMapper.map(u, UserDetailsDto.class);
+            details.setUserType(UserType.Admin);
             return details;
         }
 
-        Faculty f = facultyRepo.findById(u.getId()).orElse(null);
-        if(f!= null){
-            var details =  modelMapper.map(f, FacultyDetailsDto.class);
-            details.setUserType(UserType.Faculty);
-            return details;
-        }
-        var details =  modelMapper.map(u, UserDetailsDto.class);
-        details.setUserType(UserType.Admin);
-        return details;
+        return null;
+
+
     }
     public void update(int id, UserDetailsDto userDetailsDto){
         var user = repo.findById(id).orElse(null);
@@ -119,5 +129,17 @@ public class UserServiceImpl implements UserService {
         var entity = modelMapper.map(userDetailsDto, User.class);
         entity.setId(id);
         repo.save(entity);
+    }
+
+    @Override
+    public User getLoggedInUser(){
+        var tokenValues = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("token values " + tokenValues.getClaims().toString());
+        String email = tokenValues.getClaim("email");
+        var users = repo.findAllByEmailEqualsIgnoreCase(email);
+        if(users!= null && users.size()>0){
+            return users.get(0);
+        }
+        return null;
     }
 }

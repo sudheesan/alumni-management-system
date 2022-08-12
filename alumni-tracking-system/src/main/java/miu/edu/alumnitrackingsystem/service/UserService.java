@@ -17,4 +17,5 @@ public interface UserService {
     User getUserByEmailAndRole(String email,String fName, String lName,  UserType userType);
     Object getUserByEmail(String email);
     void update(int id, UserDetailsDto userDetailsDto);
+    User getLoggedInUser();
 }
