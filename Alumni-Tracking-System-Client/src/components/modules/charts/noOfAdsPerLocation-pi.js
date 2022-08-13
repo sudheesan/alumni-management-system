@@ -1,43 +1,42 @@
 import React from "react";
 import Chart from "../charts";
 
-const options = {
+export default function NoOfAdsPerLocationPiChart({ jobsByState }) {
+  let dataToLoad = [];
+
+  for (const property in jobsByState) {
+    dataToLoad.push({ value: jobsByState[property], name: property });
+  }
+
+  const options = {
     title: {
-      text: 'No of Jobs Ads',
-      subtext: 'By State',
-      left: 'right'
+      text: "No of Jobs Ads",
+      subtext: "By State",
+      left: "right",
     },
     tooltip: {
-      trigger: 'item'
+      trigger: "item",
     },
     legend: {
-      orient: 'vertical',
-      left: 'left'
+      orient: "vertical",
+      left: "left",
     },
     series: [
       {
-        name: 'Access From',
-        type: 'pie',
-        radius: '50%',
-        data: [
-          { value: 1048, name: 'Search Engine' },
-          { value: 735, name: 'Direct' },
-          { value: 580, name: 'Email' },
-          { value: 484, name: 'Union Ads' },
-          { value: 300, name: 'Video Ads' }
-        ],
+        name: "Access From",
+        type: "pie",
+        radius: "50%",
+        data: dataToLoad,
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
             shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }
-    ]
+            shadowColor: "rgba(0, 0, 0, 0.5)",
+          },
+        },
+      },
+    ],
   };
-
-export default function NoOfAdsPerLocationPiChart() {
   return (
     <React.Fragment>
       <Chart options={options} />

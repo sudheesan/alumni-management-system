@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 
@@ -6,8 +6,37 @@ import NoOfAdsPerLocationPiChart from "../charts/noOfAdsPerLocation-pi";
 import NoOfStudentsPerStatePiChart from "../charts/noOfStudentsPerState-pi";
 import NoOfStudentsPerCityPiChart from "../charts/noOfStudentsPerCity-pi";
 import JobsByTagPiChart from "../charts/jobsByTag-pi";
+import to from "../../../utils/to";
+import { getChartData } from "../../../services/dashBoardService";
 
 const Discover = () => {
+  const [graphData, setGraphData] = useState({});
+
+  const {
+    jobsByCity,
+    jobsByState,
+    jobsByTag,
+    studentsByCity,
+    studentsByState,
+  } = graphData;
+
+  console.log(
+    jobsByCity,
+    jobsByState,
+    jobsByTag,
+    studentsByCity,
+    studentsByState
+  );
+
+  const handleChartDate = async () => {
+    const [error, response] = await to(getChartData);
+    setGraphData(response);
+  };
+
+  useEffect(() => {
+    handleChartDate();
+  }, []);
+
   return (
     <Grid
       rowSpacing={2}
@@ -26,7 +55,7 @@ const Discover = () => {
                 height: "400px",
               }}
             >
-              <NoOfAdsPerLocationPiChart />
+              <NoOfAdsPerLocationPiChart jobsByState={jobsByState} />
             </Paper>
           </Grid>
           <Grid item sx={6}>
@@ -37,7 +66,7 @@ const Discover = () => {
                 height: "400px",
               }}
             >
-              <JobsByTagPiChart />
+              <JobsByTagPiChart jobsByTag={jobsByTag} />
             </Paper>
           </Grid>
         </Grid>
@@ -52,7 +81,7 @@ const Discover = () => {
                 height: "400px",
               }}
             >
-              <NoOfStudentsPerStatePiChart />
+              <NoOfStudentsPerStatePiChart studentsByState={studentsByState} />
             </Paper>
           </Grid>
           <Grid item sx={6}>
@@ -63,7 +92,7 @@ const Discover = () => {
                 height: "400px",
               }}
             >
-              <NoOfStudentsPerCityPiChart />
+              <NoOfStudentsPerCityPiChart studentsByCity={studentsByCity} />
             </Paper>
           </Grid>
         </Grid>

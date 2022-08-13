@@ -37,6 +37,7 @@ function createData(name, calories, fat, carbs, protein) {
 export default function JobApplicants(props) {
   const { openModal, jobDetail, handleClose } = props;
 
+  const {appliedStudent} = jobDetail;
   console.log("Job Details", jobDetail);
 
   return (
@@ -49,7 +50,7 @@ export default function JobApplicants(props) {
       >
         <Box sx={{ ...style, width: 800, height: 600, maxHeight: 600 }}>
           <Grid container direction="column" rowSpacing={2}>
-            <Grid item>Applicants</Grid>
+            <Grid item style={{fontWeight:"bold"}}>Applicants</Grid>
             <Grid item>
               <Divider light={false} />
             </Grid>
@@ -58,24 +59,27 @@ export default function JobApplicants(props) {
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Applicant</TableCell>
-                      <TableCell align="right">
+                      <TableCell style={{fontWeight:"bold"}}>Applicant</TableCell>
+                      <TableCell style={{fontWeight:"bold"}} align="right">
                         Downloac Curriculum Vitae
                       </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map((row) => (
+                    {appliedStudent.map((student) => (
                       <TableRow
-                        key={row.name}
+                        key={student.id}
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                         }}
                       >
+                        {
+                          
+                        }
                         <TableCell component="th" scope="row">
-                          {row.name}
+                          {student.firstName} {student.lastName}
                         </TableCell>
-                        <TableCell align="right">{row.calories}</TableCell>
+                        <TableCell align="right">{student.cvUrl}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

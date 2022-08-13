@@ -234,30 +234,32 @@ const Profile = () => {
         )}
       </Grid>
       <Grid sm={4} item>
-        <Grid rowSpacing={3} container direction="column">
-          <Grid item>
-            <TextareaAutosize
-              onChange={handleProExperienceChage}
-              maxRows={20}
-              aria-label="maximum height"
-              placeholder="My Professional experience"
-              style={{ width: "100%", height: 400 }}
-            />
+        {userDetails && (
+          <Grid rowSpacing={3} container direction="column">
+            <Grid item>
+              <TextareaAutosize
+                onChange={handleProExperienceChage}
+                maxRows={20}
+                aria-label="maximum height"
+                placeholder="My Professional experience"
+                style={{ width: "100%", height: 400 }}
+              />
+            </Grid>
+            <Grid textAlign="center" item>
+              <LoadingButton
+                onClick={handleUserUpdate}
+                disabled={isUserUpdating}
+                loading={isUserUpdating}
+                size="large"
+                variant="contained"
+                color="primary"
+                endIcon={<UpdateSharp />}
+              >
+                Update
+              </LoadingButton>
+            </Grid>
           </Grid>
-          <Grid textAlign="center" item>
-            <LoadingButton
-              onClick={handleUserUpdate}
-              disabled={isUserUpdating}
-              loading={isUserUpdating}
-              size="large"
-              variant="contained"
-              color="primary"
-              endIcon={<UpdateSharp />}
-            >
-              Update
-            </LoadingButton>
-          </Grid>
-        </Grid>
+        )}
       </Grid>
     </Grid>
   );
