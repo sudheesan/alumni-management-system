@@ -107,7 +107,11 @@ public class JobServiceImpl implements JobService {
           var students = studentRepo.findAll();
           students.forEach(student -> {
             try {
-              firebaseMessagingService.sendNotification(msg, student.getFcmToken());
+                var fcmToken = student.getFcmToken();
+                if(fcmToken!= null){
+                    firebaseMessagingService.sendNotification(msg, student.getFcmToken());
+                }
+
             } catch (FirebaseMessagingException e) {
               log.info("Notification sent to student id "+ student.getId());
               throw new RuntimeException(e);
