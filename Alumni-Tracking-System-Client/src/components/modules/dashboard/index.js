@@ -9,7 +9,6 @@ import AppBar from '../common/appBar';
 import ModuleRoutes from '../moduleRoutes';
 import {getFCMToken, onMessageListener} from "../../../utils/firebase";
 import {saveFcmToken} from "../../../services/firebaseService";
-import {useSelector} from "react-redux";
 
 const mdTheme = createTheme();
 

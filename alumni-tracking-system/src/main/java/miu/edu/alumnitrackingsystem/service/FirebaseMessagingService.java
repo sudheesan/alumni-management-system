@@ -15,12 +15,12 @@ public class FirebaseMessagingService {
   private final FirebaseMessaging firebaseMessaging;
 
 
-  public String sendNotification(NotificationMessage notificationMessage, String token) throws FirebaseMessagingException {
+  public String sendNotification(String title, String body, String token) throws FirebaseMessagingException {
 
     Notification notification = Notification
       .builder()
-      .setTitle(notificationMessage.getSubject())
-      .setBody(notificationMessage.getContent())
+      .setTitle(title)
+      .setBody(body)
       .build();
 
     System.out.println(token);
@@ -28,7 +28,6 @@ public class FirebaseMessagingService {
       .builder()
       .setToken(token)
       .setNotification(notification)
-      .putAllData(notificationMessage.getData())
       .build();
 
     return firebaseMessaging.send(message);

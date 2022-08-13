@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
     if(user != null) {
       user.setFcmToken(fcmToken);
       repo.save(user);
-      log.info("Fcm Token is updated for user id{}{}", user.getId(), user.toString());
+      log.info("Fcm Token is updated for user id{}{}", user.getId());
     } else {
       log.info("Fcm Token is not updated for user id{}", user.getId());
     }

@@ -8,16 +8,17 @@ import { getStorage } from "firebase/storage";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAnbuhczjGc3DM2DRTO-FLmTPyhS55RCaw",
-  authDomain: "miu-amp.firebaseapp.com",
-  projectId: "miu-amp",
-  storageBucket: "miu-amp.appspot.com",
-  messagingSenderId: "1005835444660",
-  appId: "1:1005835444660:web:f1958f5ebe93a1881992e1",
-  measurementId: "G-DCH8HR8E0G"
+  apiKey: "AIzaSyApxDsOCOaGgVU2Juiqh6TiYlCYupUjEI0",
+  authDomain: "miu-amp-3c44d.firebaseapp.com",
+  projectId: "miu-amp-3c44d",
+  storageBucket: "miu-amp-3c44d.appspot.com",
+  messagingSenderId: "590766648589",
+  appId: "1:590766648589:web:4c4bf40f12f33211fa1444",
+  measurementId: "G-NHGFE4EXWE"
 };
 
-const vapidKey = 'BAnwN1fa9L_F5TfUyQ_nqNk4UfreKLitwnrlAlAolw7GV-5GpXILt5ZMm0w4idQUbf_FTBTux1scaFfFvm2PGlw';
+
+const vapidKey = 'BO7PUWzDi8Acf4l62bn2cIJot0354lCzJEkJQT10Cj4hWwV2Xn9KoHOLdg8lPvxIWSJrjaVec0Ay0ZNZL0O_xyU';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

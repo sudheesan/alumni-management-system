@@ -12,16 +12,5 @@ import java.io.IOException;
 
 @Configuration
 public class FirebaseConfig {
-  @Bean
-  FirebaseMessaging firebaseMessaging() throws IOException {
-    System.out.println("++++++++++++++++" +new ClassPathResource("firebase-service-account.json").getInputStream().readAllBytes().toString());
-    GoogleCredentials googleCredentials = GoogleCredentials
-      .fromStream(new ClassPathResource("firebase-service-account.json").getInputStream());
-    FirebaseOptions firebaseOptions = FirebaseOptions
-      .builder()
-      .setCredentials(googleCredentials)
-      .build();
-    FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "miu-amp");
-    return FirebaseMessaging.getInstance(app);
-  }
+
 }
