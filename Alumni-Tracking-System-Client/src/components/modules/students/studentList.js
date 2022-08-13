@@ -17,7 +17,7 @@ import StudentCard from "./studenCard";
 import states from "../../../utils/states";
 import { statesNames, citiesByStates } from "../../../utils/state-city";
 
-const majors = ['Data Science', 'Functional Programming', 'SoftWare Engineering'];
+//const majors = ['Data Science', 'Functional Programming', 'SoftWare Engineering'];
 
 const StudentList = () => {
   const students = useSelector((state) => state.student.students);
@@ -59,12 +59,14 @@ const StudentList = () => {
         (student) => student.city === cityFilterValue
       );
     }
+    
     if (majorFilterValue.trim().length) {
       filteredValues = filteredValues.filter(
-        (student) => student.major === majorFilterValue
+        (student) => {
+          return student.major && student.major.toLowerCase().includes(majorFilterValue.toLowerCase())}
       );
     }
-
+    //console.log("studend", students)
     setStudentList(filteredValues);
   }, [idFilterValue, stateFilterValue, cityFilterValue, majorFilterValue]);
 
@@ -152,22 +154,17 @@ const StudentList = () => {
         </Grid>
         <Grid item sm={2}>
           <FormControl style={{ width: "100%" }}>
-            <InputLabel id="demo-simple-select-helper-label">
+            {/* <InputLabel id="demo-simple-select-helper-label">
               Filter By Major
-            </InputLabel>
-            <Select
+            </InputLabel> */}
+            <TextField
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
               value={majorFilterValue}
               label="Filter By Major"
               onChange={(event) => setMajorFilterValue(event.target.value)}
             >
-              {majors.map((major) => (
-                <MenuItem key={major} value={major}>
-                  {major}
-                </MenuItem>
-              ))}
-            </Select>
+            </TextField>
           </FormControl>
         </Grid>
         <Grid item sm={2}>
