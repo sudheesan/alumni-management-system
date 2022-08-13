@@ -72,7 +72,7 @@ const JobAdList = () => {
     }
     if (companyNameFilter && companyNameFilter.trim().length != 0) {
       filteredJobs = filteredJobs.filter((job) =>
-        job.companyName.includes(companyNameFilter)
+        job.companyName.toLowerCase().includes(companyNameFilter.toLowerCase())
       );
     }
     setJobList(filteredJobs);
@@ -195,6 +195,7 @@ const JobAdList = () => {
         </Grid>
         <Grid item sm={3}>
           <TextField
+            value={companyNameFilter}
             onChange={(event) => setCompanyNameFilter(event.target.value)}
             id="outlined-required"
             label="Search By company"
