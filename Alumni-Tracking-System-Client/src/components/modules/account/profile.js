@@ -18,6 +18,7 @@ import Alert from "../common/alert";
 import { fetchUserByEmail } from "../../../actions/userActions";
 import to from "../../../utils/to";
 import { updateUser } from "../../../services/userManagementService";
+import { statesNames, citiesByStates } from "../../../utils/state-city";
 
 const initialAlertState = {
   open: false,
@@ -32,6 +33,10 @@ const Profile = () => {
   const isUserLoading = useSelector((state) => state.user.isUserLoading);
 
   const [userDetails, setUserDetails] = useState(currentUser);
+
+  const initialCities = userDetails && userDetails.state ? citiesByStates[userDetails.state] : [];
+
+  const [cities, setCities] = useState(initialCities);
 
   const [isUserUpdating, setIsUserUpdating] = useState(false);
 
@@ -123,6 +128,8 @@ const Profile = () => {
       ...userDetails,
       state: value,
     });
+    const citiesOfTheState = citiesByStates[value];  
+    setCities(citiesOfTheState);
   };
 
   const handleUserCityChange = (event) => {
@@ -224,7 +231,7 @@ const Profile = () => {
                   label="State"
                   onChange={handleUserStateChange}
                 >
-                  {states.map((state) => (
+                  {statesNames.map((state) => (
                     <MenuItem key={state} value={state}>
                       {state}
                     </MenuItem>
@@ -243,7 +250,7 @@ const Profile = () => {
                   label="City"
                   onChange={handleUserCityChange}
                 >
-                  {states.map((state) => (
+                  {cities.map((state) => (
                     <MenuItem key={state} value={state}>
                       {state}
                     </MenuItem>
