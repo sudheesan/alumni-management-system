@@ -11,8 +11,8 @@ import IconButton from "@mui/material/IconButton";
 import Select from "@mui/material/Select";
 import { Grid } from "@mui/material";
 import ResetTvSharpIcon from "@mui/icons-material/ResetTvSharp";
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import SampleJob from "../jobCard";
 import JobApplyModal from "../jobAds/applyModal";
@@ -58,18 +58,17 @@ const JobAdList = () => {
 
     const filteredTagValues = value.map((tg) => tg.tag);
 
-    // if (filteredTagValues.length) {
-    //   filteredJobs = filteredJobs.filter((job) =>
-    //     job.tag.some((tag) => filteredTagValues.includes(tag))
-    //   );
-    // }
-
-    // if (selectedState && selectedState !== "") {
-    //   filteredJobs = filteredJobs.filter((job) => job.state === selectedState);
-    // }
-    // if (selectedCity && selectedCity !== "") {
-    //   filteredJobs = filteredJobs.filter((job) => job.state === selectedCity);
-    // }
+    if (filteredTagValues.length) {
+      filteredJobs = filteredJobs.filter((job) =>
+        job.tags.some((tg) => filteredTagValues.includes(tg.tag))
+      );
+    }
+    if (selectedState && selectedState !== "") {
+      filteredJobs = filteredJobs.filter((job) => job.state === selectedState);
+    }
+    if (selectedCity && selectedCity !== "") {
+      filteredJobs = filteredJobs.filter((job) => job.state === selectedCity);
+    }
     if (companyNameFilter && companyNameFilter.trim().length != 0) {
       filteredJobs = filteredJobs.filter((job) =>
         job.companyName.includes(companyNameFilter)
@@ -82,6 +81,7 @@ const JobAdList = () => {
     setValue([]);
     setSelectedState("");
     setSelectedCity("");
+    setCompanyNameFilter("");
     setJobList(allJobAds);
   };
 
