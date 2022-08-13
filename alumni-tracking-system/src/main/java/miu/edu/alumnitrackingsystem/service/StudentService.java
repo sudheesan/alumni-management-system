@@ -4,6 +4,7 @@ import miu.edu.alumnitrackingsystem.dto.*;
 import miu.edu.alumnitrackingsystem.entity.Student;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StudentService {
     List<StudentDto> getAll();
@@ -15,4 +16,8 @@ public interface StudentService {
 
     void appliedToJob(int jobId, CvForJobDto cvForJobDto);
     void update(int id,StudentDetailsDto studentDetailsDto);
+
+    Map<String, Long> getNumberOfStudentByState();
+
+    Map<String, Long> getNumberOfJobByCity();
 }

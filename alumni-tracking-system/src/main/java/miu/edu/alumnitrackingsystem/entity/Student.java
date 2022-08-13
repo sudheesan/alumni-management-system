@@ -20,4 +20,5 @@ public class Student extends User{
     public void addComment(Comment comment){
         comments.add(comment);
     }
+    public String major;
 }

@@ -15,4 +15,6 @@ public class StudentDto {
     private float gpa;
     private String state;
     private String city;
+    private String experience;
+    public String major;
 }

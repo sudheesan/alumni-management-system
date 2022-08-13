@@ -6,6 +6,7 @@ import miu.edu.alumnitrackingsystem.entity.Faculty;
 import miu.edu.alumnitrackingsystem.entity.Job;
 
 import java.util.List;
+import java.util.Map;
 
 public interface JobService {
     List<JobDto> getAll();
@@ -14,4 +15,10 @@ public interface JobService {
     void update(int jobid, JobDetailsDto job);
     void delete();
     List<JobDto> myPostedJob();
+
+    Map<String, Long> getNumberOfJobByState();
+
+    Map<String, Long> getNumberOfJobByCity();
+
+    Map<String, Integer> JobByTags();
 }

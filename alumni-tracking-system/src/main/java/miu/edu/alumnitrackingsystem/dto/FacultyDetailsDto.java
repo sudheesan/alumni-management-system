@@ -22,4 +22,5 @@ public class FacultyDetailsDto {
     private List<JobDto> jobs;
 
     public UserType userType;
+    private String experience;
 }
