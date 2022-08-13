@@ -7,7 +7,6 @@ import miu.edu.alumnitrackingsystem.dto.CvForJobDto;
 import miu.edu.alumnitrackingsystem.dto.JobDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDto;
-import miu.edu.alumnitrackingsystem.entity.Faculty;
 import miu.edu.alumnitrackingsystem.entity.JobCv;
 import miu.edu.alumnitrackingsystem.entity.Student;
 import miu.edu.alumnitrackingsystem.models.NotificationMessage;
@@ -24,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -144,5 +144,22 @@ public class StudentServiceImpl implements StudentService {
         var entity = mapper.map(studentDetailsDto, Student.class);
         entity.setId(id);
         repo.save(entity);
+    }
+
+    @Override
+    public Map<String, Long> getNumberOfStudentByState(){
+        var st = getAll();
+        var student = st.stream().filter(s->s.getState()!=null);
+        var nomJobByState = student.collect(Collectors.groupingBy(f-> f.getState(), Collectors.counting()));
+
+        return nomJobByState;
+    }
+    @Override
+    public Map<String, Long> getNumberOfJobByCity(){
+        var st = getAll();
+        var student = st.stream().filter(s->s.getCity()!=null);
+        var result = student.collect(Collectors.groupingBy(f-> f.getCity(), Collectors.counting()));
+
+        return result;
     }
 }

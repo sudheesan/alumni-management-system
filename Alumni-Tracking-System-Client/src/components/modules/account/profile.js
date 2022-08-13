@@ -87,10 +87,21 @@ const Profile = () => {
       target: { value },
     } = event;
 
-    // setUserDetails({
-    //   ...userDetails,
-    //   professionalExperience: value,
-    // });
+    setUserDetails({
+      ...userDetails,
+      experience: value,
+    });
+  };
+
+  const handleMajorChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+
+    setUserDetails({
+      ...userDetails,
+      major: value,
+    });
   };
 
   const handleUserGpaChange = (event) => {
@@ -183,6 +194,16 @@ const Profile = () => {
                 />
               </Grid>
             )}
+            {userType && userType === "Student" && (
+              <Grid item sm={3}>
+                <TextField
+                  onChange={handleMajorChange}
+                  type="text"
+                  value={userDetails.major}
+                  label="major"
+                />
+              </Grid>
+            )}
             {userType && userType === "Faculty" && (
               <Grid item sm={3}>
                 <TextField
@@ -234,30 +255,33 @@ const Profile = () => {
         )}
       </Grid>
       <Grid sm={4} item>
-        <Grid rowSpacing={3} container direction="column">
-          <Grid item>
-            <TextareaAutosize
-              onChange={handleProExperienceChage}
-              maxRows={20}
-              aria-label="maximum height"
-              placeholder="My Professional experience"
-              style={{ width: "100%", height: 400 }}
-            />
+        {userDetails && (
+          <Grid rowSpacing={3} container direction="column">
+            <Grid item>
+              <TextareaAutosize
+                onChange={handleProExperienceChage}
+                value={userDetails.experience}
+                maxRows={20}
+                aria-label="maximum height"
+                placeholder="My Professional experience"
+                style={{ width: "100%", height: 400 }}
+              />
+            </Grid>
+            <Grid textAlign="center" item>
+              <LoadingButton
+                onClick={handleUserUpdate}
+                disabled={isUserUpdating}
+                loading={isUserUpdating}
+                size="large"
+                variant="contained"
+                color="primary"
+                endIcon={<UpdateSharp />}
+              >
+                Update
+              </LoadingButton>
+            </Grid>
           </Grid>
-          <Grid textAlign="center" item>
-            <LoadingButton
-              onClick={handleUserUpdate}
-              disabled={isUserUpdating}
-              loading={isUserUpdating}
-              size="large"
-              variant="contained"
-              color="primary"
-              endIcon={<UpdateSharp />}
-            >
-              Update
-            </LoadingButton>
-          </Grid>
-        </Grid>
+        )}
       </Grid>
     </Grid>
   );

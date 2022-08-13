@@ -56,14 +56,15 @@ const initialAlertState = {
 
 export default function MyAdUpdateModal(props) {
   const { openModal, jobDetail, handleClose } = props;
-  const isMyAdsLoading = useSelector((state) => state.myAds.isMyAdsLoading);
 
   const { companyName, description, tags, state, city, id } = jobDetail;
 
   const allTags = useSelector((state) => state.tags.jobTags);
-  const dispatch = useDispatch();
 
-  const [jobTags, setJobTags] = useState(tags || []);
+  const tagValues = tags.map((tg) => tg.tag);
+
+  const [jobTags, setJobTags] = useState(tagValues || []);
+
   const [jobDescription, setJobDescription] = useState(description || "");
   const [companyText, setCompanyText] = useState(companyName || "");
   const [companyState, setCompanyState] = useState(state || "");
@@ -79,13 +80,15 @@ export default function MyAdUpdateModal(props) {
   const [updateAlert, setUpdateAlert] = useState(initialAlertState);
 
   const handleJobPostUpdate = async () => {
+    const tagsForUpdate = allTags.filter((tg) => jobTags.includes(tg.tag));
+
     const params = {
       id,
       jobDescription,
       companyText,
       companyState,
       companyCity,
-      jobTags,
+      jobTags: tagsForUpdate,
     };
     setIsAdUpdating(true);
     const [error, result] = await to(updateAnAd, params);
@@ -127,6 +130,7 @@ export default function MyAdUpdateModal(props) {
     const {
       target: { value },
     } = event;
+
     setJobTags(typeof value === "string" ? value.split(",") : value);
   };
 
@@ -285,14 +289,14 @@ export default function MyAdUpdateModal(props) {
                         value={jobTags}
                         onChange={handleTagChange}
                         input={<OutlinedInput label="Tag" />}
-                        renderValue={(selected) =>
-                          selected.map((value) => value.tag).join(", ")
-                        }
+                        renderValue={(selected) => selected.join(", ")}
                         MenuProps={MenuProps}
                       >
                         {allTags.map((name) => (
-                          <MenuItem key={name.tag} value={name}>
-                            <Checkbox checked={jobTags.indexOf(name) > -1} />
+                          <MenuItem key={name.tag} value={name.tag}>
+                            <Checkbox
+                              checked={jobTags.indexOf(name.tag) > -1}
+                            />
                             <ListItemText primary={name.tag} />
                           </MenuItem>
                         ))}

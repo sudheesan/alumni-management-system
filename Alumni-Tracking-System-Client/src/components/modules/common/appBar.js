@@ -49,7 +49,7 @@ const MyAppBar =  () => {
                         noWrap
                         sx={{ flexGrow: 1 }}
                     >
-                        Dashboard
+                        AMS
                     </Typography>
                     <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">

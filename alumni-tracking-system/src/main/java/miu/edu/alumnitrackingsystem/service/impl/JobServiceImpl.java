@@ -4,7 +4,6 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.extern.slf4j.Slf4j;
 import miu.edu.alumnitrackingsystem.dto.JobDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.JobDto;
-import miu.edu.alumnitrackingsystem.entity.Faculty;
 import miu.edu.alumnitrackingsystem.entity.Job;
 import miu.edu.alumnitrackingsystem.entity.Tag;
 import miu.edu.alumnitrackingsystem.models.NotificationMessage;
@@ -14,14 +13,13 @@ import miu.edu.alumnitrackingsystem.service.JobService;
 import miu.edu.alumnitrackingsystem.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -56,7 +54,8 @@ public class JobServiceImpl implements JobService {
         var entities = repo.findAll();
         entities.forEach(e->
         {
-            result.add(modelMapper.map(e, JobDto.class));
+            if(e.getDeleted() == false)
+                result.add(modelMapper.map(e, JobDto.class));
         });
 
         return result;
@@ -149,11 +148,57 @@ public class JobServiceImpl implements JobService {
             var entities = user.getJobs();
             entities.forEach(e->
             {
-                result.add(modelMapper.map(e, JobDto.class));
+                var myjob = modelMapper.map(e, JobDto.class);
+                var cvs = e.getJobCvs();
+                myjob.getAppliedStudent().forEach(aps->{
+                    var scv = cvs.stream().filter(cv-> cv.getStudentId() == aps.getId()).collect(Collectors.toList());
+                    if(scv!= null && scv.size()> 0){
+                        aps.setCvUrl(scv.get(0).getCvUrl());
+                    }
+                });
+                result.add(myjob);
             });
 
             return result;
         }
         return null;
+    }
+
+    @Override
+    public Map<String, Long> getNumberOfJobByState(){
+        var jb = getAll();
+        var jobs = jb.stream().filter(j->j.getState()!= null);
+        var nomJobByState = jobs.collect(Collectors.groupingBy(f-> f.getState(), Collectors.counting()));
+
+        return nomJobByState;
+    }
+    @Override
+    public Map<String, Long> getNumberOfJobByCity(){
+        var jb = getAll();
+        var jobs = jb.stream().filter(j->j.getCity()!= null);
+        var result = jobs.collect(Collectors.groupingBy(f-> f.getCity(), Collectors.counting()));
+
+        return result;
+    }
+
+    @Override
+    public Map<String, Integer> JobByTags(){
+        var jobs = getAll();
+
+        Map<String, Integer> jobsByTags = new HashMap<String, Integer>();
+        jobs.forEach(j->{
+            if(j.getTags()!= null){
+                j.getTags().forEach(t->{
+                    if(jobsByTags.containsKey(t.getTag())){
+                        int n = jobsByTags.get(t.getTag());
+                        jobsByTags.put(t.getTag(), ++n);
+                    }else{
+                        jobsByTags.put(t.getTag(), 1);
+                    }
+                });
+            }
+
+        });
+        return jobsByTags;
     }
 }

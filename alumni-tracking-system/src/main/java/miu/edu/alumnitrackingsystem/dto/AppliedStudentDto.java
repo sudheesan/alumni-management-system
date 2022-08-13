@@ -1,18 +1,19 @@
 package miu.edu.alumnitrackingsystem.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import miu.edu.alumnitrackingsystem.util.UserType;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
 @Data
-public class UserDetailsDto {
+@NoArgsConstructor
+@AllArgsConstructor
+public class AppliedStudentDto {
     private int id;
     private String email;
     private String firstName;
     private String lastName;
+    private float gpa;
     private String state;
     private String city;
-    private List<JobDto> jobs;
-    private String experience;
-    public UserType userType;
+    private String cvUrl;
 }

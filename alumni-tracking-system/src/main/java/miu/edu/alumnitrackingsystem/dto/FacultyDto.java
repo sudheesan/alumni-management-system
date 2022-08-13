@@ -15,4 +15,5 @@ public class FacultyDto {
     private String department;
     private String state;
     private String city;
+    private String experience;
 }

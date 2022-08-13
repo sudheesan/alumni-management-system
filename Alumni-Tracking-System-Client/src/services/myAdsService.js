@@ -26,13 +26,13 @@ const postNewAdd = async (params) => {
 };
 
 const updateAnAd = async (params) => {
-  const { description, jobTags, companyText, companyCity, companyState, id } =
+  const { jobDescription, jobTags, companyText, companyCity, companyState, id } =
     params;
   const updatedTags = jobTags.map((tg) => {
     return { tag: tg.tag };
   });
   const body = {
-    description,
+    description: jobDescription,
     tags: jobTags,
     companyName: companyText,
     state: companyState,
