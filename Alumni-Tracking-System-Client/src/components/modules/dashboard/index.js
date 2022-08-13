@@ -9,6 +9,7 @@ import AppBar from '../common/appBar';
 import ModuleRoutes from '../moduleRoutes';
 import {getFCMToken, onMessageListener} from "../../../utils/firebase";
 import {saveFcmToken} from "../../../services/firebaseService";
+import {useSelector} from "react-redux";
 
 const mdTheme = createTheme();
 
@@ -25,7 +26,7 @@ function DashboardContent() {
 
   useEffect(()=>{
     if(token) {
-      saveFcmToken(100, token);
+      saveFcmToken(token);
     }
   }, [token])
 

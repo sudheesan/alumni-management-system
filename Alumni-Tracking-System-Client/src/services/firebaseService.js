@@ -2,9 +2,8 @@ import { getAxiosClient } from "./httpService";
 
 const axios = getAxiosClient();
 
-const saveFcmToken = async (userId, fcmToken) => {
-  return  await axios.post('/notification-token', {
-    userId: userId,
+const saveFcmToken = async (fcmToken) => {
+  return  await axios.put('/users/fcm-token', {
     fcmToken: fcmToken
   });
 }

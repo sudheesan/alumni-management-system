@@ -1,5 +1,6 @@
 package miu.edu.alumnitrackingsystem.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import miu.edu.alumnitrackingsystem.dto.FacultyDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.StudentDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.UserDetailsDto;
@@ -18,6 +19,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -142,4 +144,17 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+  @Override
+  public void saveFcmToken(String fcmToken) {
+    var user = getLoggedInUser();
+    if(user != null) {
+      user.setFcmToken(fcmToken);
+      repo.save(user);
+      log.info("Fcm Token is updated for user id{}", user.getId());
+    } else {
+      log.info("Fcm Token is not updated for user id{}", user.getId());
+    }
+
+  }
 }
