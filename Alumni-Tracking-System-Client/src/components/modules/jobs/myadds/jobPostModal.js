@@ -24,6 +24,8 @@ import { useDispatch, useSelector } from "react-redux";
 import states from "./states";
 import to from "../../../../utils/to";
 import { postNewAdd } from "../../../../services/myAdsService";
+import { statesNames, citiesByStates } from "../../../../utils/state-city";
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -59,11 +61,11 @@ const initialAlertState = {
 export default function MyJobPostModal(props) {
   const { openModal, jobDetail, handleClose } = props;
   const allTags = useSelector((state) => state.tags.jobTags);
-  const dispatch = useDispatch();
 
   const [tags, setTags] = useState([]);
   const [description, setDescription] = useState("");
   const [companyText, setCompanyText] = useState("");
+  const [citiesForState, setCitiesForState] = useState([]);
 
   const [companyState, setCompanyState] = useState("");
   const [companyCity, setCompanyCity] = useState("");
@@ -129,11 +131,13 @@ export default function MyJobPostModal(props) {
     setTags(typeof value === "string" ? value.split(",") : value);
   };
 
-  const handleCompanyStateChangeChange = (event) => {
+  const handleCompanyStateChangeChange = (event) => {    
     const {
       target: { value },
     } = event;
     setCompanyState(value);
+    const citiesOfTheState = citiesByStates[value];  
+    setCitiesForState(citiesOfTheState);
   };
 
   const handleCompanyCityChangeChange = (event) => {
@@ -243,7 +247,7 @@ export default function MyJobPostModal(props) {
                       label="State"
                       onChange={handleCompanyStateChangeChange}
                     >
-                      {states.map((state) => (
+                      {statesNames.map((state) => (
                         <MenuItem key={state} value={state}>
                           {state}
                         </MenuItem>
@@ -261,7 +265,7 @@ export default function MyJobPostModal(props) {
                       label="City"
                       onChange={handleCompanyCityChangeChange}
                     >
-                      {states.map((state) => (
+                      {citiesForState.map((state) => (
                         <MenuItem key={state} value={state}>
                           {state}
                         </MenuItem>

@@ -15,6 +15,9 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { fetchAllStudents } from "../../../actions/studentActions";
 import StudentCard from "./studenCard";
 import states from "../../../utils/states";
+import { statesNames, citiesByStates } from "../../../utils/state-city";
+
+const majors = ['Data Science', 'Functional Programming', 'SoftWare Engineering'];
 
 const StudentList = () => {
   const students = useSelector((state) => state.student.students);
@@ -29,6 +32,7 @@ const StudentList = () => {
   const [stateFilterValue, setStateFilterValue] = useState("");
   const [cityFilterValue, setCityFilterValue] = useState("");
   const [majorFilterValue, setMajorFilterValue] = useState("");
+  const [citiesForState, setCitiesForState] = useState([]);
 
   useState(() => {
     dispatch(fetchAllStudents());
@@ -55,11 +59,11 @@ const StudentList = () => {
         (student) => student.city === cityFilterValue
       );
     }
-    // if (majorFilterValue.trim().length) {
-    //   filteredValues = filteredValues.filter(
-    //     (student) => student.major === majorFilterValue
-    //   );
-    // }
+    if (majorFilterValue.trim().length) {
+      filteredValues = filteredValues.filter(
+        (student) => student.major === majorFilterValue
+      );
+    }
 
     setStudentList(filteredValues);
   }, [idFilterValue, stateFilterValue, cityFilterValue, majorFilterValue]);
@@ -71,6 +75,13 @@ const StudentList = () => {
     setMajorFilterValue("");
     setStudentList(students);
   };
+
+  const  handleStateChange = (event) => {
+    const state = event.target.value;
+    setStateFilterValue(state);
+    const citiesOfTheState = citiesByStates[state];  
+    setCitiesForState(citiesOfTheState);
+  }
 
   return (
     <Grid
@@ -109,9 +120,9 @@ const StudentList = () => {
               id="demo-simple-select-helper"
               value={stateFilterValue}
               label="Filter By State"
-              onChange={(event) => setStateFilterValue(event.target.value)}
+              onChange={handleStateChange}
             >
-              {states.map((state) => (
+              {statesNames.map((state) => (
                 <MenuItem key={state} value={state}>
                   {state}
                 </MenuItem>
@@ -131,7 +142,7 @@ const StudentList = () => {
               label="Filter By City"
               onChange={(event) => setCityFilterValue(event.target.value)}
             >
-              {states.map((state) => (
+              {citiesForState.map((state) => (
                 <MenuItem key={state} value={state}>
                   {state}
                 </MenuItem>
@@ -149,11 +160,11 @@ const StudentList = () => {
               id="demo-simple-select-helper"
               value={majorFilterValue}
               label="Filter By Major"
-              onClick={(event) => setMajorFilterValue(event.target.value)}
+              onChange={(event) => setMajorFilterValue(event.target.value)}
             >
-              {states.map((state) => (
-                <MenuItem key={state} value={state}>
-                  {state}
+              {majors.map((major) => (
+                <MenuItem key={major} value={major}>
+                  {major}
                 </MenuItem>
               ))}
             </Select>

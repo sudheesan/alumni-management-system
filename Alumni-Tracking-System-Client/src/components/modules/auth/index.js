@@ -54,7 +54,7 @@ export default function () {
 
                         <div className="d-grid gap-2 mt-3">
                             <button onClick={login} className="btn btn-primary">
-                                Submit
+                                Sign In
                             </button>
                         </div>
                     </div>
