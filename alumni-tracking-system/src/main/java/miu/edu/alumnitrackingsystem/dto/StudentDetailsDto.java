@@ -23,4 +23,6 @@ public class StudentDetailsDto {
     private List<CommentDto> comments;
 
     public UserType userType;
+    private String experience;
+    public String major;
 }

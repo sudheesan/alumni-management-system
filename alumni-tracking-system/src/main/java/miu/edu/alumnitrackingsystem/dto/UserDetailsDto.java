@@ -13,5 +13,6 @@ public class UserDetailsDto {
     private String state;
     private String city;
     private List<JobDto> jobs;
+    private String experience;
     public UserType userType;
 }
