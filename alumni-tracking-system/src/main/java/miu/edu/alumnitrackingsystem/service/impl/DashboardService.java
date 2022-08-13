@@ -20,7 +20,7 @@ public class DashboardService {
         var jobsByCity = jobService.getNumberOfJobByCity();
         var jobsByState = jobService.getNumberOfJobByState();
         var jobsByTag = jobService.JobByTags();
-        var studentByState = studentService.getNumberOfJobByCity();
+        var studentByState = studentService.getNumberOfStudentByState();
         var studentByCity = studentService.getNumberOfJobByCity();
         ChartsDto dto = new ChartsDto();
         dto.setJobsByCity(jobsByCity);

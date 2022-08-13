@@ -65,14 +65,15 @@ public class FacultyServiceImpl implements FacultyService {
         var currentUser = userService.getLoggedInUser();
         int facultyId = currentUser.getId();
         var student = studentRepo.findById(studentId).orElse(null);
-        var faculty = repo.findById(facultyId).orElse(null);
+        var faculty = userService.getById(facultyId);
         if(student!= null && faculty!= null){
             var comment = new Comment();
             comment.setComment(commentText);
-            comment.setFaculty(faculty);
             student.addComment(comment);
             comment.setStudent(student);
             studentRepo.save(student);
+        }else{
+            throw new RuntimeException("Invalid data");
         }
 
     }
