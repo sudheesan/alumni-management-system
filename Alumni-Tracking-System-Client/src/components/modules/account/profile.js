@@ -34,15 +34,20 @@ const Profile = () => {
 
   const [userDetails, setUserDetails] = useState(currentUser);
 
-  const initialCities = userDetails && userDetails.state ? citiesByStates[userDetails.state] : [];
+  const initialCities = currentUser && currentUser.state ? citiesByStates[currentUser.state] : [];
 
   const [cities, setCities] = useState(initialCities);
 
   const [isUserUpdating, setIsUserUpdating] = useState(false);
 
   const [updateAlert, setUpdateAlert] = useState(initialAlertState);
+  
 
   const { userType } = userDetails || {};
+
+  useEffect(() => {
+    setCities(initialCities);
+  }, [initialCities])
 
   useEffect(() => {
     dispatch(fetchUserByEmail());
