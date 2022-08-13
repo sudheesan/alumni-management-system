@@ -34,9 +34,7 @@ const Profile = () => {
 
   const [userDetails, setUserDetails] = useState(currentUser);
 
-  const initialCities = currentUser && currentUser.state ? citiesByStates[currentUser.state] : [];
-
-  const [cities, setCities] = useState(initialCities);
+  const [cities, setCities] = useState([]);
 
   const [isUserUpdating, setIsUserUpdating] = useState(false);
 
@@ -46,8 +44,9 @@ const Profile = () => {
   const { userType } = userDetails || {};
 
   useEffect(() => {
+    const initialCities = currentUser && currentUser.state ? citiesByStates[currentUser.state] : [];
     setCities(initialCities);
-  }, [initialCities])
+  }, [currentUser])
 
   useEffect(() => {
     dispatch(fetchUserByEmail());
@@ -133,7 +132,8 @@ const Profile = () => {
       ...userDetails,
       state: value,
     });
-    const citiesOfTheState = citiesByStates[value];  
+
+    const citiesOfTheState = citiesByStates[value];
     setCities(citiesOfTheState);
   };
 
@@ -251,7 +251,7 @@ const Profile = () => {
                   style={{ width: 200 }}
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={userDetails.city}
+                  value={userDetails.city || ""}
                   label="City"
                   onChange={handleUserCityChange}
                 >
