@@ -14,9 +14,6 @@ public class Comment {
     @ManyToOne
     private Student student;
 
-    @ManyToOne
-    private Faculty faculty;
-
     private String comment;
 
     private Boolean deleted = false;

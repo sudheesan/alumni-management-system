@@ -128,15 +128,17 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Map<String, Long> getNumberOfStudentByState(){
-        var student = getAll();
-        var nomJobByState = student.stream().collect(Collectors.groupingBy(f-> f.getState(), Collectors.counting()));
+        var st = getAll();
+        var student = st.stream().filter(s->s.getState()!=null);
+        var nomJobByState = student.collect(Collectors.groupingBy(f-> f.getState(), Collectors.counting()));
 
         return nomJobByState;
     }
     @Override
     public Map<String, Long> getNumberOfJobByCity(){
-        var student = getAll();
-        var result = student.stream().collect(Collectors.groupingBy(f-> f.getCity(), Collectors.counting()));
+        var st = getAll();
+        var student = st.stream().filter(s->s.getCity()!=null);
+        var result = student.collect(Collectors.groupingBy(f-> f.getCity(), Collectors.counting()));
 
         return result;
     }

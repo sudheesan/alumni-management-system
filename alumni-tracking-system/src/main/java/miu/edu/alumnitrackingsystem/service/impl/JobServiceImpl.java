@@ -127,13 +127,12 @@ public class JobServiceImpl implements JobService {
                 var myjob = modelMapper.map(e, JobDto.class);
                 var cvs = e.getJobCvs();
                 myjob.getAppliedStudent().forEach(aps->{
-                    var scv = cvs.stream().filter(cv-> cv.getId() == aps.getId()).collect(Collectors.toList());
+                    var scv = cvs.stream().filter(cv-> cv.getStudentId() == aps.getId()).collect(Collectors.toList());
                     if(scv!= null && scv.size()> 0){
                         aps.setCvUrl(scv.get(0).getCvUrl());
                     }
-
                 });
-                result.add(modelMapper.map(e, JobDto.class));
+                result.add(myjob);
             });
 
             return result;
@@ -143,15 +142,17 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Map<String, Long> getNumberOfJobByState(){
-        var jobs = getAll();
-        var nomJobByState = jobs.stream().collect(Collectors.groupingBy(f-> f.getState(), Collectors.counting()));
+        var jb = getAll();
+        var jobs = jb.stream().filter(j->j.getState()!= null);
+        var nomJobByState = jobs.collect(Collectors.groupingBy(f-> f.getState(), Collectors.counting()));
 
         return nomJobByState;
     }
     @Override
     public Map<String, Long> getNumberOfJobByCity(){
-        var jobs = getAll();
-        var result = jobs.stream().collect(Collectors.groupingBy(f-> f.getCity(), Collectors.counting()));
+        var jb = getAll();
+        var jobs = jb.stream().filter(j->j.getCity()!= null);
+        var result = jobs.collect(Collectors.groupingBy(f-> f.getCity(), Collectors.counting()));
 
         return result;
     }
@@ -162,14 +163,17 @@ public class JobServiceImpl implements JobService {
 
         Map<String, Integer> jobsByTags = new HashMap<String, Integer>();
         jobs.forEach(j->{
-            j.getTags().forEach(t->{
-                if(jobsByTags.containsKey(t.getTag())){
-                    int n = jobsByTags.get(t.getTag());
-                    jobsByTags.put(t.getTag(), ++n);
-                }else{
-                    jobsByTags.put(t.getTag(), 1);
-                }
-            });
+            if(j.getTags()!= null){
+                j.getTags().forEach(t->{
+                    if(jobsByTags.containsKey(t.getTag())){
+                        int n = jobsByTags.get(t.getTag());
+                        jobsByTags.put(t.getTag(), ++n);
+                    }else{
+                        jobsByTags.put(t.getTag(), 1);
+                    }
+                });
+            }
+
         });
         return jobsByTags;
     }
