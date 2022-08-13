@@ -1,7 +1,15 @@
 import React from "react";
 import Chart from "../charts";
 
-const options = {
+export default function NoOfStudentsPerCityPiChart({studentsByCity}) {
+
+  let dataToLoad = [];
+
+  for (const property in studentsByCity) {
+    dataToLoad.push({ value: studentsByCity[property], name: property });
+  }
+
+  const options = {
     title: {
       text: 'No of Students',
       subtext: 'By City',
@@ -19,13 +27,7 @@ const options = {
         name: 'Access From',
         type: 'pie',
         radius: '50%',
-        data: [
-          { value: 1048, name: 'Search Engine' },
-          { value: 735, name: 'Direct' },
-          { value: 580, name: 'Email' },
-          { value: 484, name: 'Union Ads' },
-          { value: 300, name: 'Video Ads' }
-        ],
+        data: dataToLoad,
         emphasis: {
           itemStyle: {
             shadowBlur: 10,
@@ -37,7 +39,6 @@ const options = {
     ]
   };
 
-export default function NoOfStudentsPerCityPiChart() {
   return (
     <React.Fragment>
       <Chart options={options} />
