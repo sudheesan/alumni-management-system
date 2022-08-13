@@ -4,17 +4,15 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
+import lombok.RequiredArgsConstructor;
 import miu.edu.alumnitrackingsystem.models.NotificationMessage;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class FirebaseMessagingService {
 
   private final FirebaseMessaging firebaseMessaging;
-
-  public FirebaseMessagingService(FirebaseMessaging firebaseMessaging) {
-    this.firebaseMessaging = firebaseMessaging;
-  }
 
 
   public String sendNotification(NotificationMessage notificationMessage, String token) throws FirebaseMessagingException {
@@ -25,6 +23,7 @@ public class FirebaseMessagingService {
       .setBody(notificationMessage.getContent())
       .build();
 
+    System.out.println(token);
     Message message = Message
       .builder()
       .setToken(token)
