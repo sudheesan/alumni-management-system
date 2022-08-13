@@ -18,12 +18,15 @@ const updateUser = async (params) => {
     firstName,
     lastName,
     email,
+    major,
+    experience,
   } = params;
 
   const commonBody = {
     firstName,
     lastName,
     email,
+    experience
   };
   let result = null;
   if (userType === "Admin") {
@@ -38,6 +41,7 @@ const updateUser = async (params) => {
       city,
       state,
       gpa,
+      major, 
     });
   } else if (userType === "Faculty") {
     result = await axios.put(`/faculties/${id}`, {

@@ -87,10 +87,21 @@ const Profile = () => {
       target: { value },
     } = event;
 
-    // setUserDetails({
-    //   ...userDetails,
-    //   professionalExperience: value,
-    // });
+    setUserDetails({
+      ...userDetails,
+      experience: value,
+    });
+  };
+
+  const handleMajorChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+
+    setUserDetails({
+      ...userDetails,
+      major: value,
+    });
   };
 
   const handleUserGpaChange = (event) => {
@@ -183,6 +194,16 @@ const Profile = () => {
                 />
               </Grid>
             )}
+            {userType && userType === "Student" && (
+              <Grid item sm={3}>
+                <TextField
+                  onChange={handleMajorChange}
+                  type="text"
+                  value={userDetails.major}
+                  label="major"
+                />
+              </Grid>
+            )}
             {userType && userType === "Faculty" && (
               <Grid item sm={3}>
                 <TextField
@@ -239,6 +260,7 @@ const Profile = () => {
             <Grid item>
               <TextareaAutosize
                 onChange={handleProExperienceChage}
+                value={userDetails.experience}
                 maxRows={20}
                 aria-label="maximum height"
                 placeholder="My Professional experience"
