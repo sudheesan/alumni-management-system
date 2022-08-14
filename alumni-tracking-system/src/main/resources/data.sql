@@ -29,3 +29,15 @@ INSERT INTO public.job (id, city, company_name, deleted, description, state, tit
 INSERT INTO public.job (id, city, company_name, deleted, description, state, title, posted_by_id) VALUES (9, 'Manchester', 'New York Times', false, 'We need Angular Developers', 'New York', null, 3000);
 INSERT INTO public.job (id, city, company_name, deleted, description, state, title, posted_by_id) VALUES (10, 'Anoka County', 'Marvel', false, 'We need JS devs', 'Minnesota', null, 3000);
 
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (1001, 1002);
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (1001, 1003);
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (1002, 1000);
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (1002, 1001);
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (1003, 1001);
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (1004, 1001);
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (1005, 1005);
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (1006, 1002);
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (1007, 1000);
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (1008, 1003);
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (1009, 1004);
+INSERT INTO public.job_tags (job_id, tags_id) VALUES (10010, 1001);
