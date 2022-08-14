@@ -18,12 +18,13 @@ public class TagController {
 
     @GetMapping
     public List<Tag> getAll(){
+        log.info("calling /api/v1/tags- getAll");
         return  tagService.getAll();
     }
 
     @PostMapping
     public void save(@RequestBody Tag tag){
-      log.info("Initializing '{}' realm in Keycloak ...", "name sdkjfhdskjhfhksd");
+      log.info("calling save token");
 
       tagService.save(tag);
     }

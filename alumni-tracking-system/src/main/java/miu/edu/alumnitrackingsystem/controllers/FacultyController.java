@@ -1,5 +1,6 @@
 package miu.edu.alumnitrackingsystem.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import miu.edu.alumnitrackingsystem.dto.CommentDto;
 import miu.edu.alumnitrackingsystem.dto.FacultyDetailsDto;
 import miu.edu.alumnitrackingsystem.service.FacultyService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v1/faculties")
+@Slf4j
 public class FacultyController {
     @Autowired
     private FacultyService service;

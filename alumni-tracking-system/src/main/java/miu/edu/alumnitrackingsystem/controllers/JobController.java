@@ -1,5 +1,6 @@
 package miu.edu.alumnitrackingsystem.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import miu.edu.alumnitrackingsystem.dto.JobDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.JobDto;
 import miu.edu.alumnitrackingsystem.entity.Job;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v1/jobs")
+@Slf4j
 public class JobController {
     @Autowired
     private JobService service;
