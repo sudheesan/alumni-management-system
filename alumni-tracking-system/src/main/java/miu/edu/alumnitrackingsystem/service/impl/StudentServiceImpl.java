@@ -101,8 +101,10 @@ public class StudentServiceImpl implements StudentService {
         var job= jobRepo.findById(jobId).orElse(null);
 
 
+        System.out.println("++++++++");
         if(job!= null&& student!=null){
-            var alreadyApplied = job.getAppliedStudent().stream().anyMatch(s->s.getId() == student.getId());
+
+          var alreadyApplied = job.getAppliedStudent().stream().anyMatch(s->s.getId() == student.getId());
             if(alreadyApplied)
                 return;
             //student.addToAppliedJob(job);
@@ -116,17 +118,16 @@ public class StudentServiceImpl implements StudentService {
             jobRepo.save(job);
 
             var postedBy = job.getPostedBy();
+
             if(postedBy!= null && postedBy.getFcmToken() != null) {
-              var msg = new NotificationMessage();
-              msg.setSubject("Job Alert");
-              msg.setContent(student.getFirstName() + " is applied for job: " + job.getTitle());
-              msg.setData(new HashMap<>());
+              System.out.println("Applied++++++++"+student.getFirstName() + job.getCompanyName()+ postedBy.getFcmToken());
+
               try {
-                firebaseMessagingService.sendNotification(msg, postedBy.getFcmToken());
-                log.info("Notification sent to job owner "+ msg.toString());
+                firebaseMessagingService.sendNotification("Job Alert", student.getFirstName() + " is applied for job: " + job.getCompanyName() , postedBy.getFcmToken());
+                log.info("Notification sent to job owner ");
               } catch (FirebaseMessagingException e) {
                 log.error("Cannot sent notification", e);
-                throw new RuntimeException(e);
+                e.printStackTrace();
               }
             }
 

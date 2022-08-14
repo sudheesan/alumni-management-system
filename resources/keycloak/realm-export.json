@@ -27,13 +27,13 @@
   "oauth2DevicePollingInterval": 5,
   "enabled": true,
   "sslRequired": "external",
-  "registrationAllowed": false,
+  "registrationAllowed": true,
   "registrationEmailAsUsername": false,
   "rememberMe": false,
   "verifyEmail": false,
   "loginWithEmailAllowed": true,
   "duplicateEmailsAllowed": false,
-  "resetPasswordAllowed": false,
+  "resetPasswordAllowed": true,
   "editUsernameAllowed": false,
   "bruteForceProtected": false,
   "permanentLockout": false,
@@ -65,6 +65,9 @@
             "uma_authorization"
           ],
           "client": {
+            "amp-client": [
+              "Student"
+            ],
             "account": [
               "manage-account",
               "view-profile"
@@ -1373,7 +1376,17 @@
     "xXSSProtection": "1; mode=block",
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
-  "smtpServer": {},
+  "smtpServer": {
+    "password": "**********",
+    "starttls": "",
+    "auth": "true",
+    "port": "465",
+    "host": "smtp.gmail.com",
+    "from": "surendransudheesan@gmail.com",
+    "fromDisplayName": "AMS",
+    "ssl": "true",
+    "user": "surendransudheesan@gmail.com"
+  },
   "eventsEnabled": false,
   "eventsListeners": [
     "jboss-logging"
@@ -1971,7 +1984,7 @@
         },
         {
           "authenticatorFlow": true,
-          "requirement": "CONDITIONAL",
+          "requirement": "REQUIRED",
           "priority": 20,
           "autheticatorFlow": true,
           "flowAlias": "Browser - Conditional OTP",
@@ -2125,6 +2138,15 @@
           "userSetupAllowed": false
         }
       ]
+    },
+    {
+      "id": "87fe1e20-038f-41d9-9952-4cfe70d1a06c",
+      "alias": "sms-suth",
+      "description": "",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": []
     }
   ],
   "authenticatorConfig": [

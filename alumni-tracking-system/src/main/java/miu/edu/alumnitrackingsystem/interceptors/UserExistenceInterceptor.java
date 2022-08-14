@@ -42,10 +42,10 @@ public class UserExistenceInterceptor {
     public void deleteMethod() {
     }
 
-    @Before("getMethod() || postMethod() || deleteMethod() || putMethod() ")
+    @Before("postMethod() || deleteMethod() || putMethod() ")
     public void filterProfanityText(JoinPoint joinPoint) throws Throwable {
         var tokenValues = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println("token values " + tokenValues.getClaims().toString());
+        //System.out.println("token values " + tokenValues.getClaims().toString());
         String email = tokenValues.getClaim("email");
         String firstName = tokenValues.getClaim("given_name");
         String lastName = tokenValues.getClaim("family_name");

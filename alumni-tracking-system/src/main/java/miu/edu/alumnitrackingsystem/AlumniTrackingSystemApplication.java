@@ -33,7 +33,7 @@ public class AlumniTrackingSystemApplication {
       .builder()
       .setCredentials(googleCredentials)
       .build();
-    FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "miu-am");
+    FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "my-app");
     return FirebaseMessaging.getInstance(app);
   }
 

@@ -100,21 +100,19 @@ public class JobServiceImpl implements JobService {
             entity.setFiles(files);
             repo.save(entity);
 
-          var msg = new NotificationMessage();
-          msg.setSubject("New Job Alert");
-          msg.setContent(user.getFirstName() + " post a new job. Title: "+ job.getTitle());
-          msg.setData(new HashMap<>());
+
           var students = studentRepo.findAll();
           students.forEach(student -> {
             try {
-                var fcmToken = student.getFcmToken();
-                if(fcmToken!= null){
-                    firebaseMessagingService.sendNotification(msg, student.getFcmToken());
-                }
 
+              if(student.getFcmToken() != null){
+                firebaseMessagingService.sendNotification("New Job Alert" ,user.getFirstName() + " post a new job. Company: "+ job.getCompanyName(), student.getFcmToken());
+                log.info("Notification sent to student id "+ student.getId());
+
+              }
             } catch (FirebaseMessagingException e) {
-              log.info("Notification sent to student id "+ student.getId());
-              throw new RuntimeException(e);
+              e.printStackTrace();
+              log.info("Can not send notification to student id "+ student.getId() +student.getFcmToken() +" \n Error" + e.getMessage());
             }
           });
         }
