@@ -18,6 +18,7 @@ import Alert from "../common/alert";
 import { fetchUserByEmail } from "../../../actions/userActions";
 import to from "../../../utils/to";
 import { updateUser } from "../../../services/userManagementService";
+import { statesNames, citiesByStates } from "../../../utils/state-city";
 
 const initialAlertState = {
   open: false,
@@ -33,11 +34,19 @@ const Profile = () => {
 
   const [userDetails, setUserDetails] = useState(currentUser);
 
+  const [cities, setCities] = useState([]);
+
   const [isUserUpdating, setIsUserUpdating] = useState(false);
 
   const [updateAlert, setUpdateAlert] = useState(initialAlertState);
+  
 
   const { userType } = userDetails || {};
+
+  useEffect(() => {
+    const initialCities = currentUser && currentUser.state ? citiesByStates[currentUser.state] : [];
+    setCities(initialCities);
+  }, [currentUser])
 
   useEffect(() => {
     dispatch(fetchUserByEmail());
@@ -123,6 +132,9 @@ const Profile = () => {
       ...userDetails,
       state: value,
     });
+
+    const citiesOfTheState = citiesByStates[value];
+    setCities(citiesOfTheState);
   };
 
   const handleUserCityChange = (event) => {
@@ -224,7 +236,7 @@ const Profile = () => {
                   label="State"
                   onChange={handleUserStateChange}
                 >
-                  {states.map((state) => (
+                  {statesNames.map((state) => (
                     <MenuItem key={state} value={state}>
                       {state}
                     </MenuItem>
@@ -239,11 +251,11 @@ const Profile = () => {
                   style={{ width: 200 }}
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={userDetails.city}
+                  value={userDetails.city || ""}
                   label="City"
                   onChange={handleUserCityChange}
                 >
-                  {states.map((state) => (
+                  {cities.map((state) => (
                     <MenuItem key={state} value={state}>
                       {state}
                     </MenuItem>

@@ -18,7 +18,7 @@ import SampleJob from "../jobCard";
 import JobApplyModal from "../jobAds/applyModal";
 import { fetchAllJobs } from "../../../../actions/JobAdActions";
 import { fetchAllTags } from "../../../../actions/tagsActions";
-import states from "../../../../utils/states";
+import { statesNames, citiesByStates } from "../../../../utils/state-city";
 
 const GridItem = function (props) {
   return (
@@ -39,6 +39,7 @@ const JobAdList = () => {
   const [value, setValue] = useState([]);
   const [applyJobobModalOpen, setApllyJobModalOpen] = useState(false);
   const [jobPostToAppy, setJobPostToApply] = useState(null);
+  const [citiesForState, setCitiesForState] = useState([]);
 
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
@@ -71,7 +72,7 @@ const JobAdList = () => {
     }
     if (companyNameFilter && companyNameFilter.trim().length != 0) {
       filteredJobs = filteredJobs.filter((job) =>
-        job.companyName.includes(companyNameFilter)
+        job.companyName.toLowerCase().includes(companyNameFilter.toLowerCase())
       );
     }
     setJobList(filteredJobs);
@@ -84,6 +85,14 @@ const JobAdList = () => {
     setCompanyNameFilter("");
     setJobList(allJobAds);
   };
+
+
+  const handleSetSelectedState = (event) => {
+    const state = event.target.value;
+    setSelectedState(state);
+    const citiesOfTheState = citiesByStates[state];  
+    setCitiesForState(citiesOfTheState);
+  }
 
   const handleApplyJobModalOpen = (job) => {
     setJobPostToApply(job);
@@ -154,9 +163,9 @@ const JobAdList = () => {
               id="demo-simple-select"
               value={selectedState}
               label="Search By State"
-              onChange={(event) => setSelectedState(event.target.value)}
+              onChange={handleSetSelectedState}
             >
-              {states.map((state) => (
+              {statesNames.map((state) => (
                 <MenuItem key={state} value={state}>
                   {state}
                 </MenuItem>
@@ -176,7 +185,7 @@ const JobAdList = () => {
               label="Search By State"
               onChange={(event) => setSelectedCity(event.target.value)}
             >
-              {states.map((state) => (
+              {citiesForState.map((state) => (
                 <MenuItem key={state} value={state}>
                   {state}
                 </MenuItem>
@@ -186,6 +195,7 @@ const JobAdList = () => {
         </Grid>
         <Grid item sm={3}>
           <TextField
+            value={companyNameFilter}
             onChange={(event) => setCompanyNameFilter(event.target.value)}
             id="outlined-required"
             label="Search By company"

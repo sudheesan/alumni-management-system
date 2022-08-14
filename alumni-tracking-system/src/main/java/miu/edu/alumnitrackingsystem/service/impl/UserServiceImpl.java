@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getLoggedInUser(){
         var tokenValues = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //System.out.println("token values " + tokenValues.getClaims().toString());
+        System.out.println("token values " + tokenValues.getClaims().toString());
         String email = tokenValues.getClaim("email");
         var users = repo.findAllByEmailEqualsIgnoreCase(email);
         if(users!= null && users.size()>0){

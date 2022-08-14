@@ -1,6 +1,7 @@
 package miu.edu.alumnitrackingsystem.controllers;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
+import lombok.extern.slf4j.Slf4j;
 import miu.edu.alumnitrackingsystem.dto.FacultyDetailsDto;
 import miu.edu.alumnitrackingsystem.dto.FcmTokenDto;
 import miu.edu.alumnitrackingsystem.dto.UserDetailsDto;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 
 @CrossOrigin
 @RequestMapping("/api/v1/users")
+@Slf4j
 public class UserController {
     @Autowired
     private UserService userService;
@@ -24,21 +26,26 @@ public class UserController {
     private FirebaseMessagingService firebaseMessagingService;
     @GetMapping("/{email}")
     public Object getUserByEmail(@PathVariable String email){
+        log.info("calling /api/v1/users- getUserByEmail");
         return userService.getUserByEmail(email);
     }
 
     @PutMapping("/{id}")
     public void updateAdmin(@PathVariable int id, @RequestBody UserDetailsDto  userDetailsDto){
+        log.info("calling /api/v1/users- updateAdmin");
         userService.update(id, userDetailsDto);
     }
 
     @GetMapping("/getbyid/{id}")
     public UserDetailsDto getById(@PathVariable int id){
+        log.info("calling /api/v1/users- UserDetailsDto");
         return userService.getById(id);
     }
 
     @PutMapping("/fcm-token")
     public void saveFcmToken(@RequestBody FcmTokenDto fcmTokenDto) throws FirebaseMessagingException {
-      userService.saveFcmToken(fcmTokenDto.getFcmToken());
+
+        log.info("calling /api/v1/users- saveFcmToken");
+        userService.saveFcmToken(fcmTokenDto.getFcmToken());
     }
 }

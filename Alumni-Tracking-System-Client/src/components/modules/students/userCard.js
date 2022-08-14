@@ -5,7 +5,7 @@ import "./styles.css";
 
 function ProfileCard(props) {
   const {
-    student: { firstName, lastName, email, gpa, id, state, city },
+    student: { firstName, lastName, email, gpa, id, state, city, experience },
   } = props;
   return (
     <div className="card-container">
@@ -23,6 +23,12 @@ function ProfileCard(props) {
         <div className="likes">
           <h1 className="bold-text">{gpa}</h1>
           <h2 className="smaller-text">GPA</h2>
+        </div>
+      </div>
+      <div className="social-container">
+        <div className="photos">
+          <h1 className="bold-text">Experience</h1>
+          <h2 className="smaller-text">{experience}</h2>
         </div>
       </div>
     </div>

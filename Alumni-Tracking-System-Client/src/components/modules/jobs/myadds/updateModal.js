@@ -23,6 +23,7 @@ import { storage } from "../../../../utils/firebase";
 import states from "./states";
 import { updateAnAd } from "../../../../services/myAdsService";
 import to from "../../../../utils/to";
+import { statesNames, citiesByStates } from "../../../../utils/state-city";
 
 const style = {
   position: "absolute",
@@ -65,11 +66,13 @@ export default function MyAdUpdateModal(props) {
 
   const [jobTags, setJobTags] = useState(tagValues || []);
 
+  const initialCities = state ? citiesByStates[state] : [];
   const [jobDescription, setJobDescription] = useState(description || "");
   const [companyText, setCompanyText] = useState(companyName || "");
   const [companyState, setCompanyState] = useState(state || "");
-  const [companyCity, setCompanyCity] = useState(city || "");
+  const [companyCity, setCompanyCity] = useState(city || ""); 
   const [selectedFile, setSelectedFile] = useState(null);
+  const [citiesForState, setCitiesForState] = useState(initialCities);
 
   const [imgUrl, setImgUrl] = useState(null);
 
@@ -139,6 +142,8 @@ export default function MyAdUpdateModal(props) {
       target: { value },
     } = event;
     setCompanyState(value);
+    const citiesOfTheState = citiesByStates[value];  
+    setCitiesForState(citiesOfTheState);
   };
 
   const handleCompanyCityChangeChange = (event) => {
@@ -250,7 +255,7 @@ export default function MyAdUpdateModal(props) {
                       label="State"
                       onChange={handleCompanyStateChangeChange}
                     >
-                      {states.map((state) => (
+                      {statesNames.map((state) => (
                         <MenuItem key={state} value={state}>
                           {state}
                         </MenuItem>
@@ -268,7 +273,7 @@ export default function MyAdUpdateModal(props) {
                       label="City"
                       onChange={handleCompanyCityChangeChange}
                     >
-                      {states.map((state) => (
+                      {citiesForState.map((state) => (
                         <MenuItem key={state} value={state}>
                           {state}
                         </MenuItem>
